@@ -134,5 +134,5 @@ export interface IProduct{
   description?: string;
   price?: number;
   amount?: number;
-  categoryList?: ICategory;
+  categoryList?: ICategory[];
 }
