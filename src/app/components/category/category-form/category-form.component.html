@@ -1,19 +1,23 @@
 <form [formGroup]="form">
-    <div>
-        <h2 class="mb-0">Add Category</h2>
-    </div>
-    <div class="row">
-         <div class="mb-2">
+  <div>
+    <h2 class="mb-0">Add Category</h2>
+  </div>
+  <div class="row">
+    <div class="col-4">
+        
+        
+      <div class="mb-2">
         <label class="mb-1" for="name">Name*</label>
         <input id="name" formControlName="name" type="text" class="form-control">
         @if (form.controls['name'].invalid && (form.controls['name'].dirty || form.controls['name'].touched)) {
           <p class="text-danger my-1 p-absolute ">Name is required</p>
         }
       </div>
-          <div class="col-4">
+    </div>
+    <div class="col-4">
       <div class="mb-2">
-        <label class="mb-1" for="description">Description*</label>
-        <input id="description" formControlName="description" type="text" class="form-control">
+        <label class="mb-1" for="name">Description*</label>
+        <input id="name" formControlName="description" type="text" class="form-control">
         @if (form.controls['description'].invalid && (form.controls['description'].dirty || form.controls['description'].touched)) {
           <p class="text-danger my-1 p-absolute ">Description is required</p>
         }
@@ -24,6 +28,4 @@
           <button (click)="callSaveMethod.emit(form.value)"  [disabled]="form.invalid" class="btn btn-primary" type="button">Save</button>
         </div>
     </div>
-    </div>
-    
-</form>
+  </div>

@@ -38,6 +38,7 @@ export class GiftComponent {
   }
 
   save(item: IGiftList) {
+    console.log('save');
     item.id ? this.giftListService.update(item) : this.giftListService.save(item);
     this.form.reset();
   }

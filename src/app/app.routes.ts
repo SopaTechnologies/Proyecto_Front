@@ -18,7 +18,7 @@ import { CalculatorComponent } from './pages/calculator/calculator.component';
 import { GiftComponent } from './pages/gift/gift.component';
 import { GiftListGiftsComponent } from './pages/gift-list-gifts/gift-list-gifts.component';
 import { GiftsComponent } from './pages/gifts/gifts.component';
-// import { ProductComponent } from './pages/';
+import { CategoryComponent } from './pages/category/category.component';
 
 export const routes: Routes = [
   {
@@ -167,18 +167,19 @@ export const routes: Routes = [
           showInSidebar: true
         }
       },
-      // {
-      //   path: 'product',
-      //   component: ProductComponent,
-      //   data: { 
-      //     authorities: [
-      //       IRoleType.admin,
-      //       IRoleType.superAdmin,
-      //     ],
-      //     name: 'Products',
-      //     showInSidebar: true
-      //   }
-      // }
+       {
+        path: 'categoria',
+        component: CategoryComponent,
+        data: {
+          authorities: [
+            IRoleType.admin,
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'Categorias',
+          showInSidebar: true
+        }
+      },
     ],
   },
 ];

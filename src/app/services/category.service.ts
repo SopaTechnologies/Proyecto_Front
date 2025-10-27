@@ -9,14 +9,14 @@ import { AlertService } from './alert.service';
 })
 
 export class CategoryService extends BaseService<ICategory> {
-  protected override source: string = 'categories';
+    protected override source: string = 'category';
     private categorySignal = signal<ICategory[]>([]);
     get categories$() {
         return this.categorySignal;
     }
     public search: ISearch = {
         page: 1,
-        size: 10
+        size: 5
     }
     public totalItems: any = [];
     private authService: AuthService = inject(AuthService);
