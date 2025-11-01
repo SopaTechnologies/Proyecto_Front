@@ -1,0 +1,36 @@
+<form [formGroup]="genreForm" (ngSubmit)="onSubmit()" class="p-4 space-y-4">
+  <h2 class="text-lg font-semibold">
+    {{ genreForm.value.id ? 'Editar Género' : 'Agregar Género' }}
+  </h2>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Nombre</label>
+    <input
+      type="text"
+      formControlName="name"
+      class="w-full p-2 border rounded"
+      [class.border-red-500]="nameCtrl?.invalid && nameCtrl?.touched"
+    />
+    <p *ngIf="nameCtrl?.invalid && nameCtrl?.touched" class="text-red-500 text-sm mt-1">
+      El nombre es obligatorio (mínimo 3 caracteres).
+    </p>
+  </div>
+
+  <div class="flex justify-end space-x-2">
+    <button
+      type="button"
+      (click)="cancel()"
+      class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+    >
+      Cancelar
+    </button>
+
+    <button
+      type="submit"
+      class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+      [disabled]="loading()"
+    >
+      {{ loading() ? 'Guardando...' : genreForm.value.id ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+</form>

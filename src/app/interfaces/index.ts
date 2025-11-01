@@ -58,3 +58,10 @@ export interface ISearch {
   totalElements?: number;
   totalPages?:number;
 }
+
+export interface IGenre {
+  id?: number;
+  name: string;
+  id_usuario_creador?: number;
+  fecha_creacion?: string;
+}

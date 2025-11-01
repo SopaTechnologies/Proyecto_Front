@@ -1,0 +1,30 @@
+<div class="genres-grid">
+  <div *ngFor="let genre of genres; trackBy: trackById" class="genre-card">
+    <div class="genre-icon">📚</div>
+    <div class="genre-name">{{ genre.name }}</div>
+    <div class="genre-actions">
+      <button 
+        (click)="editGenre(genre)" 
+        class="btn btn-sm btn-warning me-2" 
+        type="button" 
+        title="Editar"
+      >
+        <i class="fas fa-edit"></i>
+      </button>
+      <button 
+        (click)="deleteGenre(genre)" 
+        class="btn btn-sm btn-danger" 
+        type="button" 
+        title="Eliminar"
+      >
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="genres.length === 0" class="col-12">
+    <div class="alert alert-info text-center">
+      No se encontraron géneros
+    </div>
+  </div>
+</div>

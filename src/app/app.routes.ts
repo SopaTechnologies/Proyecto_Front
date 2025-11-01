@@ -10,6 +10,8 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestGuard } from './guards/guest.guard';
 import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { GenresComponent } from './pages/genres/genres.component';
+
 
 export const routes: Routes = [
   {
@@ -65,6 +67,19 @@ export const routes: Routes = [
           ],
           name: 'Dashboard',
           showInSidebar: false
+        }
+      },
+       {
+        path: 'genres',
+        component: GenresComponent,
+        canActivate:[AdminRoleGuard],
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin
+          ],
+          name: 'Genres',
+          showInSidebar: true
         }
       },
       {
