@@ -2,62 +2,130 @@
   <div class="d-flex align-items-center justify-content-center h-100">
     <div class="login-card">
       <div class="w-100">
-        <div class="text-center">
-          <a class="logo text-center" routerLink="/">
+        <div
+          class="d-flex justify-content-between align-items-center mb-4 px-3 pt-3"
+        >
+          <div class="d-flex align-items-center">
+            <!-- <a class="logo text-center" routerLink="/"> -->
             <img
-              width="250"
-              class="img-fluid mb-4"
+              width="80"
+              class="img-fluid mb-2"
+              src="../../../../assets/icons/sopa_logo.png"
+              alt="Logo"
+            />
+            <!-- </a> -->
+
+            <span class="logo-text">by SOPA TECHNOLOGIES</span>
+          </div>
+          <div class="nav-buttons">
+            <a href="/signup" class="btn btn-primary btn-block w-100 dark-submit-btn"
+              >Registrarse en Mahou Site</a
+            >
+            <div class="text-center mb-3"></div>
+          </div>
+        </div>
+
+        <div class="text-center mb-3">
+          <span class="divider-text"></span>
+        </div>
+
+        <div class="login-main">
+          <form
+            (ngSubmit)="handleLogin($event)"
+            autocomplete="off"
+            #frm="ngForm"
+          >
+            <div class="mb-4 text-center">
+              <h1>Iniciar Sesión</h1>
+               <img
+              width="300"
+              class="img-fluid mb-2"
               src="../../../../assets/icons/logo@2x.png"
               alt="Logo"
             />
-          </a>
-        </div>
-        <div class="login-main">
-          <form (ngSubmit)="handleLogin($event)" autocomplete="off" #frm="ngForm">
-            <div class="mb-3">
-              <h4>Sign in to account</h4>
-              <small style="color: #4f4f4f">
-                Enter your email & password to login
-              </small>
+              <p style="color: #ffffff">
+                Nos alegra verte otra vez. Inicia sesion para seguir donde
+                quedaste.
+              </p>
             </div>
 
             <div class="form-group mb-3">
-              <label for="email" class="form-label mb-2">
-                Email Address
-              </label>
-              <input #email="ngModel" type="text" class="form-control" id="email" name="email"
-                placeholder="agent@gmail.com" [(ngModel)]="loginForm.email" [ngClass]="{
+              <label for="email" class="form-label mb-2"> Email Address </label>
+              <input
+                #email="ngModel"
+                type="text"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="agent@gmail.com"
+                [(ngModel)]="loginForm.email"
+                [ngClass]="{
                   'is-invalid': email.invalid && email.touched,
                   'is-valid': email.valid && email.touched
-                }" required />
+                }"
+                required
+              />
               <div *ngIf="email.invalid" class="invalid-feedback">
-                Please add a valid email
+                Por favor ingresa un correo electrónico válido
               </div>
             </div>
 
             <div class="form-group mb-4">
               <label for="password" class="form-label mb-2">Password</label>
               <div class="form-input position-relative">
-                <input #password="ngModel" type="password" class="form-control" id="password" name="password"
-                placeholder="*****" [(ngModel)]="loginForm.password" [ngClass]="{
-                  'is-invalid': password.invalid && password.touched,
-                  'is-valid': password.valid && password.touched
-                }" required />
+                <input
+                  #password="ngModel"
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="*****"
+                  [(ngModel)]="loginForm.password"
+                  [ngClass]="{
+                    'is-invalid': password.invalid && password.touched,
+                    'is-valid': password.valid && password.touched
+                  }"
+                  required
+                />
                 <div *ngIf="password.invalid" class="invalid-feedback">
-                  Please add a valid password
+                  Por favor ingresa tu contraseña
                 </div>
               </div>
             </div>
 
-            <div class="form-group mb-0">
-              <button class="btn btn-primary btn-block w-100" type="submit">
-                Sign in
+            <div class="form-group mb-3">
+              <button
+                class="btn btn-primary btn-block w-100 dark-submit-btn"
+                type="submit"
+              >
+                Iniciar
               </button>
               @if(loginError) {
-                <p class="text-danger">{{loginError}}</p>
+              <p class="text-danger">{{ loginError }}</p>
               }
             </div>
-            <a href="/signup">Go SignUp</a>
+
+            <div class="mb-4 text-center">
+              <div class="text-center mb-3">
+                <span class="divider-text">0</span>
+              </div>
+
+              <div class="mb-4 text-center">
+                <p style="color: #ffffff">Registrate con tu cuenta de Google</p>
+              </div>
+            </div>
+
+            <div class="form-group mb-3 text-center">
+              <button type="button" class="btn btn-outline w-100 google-btn">
+                <img
+                  src="https://www.google.com/favicon.ico"
+                  width="20"
+                  class="me-2"
+                  alt="Google"
+                />
+                Inicia sesión con Google
+              </button>
+            </div>
           </form>
         </div>
       </div>
