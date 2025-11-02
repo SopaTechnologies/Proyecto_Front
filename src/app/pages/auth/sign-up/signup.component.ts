@@ -13,6 +13,8 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
   templateUrl: "./signup.component.html",
   styleUrl: "./signup.component.scss",
 })
+
+
 export class SigUpComponent {
   public signUpError!: String;
   public validSignup!: boolean;
@@ -33,6 +35,8 @@ export class SigUpComponent {
 
   previewUrl: string | null = null;
   selectedFile: File | null = null;
+  isUploadingPhoto: boolean = false;
+
 
   onPhotoSelected(event: any) {
     const file = event.target.files[0];
@@ -46,24 +50,30 @@ export class SigUpComponent {
   }
 
   confirmPhotoUpload() {
-    if (!this.selectedFile) return;
+  if (!this.selectedFile) return;
 
-    const formData = new FormData();
-    formData.append("file", this.selectedFile);
-    formData.append("upload_preset", "user_photos_unsi");
-    formData.append("cloud_name", "dmbdlq4cx");
+  this.isUploadingPhoto = true; // Start loading
 
-    fetch("https://api.cloudinary.com/v1_1/dmbdlq4cx/image/upload", {
-      method: "POST",
-      body: formData,
+  const formData = new FormData();
+  formData.append("file", this.selectedFile);
+  formData.append("upload_preset", "user_photos_unsi");
+  formData.append("cloud_name", "dmbdlq4cx");
+
+  fetch("https://api.cloudinary.com/v1_1/dmbdlq4cx/image/upload", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      this.user.photo = data.secure_url;
+      console.log("Uploaded:", this.user.photo);
     })
-      .then((res) => res.json())
-      .then((data) => {
-        this.user.photo = data.secure_url;
-        console.log("Uploaded:", this.user.photo);
-      })
-      .catch((err) => console.error("Upload error:", err));
-  }
+    .catch((err) => console.error("Upload error:", err))
+    .finally(() => {
+      this.isUploadingPhoto = false; // End loading
+    });
+}
+
 
   public handleSignup(event: Event) {
     event.preventDefault();

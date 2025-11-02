@@ -28,13 +28,5 @@ export class UserFormComponent {
       password: this.userForm.controls['password'].value,
       photo: this.userForm.controls['photo'].value
     }
-    if(this.userForm.controls['id'].value) {
-      order.id = this.userForm.controls['id'].value;
-    } 
-    if(order.id) {
-      this.callUpdateMethod.emit(order);
-    } else {
-      this.callSaveMethod.emit(order);
-    }
   }
 }
