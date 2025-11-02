@@ -57,7 +57,7 @@
                 class="form-control"
                 id="email"
                 name="email"
-                placeholder="agent@gmail.com"
+                placeholder="Correo"
                 [(ngModel)]="loginForm.email"
                 [ngClass]="{
                   'is-invalid': email.invalid && email.touched,
@@ -79,7 +79,7 @@
                   class="form-control"
                   id="password"
                   name="password"
-                  placeholder="*****"
+                  placeholder="Contraseña"
                   [(ngModel)]="loginForm.password"
                   [ngClass]="{
                     'is-invalid': password.invalid && password.touched,
@@ -89,6 +89,9 @@
                 />
                 <div *ngIf="password.invalid" class="invalid-feedback">
                   Por favor ingresa tu contraseña
+                </div>
+                <div class="form-group mb-3 text-center">
+                  <a href="/login" class="text-primary">¿Olvidó su contraseña? Recuperela </a>
                 </div>
               </div>
             </div>
@@ -110,20 +113,20 @@
                 <span class="divider-text">0</span>
               </div>
 
-              <div class="mb-4 text-center">
+              <div class="text-center">
                 <p style="color: #ffffff">Registrate con tu cuenta de Google</p>
               </div>
             </div>
 
             <div class="form-group mb-3 text-center">
-              <button type="button" class="btn btn-outline w-100 google-btn">
+              <button type="button" class="btn btn-primary btn-block w-100 dark-submit-btn">
                 <img
                   src="https://www.google.com/favicon.ico"
                   width="20"
                   class="me-2"
                   alt="Google"
                 />
-                Inicia sesión con Google
+                Registrarse
               </button>
             </div>
           </form>

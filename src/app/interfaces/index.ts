@@ -7,6 +7,7 @@ export interface IResponse<T> {
   data: T;
   message: string,
   meta: T;
+  Ilo: ILoginResponse[]
 }
 
 export interface IUser {

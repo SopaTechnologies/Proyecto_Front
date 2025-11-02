@@ -1,30 +1,69 @@
-import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { FormsModule, NgModel } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
-import { IUser } from '../../../interfaces';
+import { CommonModule } from "@angular/common";
+import { Component, ViewChild } from "@angular/core";
+import { FormsModule, NgModel } from "@angular/forms";
+import { Router, RouterLink } from "@angular/router";
+import { AuthService } from "../../../services/auth.service";
+import { IUser } from "../../../interfaces";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 @Component({
-  selector: 'app-signup',
+  selector: "app-signup",
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss'
+  templateUrl: "./signup.component.html",
+  styleUrl: "./signup.component.scss",
 })
 export class SigUpComponent {
   public signUpError!: String;
   public validSignup!: boolean;
-  @ViewChild('name') nameModel!: NgModel;
-  @ViewChild('lastname') lastnameModel!: NgModel;
-  @ViewChild('email') emailModel!: NgModel;
-  @ViewChild('password') passwordModel!: NgModel;
+  @ViewChild("name") nameModel!: NgModel;
+  @ViewChild("lastname") lastnameModel!: NgModel;
+  @ViewChild("email") emailModel!: NgModel;
+  @ViewChild("photo") photoModel!: NgModel;
+  @ViewChild("username") usernameModel!: NgModel;
+  @ViewChild("password") passwordModel!: NgModel;
 
   public user: IUser = {};
 
-  constructor(private router: Router, 
-    private authService: AuthService
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private http: HttpClient
   ) {}
+
+  previewUrl: string | null = null;
+  selectedFile: File | null = null;
+
+  onPhotoSelected(event: any) {
+    const file = event.target.files[0];
+    this.selectedFile = file;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewUrl = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  confirmPhotoUpload() {
+    if (!this.selectedFile) return;
+
+    const formData = new FormData();
+    formData.append("file", this.selectedFile);
+    formData.append("upload_preset", "user_photos_unsi");
+    formData.append("cloud_name", "dmbdlq4cx");
+
+    fetch("https://api.cloudinary.com/v1_1/dmbdlq4cx/image/upload", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        this.user.photo = data.secure_url;
+        console.log("Uploaded:", this.user.photo);
+      })
+      .catch((err) => console.error("Upload error:", err));
+  }
 
   public handleSignup(event: Event) {
     event.preventDefault();
