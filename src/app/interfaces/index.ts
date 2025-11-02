@@ -11,13 +11,13 @@ export interface IResponse<T> {
 
 export interface IUser {
   id?: number;
+  username?: string;
   name?: string;
   lastname?: string;
   email?: string;
   password?: string;
-  active?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  status?: boolean;
+  photo?: string;
   authorities?: IAuthority[];
   role?: IRole
 }
