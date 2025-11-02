@@ -10,6 +10,8 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestGuard } from './guards/guest.guard';
 import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { RedactarHistoriaComponent } from './pages/redactar-historia/redactar-historia.component';
+import { CrearHistoriaComponent } from './pages/crear-historia/crear-historia.component';
 
 export const routes: Routes = [
   {
@@ -80,6 +82,14 @@ export const routes: Routes = [
           showInSidebar: false
         }
       },
+      {
+        path: "redactarhistoria/:id",
+        component: RedactarHistoriaComponent,
+      },
+      {
+        path: "crearhistoria",
+        component: CrearHistoriaComponent,
+      }
     ],
   },
 ];
