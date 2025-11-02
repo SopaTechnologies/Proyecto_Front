@@ -1,0 +1,83 @@
+import { Component , inject, Input} from '@angular/core';
+import { HistoriaModel } from '../../models/historia.model';
+import { Subscription } from 'rxjs';
+import { HistoriaService } from '../../services/history.service';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { AngularEditorModule, AngularEditorConfig } from '@wfpena/angular-wysiwyg';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  standalone: true,
+  selector: 'app-redactar-historia',
+  imports: [FormsModule, HttpClientModule, AngularEditorModule], 
+  templateUrl: './redactar-historia.component.html',
+  styleUrl: './redactar-historia.component.less'
+})
+export class RedactarHistoriaComponent {
+  historia: HistoriaModel = {
+    id: 0, // Se debe cargar
+    contenido: '', // se debe cargar
+  };
+
+  // route : ActivatedRoute = null
+  @Input() id!: Number
+  mensajeTipo = 0
+  mensaje: string = '';
+  autoSaveSub!: Subscription;
+  historyService: HistoriaService = inject(HistoriaService);
+
+  editorConfig: AngularEditorConfig = {
+    height: '500px',
+    // maxHeight: '00px',
+    editable: true,
+  }
+
+
+  ngOnInit(): void {
+    // Iniciar guardado automático
+
+    this.cargarHistoria()
+    this.autoSaveSub = this.historyService
+      .iniciarGuardadoAutomatico(this.historia)
+      .subscribe({
+        next: () => this.mostrarMensaje('Cambios guardados automáticamente.', 200),
+        error: err => this.mostrarMensaje('Error al guardar automáticamente: ' + err, err.status)
+      });
+  }
+
+  cargarHistoria(): void {
+    this.historyService.traerHistoria(Number(this.id)).subscribe({
+        next: (response) => {
+          this.historia.contenido = response.data.contenido
+          this.historia.id = response.data.id
+          this.mostrarMensaje('historia cargada satisfactoriamente.', 200)
+        },
+        error: err => this.mostrarMensaje('Error al Cargar la historia', err.status)
+    });
+  }
+
+
+
+  guardarManual() {
+    this.historyService.guardarManual(this.historia).subscribe({
+        next: () => this.mostrarMensaje('Cambios guardados satisfactoriamente.', 200),
+        error: err => this.mostrarMensaje('Error al guardar automáticamente: ' + err, err.status)
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.autoSaveSub) this.autoSaveSub.unsubscribe();
+  }
+
+  mostrarMensaje(msg: string, codigo: number) {
+    this.mensaje = msg;
+    this.mensajeTipo = codigo;
+
+    if (codigo == 200) {
+      setTimeout(() => (this.mensaje = ''), 3000);
+    }
+  }
+
+}
+

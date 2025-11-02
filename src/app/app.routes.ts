@@ -19,6 +19,8 @@ import { GiftComponent } from './pages/gift/gift.component';
 import { GiftListGiftsComponent } from './pages/gift-list-gifts/gift-list-gifts.component';
 import { GiftsComponent } from './pages/gifts/gifts.component';
 import { CategoryComponent } from './pages/category/category.component';
+import { CrearHistoriaComponent } from './pages/crear-historia/crear-historia.component';
+import { RedactarHistoriaComponent } from './pages/redactar-historia/redactar-historia.component';
 
 export const routes: Routes = [
   {
@@ -53,10 +55,10 @@ export const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
-        canActivate:[AdminRoleGuard],
-        data: { 
+        canActivate: [AdminRoleGuard],
+        data: {
           authorities: [
-            IRoleType.admin, 
+            IRoleType.admin,
             IRoleType.superAdmin
           ],
           name: 'Users',
@@ -66,9 +68,9 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
-        data: { 
+        data: {
           authorities: [
-            IRoleType.admin, 
+            IRoleType.admin,
             IRoleType.superAdmin,
             IRoleType.user
           ],
@@ -79,9 +81,9 @@ export const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent,
-        data: { 
+        data: {
           authorities: [
-            IRoleType.admin, 
+            IRoleType.admin,
             IRoleType.superAdmin,
             IRoleType.user
           ],
@@ -92,9 +94,9 @@ export const routes: Routes = [
       {
         path: 'orders',
         component: OrdersComponent,
-        data: { 
+        data: {
           authorities: [
-            IRoleType.admin, 
+            IRoleType.admin,
             IRoleType.superAdmin,
             IRoleType.user,
           ],
@@ -105,9 +107,9 @@ export const routes: Routes = [
       {
         path: 'preference-list',
         component: PreferenceListPageComponent,
-        data: { 
+        data: {
           authorities: [
-            IRoleType.admin, 
+            IRoleType.admin,
             IRoleType.superAdmin,
             IRoleType.user,
           ],
@@ -118,9 +120,9 @@ export const routes: Routes = [
       {
         path: 'sport-team',
         component: SportTeamComponent,
-        data: { 
+        data: {
           authorities: [
-            IRoleType.admin, 
+            IRoleType.admin,
             IRoleType.superAdmin,
             IRoleType.user,
           ],
@@ -167,7 +169,7 @@ export const routes: Routes = [
           showInSidebar: true
         }
       },
-       {
+      {
         path: 'categoria',
         component: CategoryComponent,
         data: {
@@ -180,6 +182,14 @@ export const routes: Routes = [
           showInSidebar: true
         }
       },
+      {
+        path: "redactarhistoria/:id",
+        component: RedactarHistoriaComponent,
+      },
+      {
+        path: "crearhistoria",
+        component: CrearHistoriaComponent,
+      }
     ],
   },
 ];
