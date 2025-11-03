@@ -32,6 +32,8 @@ export class SigUpComponent {
     private http: HttpClient
   ) {}
 
+
+
   previewUrl: string | null = null;
   selectedFile: File | null = null;
   isUploadingPhoto: boolean = false;
