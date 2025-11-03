@@ -31,4 +31,5 @@ export class SidebarComponent {
     this.appRoutes = routes.filter(route => route.path == 'app')[0];
     this.permittedRoutes = this.authService.getPermittedRoutes(this.appRoutes.children);
   }
+  
 }
