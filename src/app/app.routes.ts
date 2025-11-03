@@ -12,6 +12,7 @@ import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RedactarHistoriaComponent } from './pages/redactar-historia/redactar-historia.component';
 import { CrearHistoriaComponent } from './pages/crear-historia/crear-historia.component';
+import { GenresComponent } from './pages/genres/genres.component';
 
 export const routes: Routes = [
   {
@@ -89,7 +90,20 @@ export const routes: Routes = [
       {
         path: "crearhistoria",
         component: CrearHistoriaComponent,
-      }
+      },
+      {
+        path: 'genres',
+        component: GenresComponent,
+        canActivate:[AdminRoleGuard],
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin
+          ],
+          name: 'Géneros',
+          showInSidebar: true
+        }
+      },
     ],
   },
 ];

@@ -67,11 +67,21 @@ export class AuthService {
   }
 
   public hasRole(role: string): boolean {
-    return this.user.authorities ?  this.user?.authorities.some(authority => authority.authority == role) : false;
+    const hasInAuthorities = this.user.authorities ? 
+      this.user.authorities.some(authority => authority.authority == role) : false;
+    
+    const hasInRole = this.user.role?.name === role;
+    
+    return hasInAuthorities || !!hasInRole;
   }
 
   public isSuperAdmin(): boolean {
-    return this.user.authorities ?  this.user?.authorities.some(authority => authority.authority == IRoleType.superAdmin) : false;
+    const hasInAuthorities = this.user.authorities ? 
+      this.user.authorities.some(authority => authority.authority == IRoleType.superAdmin) : false;
+    
+    const hasInRole = this.user.role?.name === IRoleType.superAdmin;
+    
+    return hasInAuthorities || !!hasInRole;
   }
 
   public hasAnyRole(roles: any[]): boolean {
@@ -106,22 +116,26 @@ export class AuthService {
   }
 
   public areActionsAvailable(routeAuthorities: string[]): boolean  {
-    // definición de las variables de validación
     let allowedUser: boolean = false;
     let isAdmin: boolean = false;
-    // se obtienen los permisos del usuario
     let userAuthorities = this.getUserAuthorities();
-    // se valida que sea una ruta permitida para el usuario
+    
     for (const authority of routeAuthorities) {
-      if (userAuthorities?.some(item => item.authority == authority) ) {
+      if (userAuthorities?.some(item => item.authority == authority)) {
         allowedUser = userAuthorities?.some(item => item.authority == authority)
       }
       if (allowedUser) break;
     }
-    // se valida que el usuario tenga un rol de administración
+    
     if (userAuthorities?.some(item => item.authority == IRoleType.admin || item.authority == IRoleType.superAdmin)) {
       isAdmin = userAuthorities?.some(item => item.authority == IRoleType.admin || item.authority == IRoleType.superAdmin);
-    }          
+    }
+    
+    if (this.user.role && (this.user.role.name == IRoleType.admin || this.user.role.name == IRoleType.superAdmin)) {
+      isAdmin = true;
+      allowedUser = routeAuthorities.includes(this.user.role.name);
+    }
+    
     return allowedUser && isAdmin;
   }
 }

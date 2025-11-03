@@ -1,0 +1,34 @@
+@defer {
+  <div class="genres-container">
+    <div class="genres-header">
+      <h2>Géneros</h2>
+      <button 
+        (click)="modalService.displayModal('md', addGenreModal)" 
+        type="button" 
+        class="btn-add-genre">
+        <i class="fas fa-plus"></i>
+        <span>Nuevo género</span>
+      </button>
+    </div>
+
+    <app-genres-list
+      (callModalAction)="callEdition($event)"
+      (callDeleteAction)="genresService.delete($event)"
+      [genres]="genresService.genres$()"
+    />
+  </div>
+} @loading (minimum 1.5s) {
+  <app-loader/>
+}
+
+<ng-template #addGenreModal>
+  <app-modal [hideFooter]="true">
+    <div>
+      <app-genres-form
+        [genreForm]="genreForm"
+        (callSaveMethod)="saveGenre($event)"
+        (callUpdateMethod)="updateGenre($event)"
+      />
+    </div>
+  </app-modal>
+</ng-template>
