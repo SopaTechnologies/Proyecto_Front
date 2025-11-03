@@ -138,40 +138,40 @@
               </div>
             </div>
 
-            
             <div class="d-flex align-items-center mb-3">
-              
-                  <div class="form-group px-1">
-  <label for="photo" class="form-label mb-2">Foto de perfil</label>
-  <input
-    type="file"
-    class="form-control"
-    id="photo"
-    (change)="onPhotoSelected($event)"
-  />
+              <div class="form-group px-1">
+                <label for="photo" class="form-label mb-2"
+                  >Foto de perfil</label
+                >
+                <input
+                  #photoInput
+                  type="file"
+                  class="form-control"
+                  id="photo"
+                  (change)="onPhotoSelected($event)"
+                />
 
-  <img
-    *ngIf="previewUrl"
-    [src]="previewUrl"
-    class="img-thumbnail mt-2"
-    width="150"
-  />
+                <img
+                  *ngIf="previewUrl"
+                  [src]="previewUrl"
+                  class="img-thumbnail mt-2"
+                  width="150"
+                />
 
-  <div *ngIf="isUploadingPhoto" class="upload-spinner mt-2">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Subiendo foto...</span>
-    </div>
-  </div>
+                <div *ngIf="isUploadingPhoto" class="upload-spinner mt-2">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Subiendo foto...</span>
+                  </div>
+                </div>
 
-  <button
-    *ngIf="previewUrl && !user.photo && !isUploadingPhoto"
-    class="btn btn-primary btn-block w-100 dark-submit-btn"
-    (click)="confirmPhotoUpload()"
-  >
-    Confirmar Foto
-  </button>
-</div>
-
+                <button
+                  *ngIf="previewUrl && !user.photo && !isUploadingPhoto"
+                  class="btn btn-primary btn-block w-100 dark-submit-btn"
+                  (click)="confirmPhotoUpload()"
+                >
+                  Confirmar Foto
+                </button>
+              </div>
             </div>
 
             <div class="form-group mb-4">

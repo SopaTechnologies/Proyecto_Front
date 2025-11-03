@@ -13,8 +13,6 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
   templateUrl: "./signup.component.html",
   styleUrl: "./signup.component.scss",
 })
-
-
 export class SigUpComponent {
   public signUpError!: String;
   public validSignup!: boolean;
@@ -24,6 +22,7 @@ export class SigUpComponent {
   @ViewChild("photo") photoModel!: NgModel;
   @ViewChild("username") usernameModel!: NgModel;
   @ViewChild("password") passwordModel!: NgModel;
+  @ViewChild("photoInput") photoInput!: any;
 
   public user: IUser = {};
 
@@ -37,7 +36,6 @@ export class SigUpComponent {
   selectedFile: File | null = null;
   isUploadingPhoto: boolean = false;
 
-
   onPhotoSelected(event: any) {
     const file = event.target.files[0];
     this.selectedFile = file;
@@ -50,30 +48,41 @@ export class SigUpComponent {
   }
 
   confirmPhotoUpload() {
-  if (!this.selectedFile) return;
+    if (!this.selectedFile) return;
 
-  this.isUploadingPhoto = true; // Start loading
+    this.isUploadingPhoto = true;
 
-  const formData = new FormData();
-  formData.append("file", this.selectedFile);
-  formData.append("upload_preset", "user_photos_unsi");
-  formData.append("cloud_name", "dmbdlq4cx");
+    const formData = new FormData();
+    formData.append("file", this.selectedFile);
+    formData.append("upload_preset", "user_photos_unsi");
+    formData.append("cloud_name", "dmbdlq4cx");
 
-  fetch("https://api.cloudinary.com/v1_1/dmbdlq4cx/image/upload", {
-    method: "POST",
-    body: formData,
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      this.user.photo = data.secure_url;
-      console.log("Uploaded:", this.user.photo);
+    fetch("https://api.cloudinary.com/v1_1/dmbdlq4cx/image/upload", {
+      method: "POST",
+      body: formData,
     })
-    .catch((err) => console.error("Upload error:", err))
-    .finally(() => {
-      this.isUploadingPhoto = false; // End loading
-    });
-}
+      .then((res) => res.json())
+      .then((data) => {
+        this.user.photo = data.secure_url;
+        console.log("Uploaded:", this.user.photo);
+      })
+      .catch((err) => console.error("Upload error:", err))
+      .finally(() => {
+        this.isUploadingPhoto = false;
+      });
+  }
 
+  resetForm() {
+    
+    this.previewUrl = null;
+    this.selectedFile = null;
+    this.user = {};
+    this.signUpError = "";
+    this.validSignup = false;
+     if (this.photoInput) {
+    this.photoInput.nativeElement.value = null;
+  }
+  }
 
   public handleSignup(event: Event) {
     event.preventDefault();
@@ -91,9 +100,12 @@ export class SigUpComponent {
     }
     if (this.emailModel.valid && this.passwordModel.valid) {
       this.authService.signup(this.user).subscribe({
-        next: () => this.validSignup = true,
+        next: () => {
+          this.validSignup = true;
+        },
         error: (err: any) => (this.signUpError = err.description),
       });
     }
+    this.resetForm();
   }
 }
