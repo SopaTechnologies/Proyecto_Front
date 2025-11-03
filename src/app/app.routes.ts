@@ -86,10 +86,29 @@ export const routes: Routes = [
       {
         path: "redactarhistoria/:id",
         component: RedactarHistoriaComponent,
+        canActivate:[AdminRoleGuard],
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin
+          ],
+          name: 'Redactar Historia',
+          showInSidebar: true
+        }
       },
       {
         path: "crearhistoria",
         component: CrearHistoriaComponent,
+        canActivate:[AdminRoleGuard],
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user
+          ],
+          name: 'Crear Historia',
+          showInSidebar: true
+        }
       },
       {
         path: 'genres',
