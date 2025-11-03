@@ -5,7 +5,7 @@
         <div class="text-center">
           <a class="logo text-center" routerLink="/">
             <img
-              width="40"
+              width="400"
               class="img-fluid mb-4"
               src="../../../../assets/icons/logo@2x.png"
               alt="Logo"
@@ -13,37 +13,56 @@
           </a>
         </div>
         <div class="login-main">
-          <form (ngSubmit)="handleSignup($event)" autocomplete="off" #frm="ngForm">
+          <form
+            (ngSubmit)="handleSignup($event)"
+            autocomplete="off"
+            #frm="ngForm"
+          >
             <div class="mb-3">
-              <h4>Sign up account</h4>
-              <small style="color: #4f4f4f">
-                Enter your email & password to login
+              <h4 class="login-main text-center logo-text">Registro</h4>
+              <small style="color: #4f4f4f" class="text-primary">
+                Ingresa tus datos para poder iniciar
               </small>
             </div>
-
             <div class="d-flex align-items-center mb-3">
               <div class="form-group px-1">
-                <label for="name" class="form-label mb-2">
-                  Name
-                </label>
-                <input #name="ngModel" type="text" class="form-control" id="name" name="name"
-                  placeholder="User" [(ngModel)]="user.name" [ngClass]="{
+                <label for="name" class="form-label mb-2"> Nombre </label>
+                <input
+                  #name="ngModel"
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  placeholder="Nombre"
+                  [(ngModel)]="user.name"
+                  [ngClass]="{
                     'is-invalid': name.invalid && name.touched,
                     'is-valid': name.valid && name.touched
-                  }" required />
+                  }"
+                  required
+                />
                 <div *ngIf="name.invalid" class="invalid-feedback">
-                  Please add a valid name
+                  Ingresa un nombre valido
                 </div>
               </div>
               <div class="form-group px-1">
                 <label for="lastname" class="form-label mb-2">
-                  Lastname
+                  Ingresa un apellido valido
                 </label>
-                <input #lastname="ngModel" type="text" class="form-control" id="lastname" name="lastname"
-                  placeholder="demo" [(ngModel)]="user.lastname" [ngClass]="{
+                <input
+                  #lastname="ngModel"
+                  type="text"
+                  class="form-control"
+                  id="lastname"
+                  name="lastname"
+                  placeholder="Apellido"
+                  [(ngModel)]="user.lastname"
+                  [ngClass]="{
                     'is-invalid': lastname.invalid && lastname.touched,
                     'is-valid': lastname.valid && lastname.touched
-                  }" required />
+                  }"
+                  required
+                />
                 <div *ngIf="lastname.invalid" class="invalid-feedback">
                   Please add a valid lastname
                 </div>
@@ -52,43 +71,126 @@
 
             <div class="form-group mb-3">
               <label for="email" class="form-label mb-2">
-                Email Address
+                Dirección de correo
               </label>
-              <input #email="ngModel" type="text" class="form-control" id="email" name="email"
-                placeholder="agent@gmail.com" [(ngModel)]="user.email" [ngClass]="{
+              <input
+                #email="ngModel"
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Correo"
+                [(ngModel)]="user.email"
+                [ngClass]="{
                   'is-invalid': email.invalid && email.touched,
                   'is-valid': email.valid && email.touched
-                }" required />
+                }"
+                required
+              />
               <div *ngIf="email.invalid" class="invalid-feedback">
-                Please add a valid email
+                Por favor ingrese una direccion de correo valida
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="username" class="form-label mb-2">
+                Nombre de Usuario
+              </label>
+              <input
+                #username="ngModel"
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                placeholder="Nombre de Usuario, opcional"
+                [(ngModel)]="user.username"
+                [ngClass]="{
+                  'is-invalid': username.invalid && username.touched,
+                  'is-valid': username.valid && username.touched
+                }"
+                required
+              />
+              <div *ngIf="username.invalid" class="invalid-feedback">
+                Por favor ingrese un nombre de usuario
               </div>
             </div>
 
             <div class="form-group mb-5">
               <label for="password" class="form-label mb-2">Password</label>
               <div class="form-input position-relative">
-                <input #password="ngModel" type="password" class="form-control" id="password" name="password"
-                placeholder="*****" [(ngModel)]="user.password" [ngClass]="{
-                  'is-invalid': password.invalid && password.touched,
-                  'is-valid': password.valid && password.touched
-                }" required />
+                <input
+                  #password="ngModel"
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="Contraseña"
+                  [(ngModel)]="user.password"
+                  [ngClass]="{
+                    'is-invalid': password.invalid && password.touched,
+                    'is-valid': password.valid && password.touched
+                  }"
+                  required
+                />
                 <div *ngIf="password.invalid" class="invalid-feedback">
-                  Please add a valid password
+                  Por favor ingrese una contraseña
                 </div>
               </div>
             </div>
 
-            <div class="form-group mb-0">
-              <button class="btn btn-primary btn-block w-100" type="submit">
-                Sign up
+            <div class="d-flex align-items-center mb-3">
+              <div class="form-group px-1">
+                <label for="photo" class="form-label mb-2"
+                  >Foto de perfil</label
+                >
+                <input
+                  #photoInput
+                  type="file"
+                  class="form-control"
+                  id="photo"
+                  (change)="onPhotoSelected($event)"
+                />
+
+                <img
+                  *ngIf="previewUrl"
+                  [src]="previewUrl"
+                  class="img-thumbnail mt-2"
+                  width="150"
+                />
+
+                <div *ngIf="isUploadingPhoto" class="upload-spinner mt-2">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Subiendo foto...</span>
+                  </div>
+                </div>
+
+                <button
+                  *ngIf="previewUrl && !user.photo && !isUploadingPhoto"
+                  class="btn btn-primary btn-block w-100 dark-submit-btn"
+                  (click)="confirmPhotoUpload()"
+                >
+                  Confirmar Foto
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group mb-4">
+              <button
+                class="btn btn-primary btn-block w-100 dark-submit-btn"
+                type="submit"
+              >
+                Registrarse
               </button>
               @if(signUpError) {
-                <p class="text-danger">{{signUpError}}</p>
+              <p class="text-danger">{{ signUpError }}</p>
               } @else if (validSignup){
-                <p class="text-success">User registered, please go to login</p>
+              <p class="text-success">
+                Usuario Registrado correctamente, por favor dirijase a la
+                pantalla de inicio de sesión
+              </p>
               }
             </div>
-            <a href="/login">Go Login</a>
+            <a href="/login" class="text-primary">Ir a Iniciar Sesion</a>
           </form>
         </div>
       </div>

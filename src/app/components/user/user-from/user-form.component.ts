@@ -22,18 +22,11 @@ export class UserFormComponent {
   callSave() {
     let order: IUser = {
       email: this.userForm.controls['email'].value,
+      username: this.userForm.controls['username'].value,
       name: this.userForm.controls['name'].value,
       lastname: this.userForm.controls['lastname'].value,
       password: this.userForm.controls['password'].value,
-      updatedAt: this.userForm.controls['updatedAt'].value,
-    }
-    if(this.userForm.controls['id'].value) {
-      order.id = this.userForm.controls['id'].value;
-    } 
-    if(order.id) {
-      this.callUpdateMethod.emit(order);
-    } else {
-      this.callSaveMethod.emit(order);
+      photo: this.userForm.controls['photo'].value
     }
   }
 }

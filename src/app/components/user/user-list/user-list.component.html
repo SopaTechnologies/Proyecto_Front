@@ -18,8 +18,7 @@
           <td>{{item.name}}</td>
           <td>{{item.lastname}}</td>
           <td>{{item.email}}</td>
-          <td>{{item.createdAt | date: 'dd/MM/yyyy HH:mm'}}</td>
-          <td>{{item.updatedAt | date: 'dd/MM/yyyy HH:mm'}}</td>
+         
           <td>
             <button (click)="callModalAction.emit(item);" class="btn btn-warning me-2" type="button"><i class="fas fa-pen"></i></button>
             <button (click)="callDeleteAction.emit(item)" class="btn btn-danger" type="button"><i class="fas fa-trash"></i></button>

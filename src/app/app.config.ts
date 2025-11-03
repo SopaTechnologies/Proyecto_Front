@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([
         baseUrlInterceptor,
         accessTokenInterceptor,
-        //handleErrorsInterceptor
+        handleErrorsInterceptor
       ])
     ), 
     provideAnimationsAsync()
