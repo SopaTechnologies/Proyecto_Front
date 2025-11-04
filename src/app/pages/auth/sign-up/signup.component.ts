@@ -5,6 +5,7 @@ import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
 import { IUser } from "../../../interfaces";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-signup",
@@ -31,8 +32,6 @@ export class SigUpComponent {
     private authService: AuthService,
     private http: HttpClient
   ) {}
-
-
 
   previewUrl: string | null = null;
   selectedFile: File | null = null;
@@ -75,39 +74,91 @@ export class SigUpComponent {
   }
 
   resetForm() {
-    
     this.previewUrl = null;
     this.selectedFile = null;
     this.user = {};
     this.signUpError = "";
     this.validSignup = false;
-     if (this.photoInput) {
-    this.photoInput.nativeElement.value = null;
-  }
+    if (this.photoInput) {
+      this.photoInput.nativeElement.value = null;
+    }
   }
 
   public handleSignup(event: Event) {
     event.preventDefault();
     if (!this.nameModel.valid) {
       this.nameModel.control.markAsTouched();
+      Swal.fire({
+        title: "Error",
+        text: "Por favor indique un nombre.",
+        icon: "warning",
+      });
+      return;
     }
+
     if (!this.lastnameModel.valid) {
       this.lastnameModel.control.markAsTouched();
+      Swal.fire({
+        title: "Error",
+        text: "Por favor indique un apellido",
+        icon: "warning",
+      });
+      return;
     }
+
     if (!this.emailModel.valid) {
       this.emailModel.control.markAsTouched();
+      Swal.fire({
+        title: "Error",
+        text: "Por favor indique un correo electronico",
+        icon: "warning",
+      });
+      return;
     }
     if (!this.passwordModel.valid) {
       this.passwordModel.control.markAsTouched();
-    }
-    if (this.emailModel.valid && this.passwordModel.valid) {
-      this.authService.signup(this.user).subscribe({
-        next: () => {
-          this.validSignup = true;
-        },
-        error: (err: any) => (this.signUpError = err.description),
+      Swal.fire({
+        title: "Error",
+        text: "Por favor indique una contraseña",
+        icon: "warning",
       });
+      return;
     }
+    if (!this.usernameModel.valid) {
+      this.usernameModel.control.markAsTouched();
+      Swal.fire({
+        title: "Error",
+        text: "Por favor indique un nombre de usuario",
+        icon: "warning",
+      });
+      return;
+    }
+
+
+    this.ne();
     this.resetForm();
+  }
+
+  ne() {
+    this.authService.signup(this.user).subscribe({
+      next: () => {
+        this.validSignup = true;
+        Swal.fire({
+        title: "Usuario registrado correctamente!!",
+        text: "Ahora puede ir al inicio de sesión para ingresar!!",
+        icon: "success",
+      });
+      return;
+      },
+      error: (err: any) => {
+        this.signUpError = err.description;
+        Swal.fire({
+          title: "Usuario registrado correctamente!!",
+          text: "Ahora puede ir al inicio de sesión para ingresar!!" + err,
+          icon: "success",
+        });
+        return;
+      }
+    });
   }
 }

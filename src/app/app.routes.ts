@@ -90,7 +90,8 @@ export const routes: Routes = [
         data: { 
           authorities: [
             IRoleType.admin, 
-            IRoleType.superAdmin
+            IRoleType.superAdmin,
+            IRoleType.user
           ],
           name: 'Redactar Historia',
           showInSidebar: true
