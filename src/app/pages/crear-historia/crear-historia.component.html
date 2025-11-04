@@ -17,9 +17,11 @@
             required pattern="^[a-zA-Z0-9\\sáéíóúÁÉÍÓÚñÑ]+$"
             placeholder="Escribe un título para el libro" 
             [(ngModel)]="historia.titulo" />
-          <div class="error" *ngIf="formHistoria.submitted && !historia.titulo">
-            El título es obligatorio.
-          </div>
+            @if (formHistoria['submitted'] && !historia.titulo) {
+              <div class="error">
+                El título es obligatorio.
+              </div>
+            }
         </div>
 
         <!-- Descripción -->
@@ -32,9 +34,11 @@
             required
             placeholder="Empieza escribiendo tu historia aquí..." 
             [(ngModel)]="historia.descripcion" ></textarea>
-          <div class="error" *ngIf="formHistoria.submitted && !historia.descripcion">
-            La descripción es obligatoria.
-          </div>
+          @if (formHistoria['submitted'] && !historia.descripcion) {
+            <div class="error">
+              La descripción es obligatoria.
+            </div>
+          }
         </div>
 
         <!-- Género -->
@@ -48,9 +52,11 @@
             <option>Terror</option>
             <option>Aventura</option>
           </select>
-          <div class="error" *ngIf="formHistoria.submitted && !historia.genero">
-            Debe seleccionar un género.
-          </div>
+          @if (formHistoria['submitted'] && !historia.genero) {
+            <div class="error">
+              Debe seleccionar un género.
+            </div>
+          }
         </div>
 
         <!-- Contiene Juego -->
@@ -67,7 +73,7 @@
     <div class="sidebar">
       <div class="form-group">
         <label for="autor">Autor</label>
-        <input type="text" id="autor" value="Fabiana Madrigal" readonly />
+        <input type="text" id="autor" [(ngModel)]="autor" readonly />
         <div class="buttons">
           <button type="button" (click)="guardar()">Guardar</button>
         </div>

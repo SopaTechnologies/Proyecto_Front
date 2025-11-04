@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularEditorModule, AngularEditorConfig } from '@wfpena/angular-wysiwyg';
+import { UserModel } from '../../models/user.model'
 
 @Component({
   standalone: true,
@@ -14,7 +15,7 @@ import { AngularEditorModule, AngularEditorConfig } from '@wfpena/angular-wysiwy
   styleUrl: './crear-historia.component.less'
 })
 export class CrearHistoriaComponent {
-historia: CrearHistoriaModel = {
+  historia: CrearHistoriaModel = {
     titulo: '',
     descripcion: '',
     genero: '',
@@ -26,7 +27,19 @@ historia: CrearHistoriaModel = {
   mensajeTipo: number = 0;
   autoSaveSub!: Subscription;
 
+  autor: string = ''
+
   historyService: HistoriaService = inject(HistoriaService);
+
+  ngOnInit(): void {
+    var auth_user = localStorage.getItem('auth_user');
+
+    if (auth_user){
+      var user: UserModel = JSON.parse(auth_user)
+      this.autor = user.name + ' ' + user.lastname
+    }
+    
+  }
 
   guardar() {
     const validacion = this.validarCampos();
