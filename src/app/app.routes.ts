@@ -13,6 +13,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RedactarHistoriaComponent } from './pages/redactar-historia/redactar-historia.component';
 import { CrearHistoriaComponent } from './pages/crear-historia/crear-historia.component';
 import { GenresComponent } from './pages/genres/genres.component';
+import { PasswordComponent } from './pages/auth/password/password.component';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,11 @@ export const routes: Routes = [
   {
     path: 'signup',
     component: SigUpComponent,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'password',
+    component: PasswordComponent,
     canActivate: [GuestGuard],
   },
   {

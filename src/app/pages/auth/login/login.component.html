@@ -6,19 +6,19 @@
           class="d-flex justify-content-between align-items-center mb-4 px-3 pt-3"
         >
           <div class="d-flex align-items-center">
-            <!-- <a class="logo text-center" routerLink="/"> -->
             <img
               width="80"
               class="img-fluid mb-2"
               src="../../../../assets/icons/sopa_logo.png"
               alt="Logo"
             />
-            <!-- </a> -->
-
             <span class="logo-text">by SOPA TECHNOLOGIES</span>
           </div>
+
           <div class="nav-buttons">
-            <a href="/signup" class="btn btn-primary btn-block w-100 dark-submit-btn"
+            <a
+              href="/signup"
+              class="btn btn-primary btn-block w-100 dark-submit-btn"
               >Registrarse en Mahou Site</a
             >
             <div class="text-center mb-3"></div>
@@ -37,12 +37,12 @@
           >
             <div class="mb-4 text-center">
               <h1>Iniciar Sesión</h1>
-               <img
-              width="300"
-              class="img-fluid mb-2"
-              src="../../../../assets/icons/logo@2x.png"
-              alt="Logo"
-            />
+              <img
+                width="300"
+                class="img-fluid mb-2"
+                src="../../../../assets/icons/logo@2x.png"
+                alt="Logo"
+              />
               <p style="color: #ffffff">
                 Nos alegra verte otra vez. Inicia sesion para seguir donde
                 quedaste.
@@ -50,7 +50,7 @@
             </div>
 
             <div class="form-group mb-3">
-              <label for="email" class="form-label mb-2"> Email Address </label>
+              <label for="email" class="form-label mb-2"> Correo electrónico </label>
               <input
                 #email="ngModel"
                 type="text"
@@ -71,7 +71,7 @@
             </div>
 
             <div class="form-group mb-4">
-              <label for="password" class="form-label mb-2">Password</label>
+              <label for="password" class="form-label mb-2">Contraseña</label>
               <div class="form-input position-relative">
                 <input
                   #password="ngModel"
@@ -90,8 +90,11 @@
                 <div *ngIf="password.invalid" class="invalid-feedback">
                   Por favor ingresa tu contraseña
                 </div>
-                <div class="form-group mb-3 text-center">
-                  <a href="/login" class="text-primary">¿Olvidó su contraseña? Recuperela </a>
+
+                <div class="text-center">
+                  <a href="/password" class="text-primary"
+                    >¿Olvidó su contraseña? Recuperela
+                  </a>
                 </div>
               </div>
             </div>
@@ -119,7 +122,11 @@
             </div>
 
             <div class="form-group mb-3 text-center">
-              <button type="button" class="btn btn-primary btn-block w-100 dark-submit-btn" id="google-signin-button">
+              <button
+                type="button"
+                class="btn btn-primary btn-block w-100 dark-submit-btn"
+                id="google-signin-button"
+              >
                 <img
                   src="https://www.google.com/favicon.ico"
                   width="20"

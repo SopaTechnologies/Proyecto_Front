@@ -110,21 +110,13 @@ export class AuthService {
     return permittedRoutes;
   }
 
-  //   public signupError(user: IUser): Observable<IResponse<IUser>> {
-  //   return this.http.post<IResponse<IUser>>('auth/signup', user);
-  // }
-
   public signup(user: IUser): Observable<any> {
     return this.http.post("auth/signup", user);
   }
 
-  // public signuper(user: IUser): Observable<IResponse> {
-  //   return this.http.post<IResponse>("auth/signup", user).pipe(
-  //     catchError((error) => {
-  //       return throwError(() => error);
-  //     })
-  //   );
-  // }
+  public pass (user: IUser): Observable<any>{
+    return this.http.put("/{email}", user);
+  }
 
   public logout() {
     this.accessToken = "";
