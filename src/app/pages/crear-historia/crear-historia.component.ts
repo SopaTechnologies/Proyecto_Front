@@ -6,11 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularEditorModule, AngularEditorConfig } from '@wfpena/angular-wysiwyg';
 import { UserModel } from '../../models/user.model'
+import { GenreModel } from '../../models/genre.mode';
+import { CommonModule } from '@angular/common'
 
 @Component({
   standalone: true,
   selector: 'app-crear-historia',
-  imports: [FormsModule, HttpClientModule, AngularEditorModule],
+  imports: [FormsModule, HttpClientModule, AngularEditorModule, CommonModule],
   templateUrl: './crear-historia.component.html',
   styleUrl: './crear-historia.component.less'
 })
@@ -22,6 +24,8 @@ export class CrearHistoriaComponent {
     contieneJuego: false,
     // idUsuarioCreador: 101 // Simulado (usuario autenticado)
   };
+
+  genres: GenreModel[] = [];
 
   mensaje: string = '';
   mensajeTipo: number = 0;
@@ -38,7 +42,16 @@ export class CrearHistoriaComponent {
       var user: UserModel = JSON.parse(auth_user)
       this.autor = user.name + ' ' + user.lastname
     }
-    
+
+    this.historyService.getGenres().subscribe({
+      next: (response) => {
+        this.genres = response.data;
+        console.log('Generos traidos exitosamente', this.genres);
+      },
+      error: err => {
+        this.mostrarMensaje(err.status, err.status)
+      }
+    });
   }
 
   guardar() {
