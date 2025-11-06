@@ -46,11 +46,8 @@
           <label for="genero">Género </label>
           <select id="genero" name="genero" required [(ngModel)]="historia.genero">
             <option value="">Selecciona el género</option>
-            <option>Fantasía</option>
-            <option>Ciencia ficción</option>
-            <option>Romance</option>
-            <option>Terror</option>
-            <option>Aventura</option>
+            <option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</option>
+
           </select>
           @if (formHistoria['submitted'] && !historia.genero) {
             <div class="error">

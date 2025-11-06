@@ -10,6 +10,7 @@ import { HistoriaModel, CrearHistoriaModel } from '../models/historia.model';
 export class HistoriaService {
 
   private apiUrl = 'historias'; // Cambia por tu endpoint real
+  private genresAPIUrl = 'genres'
 
   constructor(private http: HttpClient) {}
 
@@ -35,5 +36,10 @@ export class HistoriaService {
   traerHistoria(idHistoria: Number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${idHistoria}`);
   }
+
+  getGenres(): Observable<any> {
+    return this.http.get(`${this.genresAPIUrl}`);
+  }
+
 
 }
