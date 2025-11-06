@@ -79,14 +79,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin-top: 20px;
   margin-bottom: 30px;
 }
-.modal {
+
+/* Estilos de modal para modales estándar (NO afectan a book-modal-overlay) */
+.modal:not(.book-modal-overlay) {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   background-color: rgba(0, 0, 0, 0.8) !important;
 }
 
-.modal-dialog {
+.modal:not(.book-modal-overlay) .modal-dialog {
   margin: 0 auto !important;
   max-width: none !important;
   width: auto !important;
@@ -95,22 +97,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   justify-content: center !important;
 }
 
-.modal-content {
+.modal:not(.book-modal-overlay) .modal-content {
   background-color: transparent !important;
   border: none !important;
   box-shadow: none !important;
   width: auto !important;
 }
 
-.modal-body {
+.modal:not(.book-modal-overlay) .modal-body {
   padding: 0 !important;
 }
 
-.modal-header,
-.modal-footer {
+.modal:not(.book-modal-overlay) .modal-header,
+.modal:not(.book-modal-overlay) .modal-footer {
   display: none !important;
 }
 
-.modal-backdrop {
+.modal:not(.book-modal-overlay) + .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.8) !important;
 }

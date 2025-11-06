@@ -10,11 +10,8 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestGuard } from './guards/guest.guard';
 import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { RedactarHistoriaComponent } from './pages/redactar-historia/redactar-historia.component';
-import { CrearHistoriaComponent } from './pages/crear-historia/crear-historia.component';
-import { GenresComponent } from './pages/genres/genres.component';
-import { MensajesComponent } from './pages/timeline/timeline.component';
-import { PersonajesComponent } from './pages/personajes/personajes.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
+import { ProductsComponent} from './pages/products/products.component';
 
 export const routes: Routes = [
   {
@@ -49,35 +46,35 @@ export const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
-        canActivate: [AdminRoleGuard],
-        data: {
+        canActivate:[AdminRoleGuard],
+        data: { 
           authorities: [
-            IRoleType.admin,
+            IRoleType.admin, 
             IRoleType.superAdmin
           ],
           name: 'Users',
-          showInSidebar: false
+          showInSidebar: true
         }
       },
       {
         path: 'dashboard',
         component: DashboardComponent,
-        data: {
+        data: { 
           authorities: [
-            IRoleType.admin,
+            IRoleType.admin, 
             IRoleType.superAdmin,
             IRoleType.user
           ],
           name: 'Dashboard',
-          showInSidebar: false
+          showInSidebar: true
         }
       },
-      {
+       {
         path: 'profile',
         component: ProfileComponent,
-        data: {
+        data: {  
           authorities: [
-            IRoleType.admin,
+            IRoleType.admin, 
             IRoleType.superAdmin,
             IRoleType.user
           ],
@@ -85,73 +82,32 @@ export const routes: Routes = [
           showInSidebar: false
         }
       },
+      {
+        path: 'categories',
+        component: CategoriesComponent,
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user
+          ],
+          name: 'categories',
+          showInSidebar: true
+        }
+      },
        {
-        path: "linetime",
-        component: MensajesComponent,
-        canActivate:[AdminRoleGuard],
-        data: { 
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin
-          ],
-          name: 'Linea de tiempo',
-          showInSidebar: true
-        }
-      },
-      {
-        path: "redactarhistoria/:id",
-        component: RedactarHistoriaComponent,
-        canActivate:[AuthGuard],
+        path: 'products',
+        component: ProductsComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
             IRoleType.superAdmin,
             IRoleType.user
           ],
-          name: 'Redactar Historia',
+          name: 'products',
           showInSidebar: true
         }
       },
-      {
-        path: "crearhistoria",
-        component: CrearHistoriaComponent,
-        canActivate:[AuthGuard],
-        data: { 
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin,
-            IRoleType.user
-          ],
-          name: 'Crear Historia',
-          showInSidebar: true
-        }
-      },
-      {
-        path: 'genres',
-        component: GenresComponent,
-        canActivate:[AdminRoleGuard],
-        data: { 
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin
-          ],
-          name: 'Géneros',
-          showInSidebar: true
-        }
-      },
-        {
-          path: 'personajes',
-          component: PersonajesComponent,
-          canActivate: [AdminRoleGuard],
-          data: {
-            authorities: [
-              IRoleType.admin,
-              IRoleType.superAdmin
-            ],
-            name: 'Personajes',
-            showInSidebar: true
-          }
-        },
     ],
   },
 ];
