@@ -1,0 +1,61 @@
+@defer {
+<div class="histories-container">
+  <div class="histories-header">
+    <h2>Historias Creadas</h2>
+    <button (click)="modalService.displayModal('md', addHistoryModal)" type="button" class="btn-add-history">
+      <i class="fas fa-plus"></i>
+      <span>Nueva Historia</span>
+    </button>
+  </div>
+
+  <div class="histories-grid">
+    <div *ngFor="let history of histories" class="history-card">
+      <div class="history-card-inner">
+        <div class="history-icon">
+          <i class="fas fa-book"></i>
+        </div>
+        <div class="history-name">{{ history.titulo }}</div>
+        <div class="history-actions">
+          <button (click)="editHistory(history.id)" class="btn-icon btn-edit" type="button" title="Editar">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button (click)="deleteHistory(history.id)" class="btn-icon btn-delete" type="button" title="Eliminar">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="histories.length === 0" class="no-histories">
+      <p>No se encontraron historias</p>
+    </div>
+  </div>
+</div>
+} @loading (minimum 1.5s) {
+<app-loader />
+}
+
+<ng-template #addHistoryModal>
+  <app-modal [hideFooter]="true">
+    <div>
+      <app-crear-historia [historyForm]="historyForm" (callUpdateMethod)="updateHistoriesList()" />
+    </div>
+  </app-modal>
+</ng-template>
+
+<ng-template #editHistoryModal>
+  <app-modal [hideFooter]="true">
+    <div>
+      <app-redactar-historia [historyForm]="historyForm" />
+    </div>
+  </app-modal>
+</ng-template>
+
+
+<ng-template #deleteHistoryModal>
+  <app-modal [hideFooter]="true">
+    <div>
+      <app-delete-form [deleteHistoryForm]="historyForm" (callUpdateMethod)="updateHistoriesList()"/>
+    </div>
+  </app-modal>
+</ng-template>

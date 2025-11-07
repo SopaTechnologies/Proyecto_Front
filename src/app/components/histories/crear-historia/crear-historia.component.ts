@@ -1,13 +1,14 @@
-import { Component, inject } from '@angular/core';
-import { HistoriaService } from '../../services/history.service';
-import { CrearHistoriaModel } from '../../models/historia.model';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { HistoriaService } from '../../../services/history.service';
+import { CrearHistoriaModel } from '../../../models/historia.model';
 import { Subscription } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularEditorModule, AngularEditorConfig } from '@wfpena/angular-wysiwyg';
-import { UserModel } from '../../models/user.model'
-import { GenreModel } from '../../models/genre.mode';
+import { UserModel } from '../../../models/user.model'
+import { GenreModel } from '../../../models/genre.mode';
 import { CommonModule } from '@angular/common'
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
   standalone: true,
@@ -17,9 +18,13 @@ import { CommonModule } from '@angular/common'
   styleUrl: './crear-historia.component.less'
 })
 export class CrearHistoriaComponent {
+
+  @Input() historyForm!: FormGroup;
+  @Output() callUpdateMethod = new EventEmitter();
+
   historia: CrearHistoriaModel = {
     titulo: '',
-    descripcion: '',
+    description: '',
     genero: '',
     contieneJuego: false,
     // idUsuarioCreador: 101 // Simulado (usuario autenticado)
@@ -34,6 +39,7 @@ export class CrearHistoriaComponent {
   autor: string = ''
 
   historyService: HistoriaService = inject(HistoriaService);
+  private modalService = inject(ModalService);
 
   ngOnInit(): void {
     var auth_user = localStorage.getItem('auth_user');
@@ -68,6 +74,8 @@ export class CrearHistoriaComponent {
       next: () => {
         console.log('Historia guardada localmente:', this.historia);
         this.mostrarMensaje('Documento guardado exitosamente.', 200);
+        this.callUpdateMethod.emit();
+        this.cancel();
       },
       error: err => {
         this.mostrarMensaje(err.status, err.status)
@@ -83,7 +91,7 @@ export class CrearHistoriaComponent {
       return { ok: false, msg: 'El título es obligatorio, sin caracteres especiales y máximo 100 caracteres.' };
     }
 
-    if (!this.historia.descripcion || this.historia.descripcion.length > 1000) {
+    if (!this.historia.description || this.historia.description.length > 1000) {
       return { ok: false, msg: 'La descripción es obligatoria y no puede superar los 1000 caracteres.' };
     }
 
@@ -97,6 +105,11 @@ export class CrearHistoriaComponent {
   mostrarMensaje(msg: string, codigo: number) {
     this.mensaje = msg;
     this.mensajeTipo = codigo;
+  }
+
+  cancel(): void {
+    this.historyForm.reset();
+    this.modalService.closeAll();
   }
 }
 
