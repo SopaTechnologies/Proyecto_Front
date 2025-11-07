@@ -16,20 +16,23 @@ import { routes } from '../../../../app.routes';
     SvgIconComponent
   ],
   templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
-  public width: any = window.innerWidth;
-  public showLeftArrow: boolean = true;
-  public showRigthArrow: boolean = false;
   public layoutService = inject(LayoutService);
   public authService = inject(AuthService);
   public permittedRoutes: Route[] = [];
+  public isCollapsed: boolean = false;
   appRoutes: any;
 
-  constructor(
-  ) {
-    this.appRoutes = routes.filter(route => route.path == 'app')[0];
-    this.permittedRoutes = this.authService.getPermittedRoutes(this.appRoutes.children);
+  constructor() {
+    this.appRoutes = routes.find(route => route.path === 'app');
+    this.permittedRoutes = this.authService.getPermittedRoutes(this.appRoutes?.children || []);
+    console.log('Rutas hijas de /app:', this.appRoutes?.children);
+    console.log('Rutas permitidas:', this.permittedRoutes);
   }
-  
+
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
+  }
 }
