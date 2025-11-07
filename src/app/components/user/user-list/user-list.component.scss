@@ -1,0 +1,65 @@
+.ag-column-drop-title {
+    font-family: 'Brush Script MT';
+    font-size: 1.5em;
+}
+
+.table-container {
+  background-color: #2b1d1d;
+  padding: 20px;
+  border-radius: 8px;
+  color: white;
+}
+
+.table-container h3 {
+  color: #d4a574;
+  font-weight: 600;
+}
+
+.table {
+  background-color: transparent;
+  color: white;
+}
+
+.table th {
+  background-color: #d4a574;
+  color: #2b1d1d;
+  border: none;
+}
+
+.table td {
+  border-color: #555;
+  color: white;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(212, 165, 116, 0.1);
+}
+
+.pagination {
+  background-color: #2b1d1d;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.page-link {
+  background-color: #d4a574;
+  color: #2b1d1d;
+  border: none;
+  margin: 0 2px;
+}
+
+.page-link:hover {
+  background-color: #c99563;
+  color: #2b1d1d;
+}
+
+.page-item.active .page-link {
+  background-color: #2b1d1d;
+  color: #d4a574;
+  border: 1px solid #d4a574;
+}
+
+.page-item.disabled .page-link {
+  background-color: #555;
+  color: #999;
+}

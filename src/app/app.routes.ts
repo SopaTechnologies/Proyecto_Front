@@ -13,6 +13,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RedactarHistoriaComponent } from './pages/redactar-historia/redactar-historia.component';
 import { CrearHistoriaComponent } from './pages/crear-historia/crear-historia.component';
 import { GenresComponent } from './pages/genres/genres.component';
+import { PasswordComponent } from './pages/auth/password/password.component';
+import { UserAdminComponent } from './pages/user-admin/user-admin.component';
 import { MensajesComponent } from './pages/timeline/timeline.component';
 import { PersonajesComponent } from './pages/personajes/personajes.component';
 
@@ -25,6 +27,11 @@ export const routes: Routes = [
   {
     path: 'signup',
     component: SigUpComponent,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'password',
+    component: PasswordComponent,
     canActivate: [GuestGuard],
   },
   {
@@ -92,7 +99,8 @@ export const routes: Routes = [
         data: { 
           authorities: [
             IRoleType.admin, 
-            IRoleType.superAdmin
+            IRoleType.superAdmin,
+            IRoleType.user
           ],
           name: 'Linea de tiempo',
           showInSidebar: true
@@ -136,6 +144,19 @@ export const routes: Routes = [
             IRoleType.superAdmin
           ],
           name: 'Géneros',
+          showInSidebar: true
+        }
+      },
+      {
+        path: 'Administración de usuarios',
+        component: UserAdminComponent,
+        canActivate:[AdminRoleGuard],
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin
+          ],
+          name: 'Administración de usuarios',
           showInSidebar: true
         }
       },
