@@ -15,6 +15,8 @@ import { CrearHistoriaComponent } from './pages/crear-historia/crear-historia.co
 import { GenresComponent } from './pages/genres/genres.component';
 import { PasswordComponent } from './pages/auth/password/password.component';
 import { UserAdminComponent } from './pages/user-admin/user-admin.component';
+import { MensajesComponent } from './pages/timeline/timeline.component';
+import { PersonajesComponent } from './pages/personajes/personajes.component';
 
 export const routes: Routes = [
   {
@@ -90,10 +92,24 @@ export const routes: Routes = [
           showInSidebar: false
         }
       },
+       {
+        path: "linetime",
+        component: MensajesComponent,
+        canActivate:[AdminRoleGuard],
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user
+          ],
+          name: 'Linea de tiempo',
+          showInSidebar: true
+        }
+      },
       {
         path: "redactarhistoria/:id",
         component: RedactarHistoriaComponent,
-        canActivate:[AdminRoleGuard],
+        canActivate:[AuthGuard],
         data: { 
           authorities: [
             IRoleType.admin, 
@@ -107,7 +123,7 @@ export const routes: Routes = [
       {
         path: "crearhistoria",
         component: CrearHistoriaComponent,
-        canActivate:[AdminRoleGuard],
+        canActivate:[AuthGuard],
         data: { 
           authorities: [
             IRoleType.admin, 
@@ -144,6 +160,19 @@ export const routes: Routes = [
           showInSidebar: true
         }
       },
+        {
+          path: 'personajes',
+          component: PersonajesComponent,
+          canActivate: [AdminRoleGuard],
+          data: {
+            authorities: [
+              IRoleType.admin,
+              IRoleType.superAdmin
+            ],
+            name: 'Personajes',
+            showInSidebar: true
+          }
+        },
     ],
   },
 ];

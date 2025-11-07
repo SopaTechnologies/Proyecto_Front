@@ -1,100 +1,38 @@
-  <div class="logo-wrapper">
-  <a routerLink="/">
-    <img
-      class="img-fluid"
-      src="../../../../../assets/icons/logo@2x.png"
-      width="50"
-      alt="Logo"
-    />
-  </a>
+<nav class="sidebar-main" [class.collapsed]="isCollapsed">
+  <!-- Encabezado -->
+  <div class="sidebar-header">
+    <a routerLink="/" class="sidebar-logo">
+      <img src="../../../../../assets/icons/logo@2x.png" alt="Logo" width="50" />
+    </a>
 
-  <div class="back-btn" (click)="layoutService.toggleSidebar()">
-    <i class="fa-solid fa-arrow-left"></i>
+    <button class="btn-toggle" (click)="toggleSidebar()">
+      <i class="fa-solid" [ngClass]="isCollapsed ? 'fa-arrow-right' : 'fa-arrow-left'"></i>
+    </button>
   </div>
 
-  <div class="toggle-sidebar" (click)="layoutService.toggleSidebar()">
-    <i class="fa-solid fa fa-thumb-tack"></i>
-  </div>
-</div>
+  <!-- Contenido -->
+  <ul class="sidebar-menu">
+    <li class="sidebar-title" *ngIf="!isCollapsed">General</li>
 
-<div class="logo-icon-wrapper">
-  <a href="javascript:void(0)">
-    <img
-      class="img-fluid"
-      src="../../../../../assets/icons/logo@2x.png"
-      width="35"
-      alt=""
-    />
-  </a>
-</div>
+ @for (route of permittedRoutes; track $index) {
+  <li class="sidebar-item">
+    <a
+      routerLink="/app/{{ route.path }}"
+      routerLinkActive="active"
+      class="sidebar-link"
+    >
+      <span class="menu-text">{{ route.data?.['name'] || route.path }}</span>
+    </a>
+  </li>
+}
 
-<nav class="sidebar-main">
-  <div
-    id="left-arrow"
-    class="left-arrow"
-    [ngClass]="{ 'd-none': !showLeftArrow }"
-  >
-    <!-- <app-feather-icon icon="arrow-left"></app-feather-icon> -->
-  </div>
+  </ul>
 
-  <div id="sidebar-menu" style="margin-left: 0px">
-    <ul class="sidebar-links custom-scrollbar">
-      <div class="simplebar-wrapper">
-        <div class="simplebar-mask">
-          <div class="simplebar-offset">
-            <div class="simplebar-content-wrapper">
-              <div class="simplebar-content">
-                <li class="back-btn">
-                  <a href="javascript:void(0)">
-                    <img
-                      class="img-fluid"
-                      src="../../../../../assets/img/login/login-bg.jpg"
-                      alt="Logo"
-                    />
-                  </a>
-
-                  <div
-                    class="mobile-back text-end"
-                    (click)="layoutService.toggleSidebar()"
-                  >
-                    <span>Atrás</span>
-                    <i class="fa fa-angle-right ps-2" ></i>
-                  </div>
-                </li>
-
-                <li class="sidebar-main-title">
-                  <div>
-                    <h6>General</h6>
-                  </div>
-                </li>
-
-                @for (route of permittedRoutes; track $index) {
-                  @if (route.data && route.data['showInSidebar']) {
-                  <li class="sidebar-list">
-                    <a
-                      routerLink="{{route.path}}"
-                      routerLinkActive="active"
-                      class="sidebar-link sidebar-title"
-                    >
-                        <span>{{route.data['name']}}</span>
-                      </a>
-                    </li>
-                  }
-                }
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </ul>
-  </div>
-
-  <div
-    class="right-arrow"
-    id="right-arrow"
-    [ngClass]="{ 'd-none': !showRigthArrow }"
-  >
-    <!-- <app-feather-icon icon="arrow-right"></app-feather-icon> -->
+  <!-- Pie / Logout -->
+  <div class="sidebar-footer">
+    <button class="btn-logout" (click)="logout()">
+  <i class="fa-solid fa-right-from-bracket"></i>
+  <span *ngIf="!isCollapsed">Cerrar sesión</span>
+</button>
   </div>
 </nav>

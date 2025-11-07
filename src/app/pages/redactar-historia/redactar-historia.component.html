@@ -1,10 +1,6 @@
 <div class="editor-container">
   <h2>Editor de Historia</h2>
 
-  <!-- <textarea [(ngModel)]="historia.contenido" 
-            placeholder="Escribe tu historia aquí..." 
-            rows="15" name="historia"></textarea> -->
-
   <angular-editor 
     [placeholder]="'Escribe tu historia'"
     [(ngModel)]="historia.contenido" 
@@ -15,18 +11,15 @@
     <button (click)="guardarManual()">Guardar</button>
   </div>
 
-  @if (mensajeTipo == 201)
-  {
-    <div class="success-message">
-      {{ mensaje }}
-    </div>
+  @if (mensaje) {
+    @if (mensajeTipo == 201) {
+      <div class="success-message">
+        {{ mensaje }}
+      </div>
+    } @else {
+      <div class="error-message">
+        {{ mensaje }}
+      </div>
+    }
   }
-  @else
-  {
-    <div class="error-message">
-      {{ mensaje }}
-    </div>
-  }
-
-
-</div>`
+</div>

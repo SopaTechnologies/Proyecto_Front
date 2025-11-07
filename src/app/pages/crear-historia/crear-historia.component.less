@@ -1,6 +1,7 @@
-
-.container {
+:host {
+  display: block;
   width: 100%;
+  height: 100%;
 }
 
 .main {
@@ -9,6 +10,10 @@
   padding: 30px;
   background-color: #2b1d1d;
   gap: 40px;
+  min-height: 100vh;
+  margin: 0;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .form-section {
@@ -35,10 +40,11 @@ select {
   background-color: #2b1d1d;
   border: 2px solid #a15c3e;
   color: #fff;
+  box-sizing: border-box;
 }
 
 textarea {
-  height: 150px;
+  height: 250px;
   resize: none;
 }
 
@@ -46,6 +52,10 @@ textarea {
   display: flex;
   align-items: center;
   gap: 8px;
+  
+  label {
+    margin-bottom: 0;
+  }
 }
 
 .upload-box {
@@ -65,6 +75,7 @@ button {
   cursor: pointer;
   font-weight: bold;
   margin-top: 10px;
+  width: 100%;
 }
 
 button:hover {
@@ -82,16 +93,25 @@ button:hover {
 
 .success-message {
   background-color: #3a7d3a;
+  color: #fff;
 }
 
 .error-message {
-  background-color: #2b1d1d;
-  color: #d9a77a;
+  background-color: #7d3a3a;
+  color: #fff;
 }
 
 .sidebar {
   flex: 1;
 }
-h2{
+
+h2 {
   color: #fff;
+  margin: 0 0 20px 0;
+}
+
+.error {
+  color: #e29a6f;
+  font-size: 12px;
+  margin-top: 5px;
 }
