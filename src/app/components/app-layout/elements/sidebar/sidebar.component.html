@@ -30,9 +30,9 @@
 
   <!-- Pie / Logout -->
   <div class="sidebar-footer">
-    <button class="btn-logout">
-      <i class="fa-solid fa-right-from-bracket"></i>
-      <span *ngIf="!isCollapsed">Cerrar sesión</span>
-    </button>
+    <button class="btn-logout" (click)="logout()">
+  <i class="fa-solid fa-right-from-bracket"></i>
+  <span *ngIf="!isCollapsed">Cerrar sesión</span>
+</button>
   </div>
 </nav>

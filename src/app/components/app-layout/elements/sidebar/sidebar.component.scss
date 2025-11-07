@@ -11,7 +11,6 @@
   left: 0;
   z-index: 100;
   transition: width 0.4s ease, background-color 0.3s ease;
-  box-shadow: 5px 0 20px rgba(0, 0, 0, 0.7);
   overflow: hidden;
 
   &.collapsed {
