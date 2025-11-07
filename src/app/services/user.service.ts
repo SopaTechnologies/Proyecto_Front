@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { BaseService } from './base-service';
-import { ISearch, IUser } from '../interfaces';
+import { ISearch, IUser, IResponse } from '../interfaces';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { AlertService } from './alert.service';
 
@@ -58,6 +58,22 @@ export class UserService extends BaseService<IUser> {
         console.error('error', err);
       }
     });
+  }
+
+  updateOrSave(user: IUser) {
+    const payload = {
+      email: user.email,
+      username: user.username,
+      lastname: user.lastname,
+      password: user.password,
+      name: user.name,
+      photo: user.photo,
+      status: user.status,
+      role: {
+        name: user.role?.name
+      }
+    };
+    return this.http.put<IResponse<IUser>>(`${this.source}/update`, payload);
   }
 
   delete(user: IUser) {

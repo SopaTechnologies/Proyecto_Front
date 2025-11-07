@@ -1,0 +1,145 @@
+.logo-text {
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 10px;
+  
+}
+
+.nav-buttons .btn-link {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-buttons .btn-secondary {
+  background-color: #d4a574;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 4px;
+}
+
+.up-main {
+  padding: 20px 40px;
+  background-color: #2b1d1d;
+}
+
+.up-main h1 {
+  color: white;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form-label {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dark-input {
+  background-color: transparent;
+  border: 1px solid #555;
+  border-radius: 6px;
+  color: white;
+  padding: 12px;
+}
+
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #2b1d1d;
+  border: 2px solid #d4a574;
+  color: #d4a574;
+}
+
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #2b1d1d;
+  border: 2px solid #d4a574;
+  color: #d4a574;
+}
+
+input[type="email"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #2b1d1d;
+  border: 2px solid #d4a574;
+  color: #d4a574;
+}
+
+
+.dark-input::placeholder {
+  color: #33271a;
+}
+
+.dark-submit-btn {
+  background-color: #d4a574;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.dark-submit-btn:hover {
+  background-color: #c99563;
+}
+
+.divider-text {
+  color: #c99563;
+  font-size: 14px;
+  position: relative;
+}
+
+
+.divider-text::before,
+.divider-text::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 140px;
+  height: 1px;
+  background-color: #c99563;
+}
+
+.divider-text::before {
+  right: 100%;
+  margin-right: 15px;
+}
+
+.divider-text::after {
+  left: 100%;
+  margin-left: 15px;
+}
+
+
+.text-primary {
+  color: #d4a574 !important;
+}
+
+.btn-link
+{
+  margin-top: 20px;
+}
+
+.upload-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ag-column-drop-title {
+    font-family: 'Brush Script MT';
+    font-size: 1.5em;
+    color: white;
+}

@@ -1,0 +1,213 @@
+<div class="up-main">
+  <form (ngSubmit)="handleSignup($event)" autocomplete="off" #frm="ngForm">
+    <div class="mb-3">
+      <h4 class="up-main text-center logo-text">
+        Registro y actualización de usuarios
+      </h4>
+    </div>
+    <div class="d-flex align-items-center mb-3">
+      <div class="form-group px-1">
+        <label for="name" class="form-label mb-2"> Nombre </label>
+        <input
+          #name="ngModel"
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          placeholder="Nombre"
+          [(ngModel)]="user.name"
+          [ngClass]="{
+            'is-invalid': name.invalid && name.touched,
+            'is-valid': name.valid && name.touched
+          }"
+          required
+        />
+        <div *ngIf="name.invalid" class="invalid-feedback">
+          Ingresa un nombre valido
+        </div>
+      </div>
+      <div class="form-group px-1">
+        <label for="lastname" class="form-label mb-2">
+          Ingresa un apellido valido
+        </label>
+        <input
+          #lastname="ngModel"
+          type="text"
+          class="form-control"
+          id="lastname"
+          name="lastname"
+          placeholder="Apellido"
+          [(ngModel)]="user.lastname"
+          [ngClass]="{
+            'is-invalid': lastname.invalid && lastname.touched,
+            'is-valid': lastname.valid && lastname.touched
+          }"
+          required
+        />
+        <div *ngIf="lastname.invalid" class="invalid-feedback">
+          Please add a valid lastname
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="email" class="form-label mb-2"> Dirección de correo </label>
+      <input
+        #email="ngModel"
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Correo"
+        [(ngModel)]="user.email"
+        [ngClass]="{
+          'is-invalid': email.invalid && email.touched,
+          'is-valid': email.valid && email.touched
+        }"
+        required
+      />
+      <div *ngIf="email.invalid" class="invalid-feedback">
+        Por favor ingrese una direccion de correo valida
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="status" class="form-label mb-2"> Usuario activo </label>
+      <input type="checkbox" class="ms-2" id="status" name="status" [(ngModel)]="user.status"/>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="role" class="form-label mb-2"> Rol </label>
+      <select
+        #role="ngModel"
+        class="form-control"
+        id="role"
+        name="role"
+        [(ngModel)]="user.role"
+        required
+      >
+        <option value="">Seleccione un rol</option>
+        <option value="SUPER_ADMIN">Administrador de la aplicación</option>
+        <option value="ADMIN">Moderador</option>
+        <option value="USER">Usuario normal</option>
+      </select>
+      <div *ngIf="role.invalid" class="invalid-feedback">
+        Por favor seleccione un rol
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="username" class="form-label mb-2"> Nombre de Usuario </label>
+      <input
+        #username="ngModel"
+        type="text"
+        class="form-control"
+        id="username"
+        name="username"
+        placeholder="Nombre de Usuario, opcional"
+        [(ngModel)]="user.username"
+        [ngClass]="{
+          'is-invalid': username.invalid && username.touched,
+          'is-valid': username.valid && username.touched
+        }"
+        required
+      />
+      <div *ngIf="username.invalid" class="invalid-feedback">
+        Por favor ingrese un nombre de usuario
+      </div>
+    </div>
+
+    <div class="form-group mb-5">
+      <label for="password" class="form-label mb-2">Password</label>
+      <div class="form-input position-relative">
+        <input
+          #password="ngModel"
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          placeholder="Contraseña"
+          [(ngModel)]="user.password"
+          [ngClass]="{
+            'is-invalid': password.invalid && password.touched,
+            'is-valid': password.valid && password.touched
+          }"
+          required
+        />
+        <div *ngIf="password.invalid" class="invalid-feedback">
+          Por favor ingrese una contraseña
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <div class="form-group px-1">
+        <label for="photo" class="form-label mb-2">Foto de perfil</label>
+        <input
+          #photoInput
+          type="file"
+          class="form-control"
+          id="photo"
+          (change)="onPhotoSelected($event)"
+        />
+
+        <img
+          *ngIf="previewUrl"
+          [src]="previewUrl"
+          class="img-thumbnail mt-2"
+          width="150"
+        />
+
+        <div *ngIf="isUploadingPhoto" class="upload-spinner mt-2">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Subiendo foto...</span>
+          </div>
+        </div>
+
+        <button
+          *ngIf="previewUrl && !user.photo && !isUploadingPhoto"
+          class="btn btn-primary btn-block w-100 dark-submit-btn"
+          (click)="confirmPhotoUpload()"
+        >
+          Confirmar Foto
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group mb-4">
+      <button
+        class="btn btn-primary btn-block w-100 dark-submit-btn"
+        type="submit"
+      >
+        Registrarse
+      </button>
+      @if(signUpError) {
+      <p class="text-danger">{{ signUpError }}</p>
+      } @else if (validSignup){
+      <p class="text-success">
+        Usuario Registrado correctamente, por favor dirijase a la pantalla de
+        inicio de sesión
+      </p>
+      }
+    </div>
+  </form>
+  <app-user-list
+    [title]="'Lista de usuarios registrados'"
+    [users]="userService.users$()"
+  ></app-user-list>
+  <nav class="mt-3">
+  <ul class="pagination justify-content-center">
+    <li
+      class="page-item"
+      *ngFor="let page of userService.totalItems"
+      [class.active]="page === userService.search.page"
+    >
+      <button class=" btn btn-primary btn-block w-100 dark-submit-btn" (click)="changePage(page)">
+        {{ page }}
+      </button>
+    </li>
+  </ul>
+</nav>
+
+  
+</div>

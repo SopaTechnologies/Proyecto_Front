@@ -22,4 +22,18 @@ export class UserListComponent {
   @Input() users: IUser[] = [];
   @Output() callModalAction: EventEmitter<IUser> = new EventEmitter<IUser>();
   @Output() callDeleteAction: EventEmitter<IUser> = new EventEmitter<IUser>();
+
+  userService = inject(UserService);
+  totalItems: number[] = [];
+
+  ngOnInit() {
+    this.totalItems = this.userService.totalItems;
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= (this.userService.search?.totalPages ?? 1)) {
+      this.userService.search.page = page;
+      this.userService.getAll();
+    }
+  }
 }
