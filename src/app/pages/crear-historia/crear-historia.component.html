@@ -1,94 +1,80 @@
-<div class="container">
+<main class="main">
+  <div class="form-section">
+    <h2>Crea un nuevo libro</h2>
 
-
-  <main class="main">
-    <div class="form-section">
-      <h2>Crea un nuevo libro</h2>
-
-      <form (ngSubmit)="guardar()" #formHistoria="">
-        <!-- Título -->
-        <div class="form-group">
-          <label for="titulo">Título del libro </label>
-          <input 
-            type="text" 
-            id="titulo" 
-            name="titulo" 
-            maxlength="100" 
-            required pattern="^[a-zA-Z0-9\\sáéíóúÁÉÍÓÚñÑ]+$"
-            placeholder="Escribe un título para el libro" 
-            [(ngModel)]="historia.titulo" />
-            @if (formHistoria['submitted'] && !historia.titulo) {
-              <div class="error">
-                El título es obligatorio.
-              </div>
-            }
-        </div>
-
-        <!-- Descripción -->
-        <div class="form-group">
-          <label for="descripcion">Descripción </label>
-          <textarea 
-            id="descripcion" 
-            name="descripcion" 
-            maxlength="1000" 
-            required
-            placeholder="Empieza escribiendo tu historia aquí..." 
-            [(ngModel)]="historia.descripcion" ></textarea>
-          @if (formHistoria['submitted'] && !historia.descripcion) {
-            <div class="error">
-              La descripción es obligatoria.
-            </div>
-          }
-        </div>
-
-        <!-- Género -->
-        <div class="form-group">
-          <label for="genero">Género </label>
-          <select id="genero" name="genero" required [(ngModel)]="historia.genero">
-            <option value="">Selecciona el género</option>
-            <option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</option>
-
-          </select>
-          @if (formHistoria['submitted'] && !historia.genero) {
-            <div class="error">
-              Debe seleccionar un género.
-            </div>
-          }
-        </div>
-
-        <!-- Contiene Juego -->
-        <div class="checkbox">
-          <input type="checkbox" id="contieneJuego" name="contieneJuego" [(ngModel)]="historia.contieneJuego" />
-          <label for="contieneJuego">Contiene juego</label>
-        </div>
-
-      </form>
-
-
-    </div>
-
-    <div class="sidebar">
+    <form (ngSubmit)="guardar()" #formHistoria="">
       <div class="form-group">
-        <label for="autor">Autor</label>
-        <input type="text" id="autor" [(ngModel)]="autor" readonly />
-        <div class="buttons">
-          <button type="button" (click)="guardar()">Guardar</button>
-        </div>
+        <label for="titulo">Título del libro </label>
+        <input 
+          type="text" 
+          id="titulo" 
+          name="titulo" 
+          maxlength="100" 
+          required pattern="^[a-zA-Z0-9\\sáéíóúÁÉÍÓÚñÑ]+$"
+          placeholder="Escribe un título para el libro" 
+          [(ngModel)]="historia.titulo" />
+          @if (formHistoria['submitted'] && !historia.titulo) {
+            <div class="error">
+              El título es obligatorio.
+            </div>
+          }
       </div>
 
-      @if (mensajeTipo == 201)
-      {
+      <div class="form-group">
+        <label for="descripcion">Descripción </label>
+        <textarea 
+          id="descripcion" 
+          name="descripcion" 
+          maxlength="1000" 
+          required
+          placeholder="Empieza escribiendo tu historia aquí..." 
+          [(ngModel)]="historia.descripcion" ></textarea>
+        @if (formHistoria['submitted'] && !historia.descripcion) {
+          <div class="error">
+            La descripción es obligatoria.
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="genero">Género </label>
+        <select id="genero" name="genero" required [(ngModel)]="historia.genero">
+          <option value="">Selecciona el género</option>
+          <option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</option>
+        </select>
+        @if (formHistoria['submitted'] && !historia.genero) {
+          <div class="error">
+            Debe seleccionar un género.
+          </div>
+        }
+      </div>
+
+      <div class="checkbox">
+        <input type="checkbox" id="contieneJuego" name="contieneJuego" [(ngModel)]="historia.contieneJuego" />
+        <label for="contieneJuego">Contiene juego</label>
+      </div>
+    </form>
+  </div>
+
+  <div class="sidebar">
+    <div class="form-group">
+      <label for="autor">Autor</label>
+      <input type="text" id="autor" [(ngModel)]="autor" readonly />
+      <div class="buttons">
+        <button type="button" (click)="guardar()">Guardar</button>
+      </div>
+    </div>
+
+    @if (mensaje) {
+      @if (mensajeTipo == 201) {
         <div class="success-message">
           {{ mensaje }}
         </div>
-      }
-      @else
-      {
+      } @else {
         <div class="error-message">
           {{ mensaje }}
         </div>
       }
-
-    </div>
-  </main>
-</div>
+    }
+  </div>
+</main>
