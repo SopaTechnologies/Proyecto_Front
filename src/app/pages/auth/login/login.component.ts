@@ -30,9 +30,21 @@ export class LoginComponent implements AfterViewInit {
     event.preventDefault();
     if (!this.emailModel.valid) {
       this.emailModel.control.markAsTouched();
+      Swal.fire({
+        title: "Error",
+        text: "Por favor indique un Correo",
+        icon: "warning",
+      });
+      return;
     }
     if (!this.passwordModel.valid) {
       this.passwordModel.control.markAsTouched();
+      Swal.fire({
+        title: "Error",
+        text: "Por favor indique una contraseña",
+        icon: "warning",
+      });
+      return;
     }
     if (this.emailModel.valid && this.passwordModel.valid) {
       this.authService.login(this.loginForm).subscribe({
