@@ -1,11 +1,12 @@
 import { Component , inject, Input} from '@angular/core';
-import { HistoriaModel } from '../../models/historia.model';
+import { HistoriaModel } from '../../../models/historia.model';
 import { Subscription } from 'rxjs';
-import { HistoriaService } from '../../services/history.service';
-import { FormsModule } from '@angular/forms';
+import { HistoriaService } from '../../../services/history.service';
+import { FormGroup, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularEditorModule, AngularEditorConfig } from '@wfpena/angular-wysiwyg';
 import { ActivatedRoute } from '@angular/router';
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
   standalone: true,
@@ -17,15 +18,19 @@ import { ActivatedRoute } from '@angular/router';
 export class RedactarHistoriaComponent {
   historia: HistoriaModel = {
     id: 0, // Se debe cargar
-    contenido: '', // se debe cargar
+    content: '', // se debe cargar,
+    titulo: '' // se debe cargar
   };
 
   // route : ActivatedRoute = null
-  @Input() id!: Number
+  // @Input() id!: Number
+  @Input() historyForm!: FormGroup;
+  
   mensajeTipo = 0
   mensaje: string = '';
   autoSaveSub!: Subscription;
   historyService: HistoriaService = inject(HistoriaService);
+  private modalService = inject(ModalService);
 
   editorConfig: AngularEditorConfig = {
     height: '500px',
@@ -47,9 +52,9 @@ export class RedactarHistoriaComponent {
   }
 
   cargarHistoria(): void {
-    this.historyService.traerHistoria(Number(this.id)).subscribe({
+    this.historyService.traerHistoria(Number(this.historyForm.value.id)).subscribe({
         next: (response) => {
-          this.historia.contenido = response.data.contenido
+          this.historia.content = response.data.content
           this.historia.id = response.data.id
           this.mostrarMensaje('historia cargada satisfactoriamente.', 200)
         },
@@ -77,6 +82,11 @@ export class RedactarHistoriaComponent {
     if (codigo == 200) {
       setTimeout(() => (this.mensaje = ''), 3000);
     }
+  }
+
+  cancel(): void {
+    this.historyForm.reset();
+    this.modalService.closeAll();
   }
 
 }

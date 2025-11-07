@@ -10,9 +10,10 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestGuard } from './guards/guest.guard';
 import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { RedactarHistoriaComponent } from './pages/redactar-historia/redactar-historia.component';
-import { CrearHistoriaComponent } from './pages/crear-historia/crear-historia.component';
+import { RedactarHistoriaComponent } from './components/histories/redactar-historia/redactar-historia.component';
+import { CrearHistoriaComponent } from './components/histories/crear-historia/crear-historia.component';
 import { GenresComponent } from './pages/genres/genres.component';
+import { HistoriesCardComponent } from './pages/histories/histories.component';
 import { PasswordComponent } from './pages/auth/password/password.component';
 import { UserAdminComponent } from './pages/user-admin/user-admin.component';
 import { MensajesComponent } from './pages/timeline/timeline.component';
@@ -107,8 +108,8 @@ export const routes: Routes = [
         }
       },
       {
-        path: "redactarhistoria/:id",
-        component: RedactarHistoriaComponent,
+        path: "histories",
+        component: HistoriesCardComponent,
         canActivate:[AuthGuard],
         data: { 
           authorities: [
@@ -116,21 +117,7 @@ export const routes: Routes = [
             IRoleType.superAdmin,
             IRoleType.user
           ],
-          name: 'Redactar Historia',
-          showInSidebar: true
-        }
-      },
-      {
-        path: "crearhistoria",
-        component: CrearHistoriaComponent,
-        canActivate:[AuthGuard],
-        data: { 
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin,
-            IRoleType.user
-          ],
-          name: 'Crear Historia',
+          name: 'Historias',
           showInSidebar: true
         }
       },
