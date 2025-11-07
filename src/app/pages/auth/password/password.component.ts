@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 import { AuthService } from "../../../services/auth.service";
 import { NgbCollapse } from "@ng-bootstrap/ng-bootstrap";
 
-
 @Component({
   selector: "app-password",
   standalone: true,
@@ -22,7 +21,7 @@ export class PasswordComponent {
   @ViewChild("email") emailModel!: NgModel;
   @ViewChild("password") passwordModel!: NgModel;
 
-  public passForm: {email: string; password: string} = {
+  public passForm: { email: string; password: string } = {
     email: "",
     password: "",
   };
@@ -44,12 +43,21 @@ export class PasswordComponent {
         icon: "warning",
       });
       return;
-    }else{
+    } 
+    else {
       this.authService.pass(this.passForm).subscribe({
-        // next:()=> this.router.navigateByUrl("/login"),
+        next: (response: any) => {
+          this.router.navigateByUrl("/login");
+          Swal.fire({
+            title: "Contraseña modificada Exitosamente!!",
+            text:
+              "Ahora puede iniciar sesión",
+            icon: "success",
+          });
+        },
 
-        error: (err:any) => (this.passError = err.error.description),
-      })
+        error: (err: any) => (this.passError = err.error.description),
+      });
     }
   }
 }

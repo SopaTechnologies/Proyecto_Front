@@ -114,8 +114,8 @@ export class AuthService {
     return this.http.post("auth/signup", user);
   }
 
-  public pass (user: IUser): Observable<any>{
-    return this.http.put("{email}", user);
+  public pass (user: {email: string; password: string}): Observable<any>{
+    return this.http.put(`users/pass/${user.email}`, user);
   }
 
   public logout() {
