@@ -9,6 +9,8 @@ import {
 import { Observable, firstValueFrom, of, tap } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { throwError, catchError } from "rxjs";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import Swal from 'sweetalert2';
 @Injectable({
   providedIn: "root",
 })
@@ -17,6 +19,7 @@ export class AuthService {
   private expiresIn!: number;
   private user: IUser = { email: "", authorities: [] };
   private http: HttpClient = inject(HttpClient);
+  private snackBar: MatSnackBar = inject(MatSnackBar);
 
   constructor() {
     this.load();
@@ -115,7 +118,25 @@ export class AuthService {
   }
 
   public pass (user: {email: string; password: string}): Observable<any>{
-    return this.http.put(`users/pass/${user.email}`, user);
+    return this.http.put(`users/pass/${user.email}`, user).pipe(
+      tap(() => {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Password updated successfully',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      }),
+      catchError((error) => {
+        Swal.fire({
+          title: 'Error',
+          text: `Error updating password: ${error.message}`,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        throw error;
+      })
+    );
   }
 
   public logout() {

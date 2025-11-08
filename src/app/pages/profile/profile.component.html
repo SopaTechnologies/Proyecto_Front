@@ -2,22 +2,27 @@
 <div class="row info-container">
   <div class="col-6">
     <div class="shadow-sm bg-body rounded px-4 py-4 h-100">
-      <div>
-        <i class="fa-solid fa-user-tie"></i>
+      <div class="text-center mb-3">
+        <img
+          [src]="profileService.user$().photo || 'assets/img/default-avatar.png'"
+          alt="Profile Photo"
+          class="rounded-circle"
+          style="width: 300; height: 300; object-fit: cover;"
+        />
       </div>
       <div class="border-bottom my-3">
-        <label>Name:</label>
+        <label>Nombre:</label>
         <p>{{profileService.user$().name}}</p>
       </div>
       <div class="border-bottom my-3">
-        <label>Lastname:</label>
+        <label>Apellido:</label>
         <p>{{profileService.user$().lastname}}</p>
       </div>
       <div class="border-bottom my-3">
-        <label>email:</label>
+        <label>Corrreo:</label>
         <p>{{profileService.user$().email}}</p>
       </div>
-      
+
     </div>
   </div>
   <div class="col-6">
@@ -32,42 +37,92 @@
           <label>Description:</label>
           <p>{{profileService.user$().role?.description}}</p>
         </div>
-        <div class=" my-3">
-          <label>Last update:</label>
-          <p>{{profileService.user$().role?.updatedAt | date:'dd/MM/YYYY'}}</p>
-        </div>
       </div>
-      <div class="col-12 shadow-sm bg-body rounded px-4 py-4">
-        <label>Last actions:</label>
-        <div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Date</th>
-                <th scope="col">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>10/06/2024</td>
-                <td>Deleted user</td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>10/06/2024</td>
-                <td>Deleted user</td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>10/06/2024</td>
-                <td>Deleted user</td>
-              </tr>
-            </tbody>
-          </table>
+    </div>
+  </div>
+</div>
+
+
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="shadow-sm bg-body rounded px-4 py-4">
+      <h5>Actualiza tus datos personales</h5>
+      <form (ngSubmit)="updateUser()" #userUpdateForm="ngForm">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              [(ngModel)]="userForm.name"
+              required
+            />
+        
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="lastname" class="form-label">Lastname</label>
+            <input
+              type="text"
+              class="form-control"
+              id="lastname"
+              name="lastname"
+              [(ngModel)]="userForm.lastname"
+              required
+            />
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              [(ngModel)]="userForm.email"
+              required
+            />
+          </div>
         </div>
-      </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!userUpdateForm.form.valid">Update Personal Data</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="shadow-sm bg-body rounded px-4 py-4">
+      <h5>Cambiar la Contraseña</h5>
+      <form (ngSubmit)="updatePassword()" #passwordUpdateForm="ngForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="passwordEmail" class="form-label">Correo</label>
+            <input
+              type="email"
+              class="form-control"
+              id="passwordEmail"
+              name="email"
+              [(ngModel)]="passwordForm.email"
+              required
+              readonly
+            />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="newPassword" class="form-label">Indique la nueva contraseña</label>
+            <input
+              type="password"
+              class="form-control"
+              id="newPassword"
+              name="newPassword"
+              [(ngModel)]="passwordForm.newPassword"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!passwordUpdateForm.form.valid">Update Password</button>
+      </form>
     </div>
   </div>
 </div>
