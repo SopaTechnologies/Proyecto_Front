@@ -55,7 +55,7 @@ export class PasswordComponent {
         },
 
         error: (err: any) => {
-          const errorMessage =  " Usuario no encontrado";
+          const errorMessage = err.error?.message || err.error?.description || "El usuario indicado no se encuentra registrado";
           this.passError = errorMessage;
           Swal.fire({
             title: "Error",

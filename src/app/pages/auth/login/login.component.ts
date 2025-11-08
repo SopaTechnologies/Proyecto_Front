@@ -48,8 +48,27 @@ export class LoginComponent implements AfterViewInit {
     }
     if (this.emailModel.valid && this.passwordModel.valid) {
       this.authService.login(this.loginForm).subscribe({
-        next: () => this.router.navigateByUrl("/app/dashboard"),
-        error: (err: any) => (this.loginError = err.error.description),
+        next: (response: any) => {
+          this.router.navigateByUrl("/app/dashboard");
+          Swal.fire({
+            title: "Sesión iniciada correctamente!!",
+            text: "Éxitos en tu nueva aventura!!!",
+            icon: "success",
+          });
+        },
+
+        error: (err: any) => {
+          const errorMessage =
+            err.error?.message ||
+            err.error?.description ||
+            "El usuario indicado no esta registrado";
+          this.loginError = errorMessage;
+          Swal.fire({
+            title: "Error",
+            text: errorMessage,
+            icon: "error",
+          });
+        },
       });
     }
   }
@@ -114,8 +133,16 @@ export class LoginComponent implements AfterViewInit {
         });
       },
       error: (err: any) => {
-        this.loginError =
-          err.error?.message || "Error with Google authentication.";
+        const errorMessage =
+          err.error?.message ||
+          err.error?.description ||
+          "El usuario indicado no se encuentra registrado";
+        this.loginError = errorMessage;
+        Swal.fire({
+          title: "Error",
+          text: errorMessage,
+          icon: "error",
+        });
       },
     });
   }

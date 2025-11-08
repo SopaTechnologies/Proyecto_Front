@@ -9,7 +9,6 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import Swal from "sweetalert2";
 import { UserListComponent } from "../../components/user/user-list/user-list.component";
 
-
 @Component({
   selector: "app-user-admin",
   standalone: true,
@@ -21,7 +20,6 @@ export class UserAdminComponent {
   public signUpError!: string;
   public validSignup!: boolean;
 
-  
   @ViewChild("name") nameModel!: NgModel;
   @ViewChild("lastname") lastnameModel!: NgModel;
   @ViewChild("email") emailModel!: NgModel;
@@ -31,14 +29,14 @@ export class UserAdminComponent {
   @ViewChild("role") roleModel!: NgModel;
   @ViewChild("photoInput") photoInput!: any;
 
-  public user: IUser2 = { role: { name: ''} };
+  public user: IUser2 = { role: { name: "" } };
 
   get roleName(): string {
-    return this.user.role?.name || '';
+    return this.user.role?.name || "";
   }
 
   set roleName(value: string) {
-    if (!this.user.role) this.user.role = { name: '' };
+    if (!this.user.role) this.user.role = { name: "" };
     this.user.role.name = value;
   }
 
@@ -95,7 +93,7 @@ export class UserAdminComponent {
   resetForm() {
     this.previewUrl = null;
     this.selectedFile = null;
-    this.user = { role: { name: ''} };
+    this.user = { role: { name: "" } };
     this.signUpError = "";
     this.validSignup = false;
     if (this.photoInput) {
@@ -115,18 +113,28 @@ export class UserAdminComponent {
 
     if (!this.emailModel.valid) {
       this.emailModel.control.markAsTouched();
+      Swal.fire({
+        title: "Error",
+        text: "Por favor indique un Correo para actualizar el cliente!!",
+        icon: "warning",
+      });
+      return;
     }
     if (!this.passwordModel.valid) {
       this.passwordModel.control.markAsTouched();
     }
     if (!this.usernameModel.valid) {
       this.usernameModel.control.markAsTouched();
-
     }
     if (!this.roleModel.valid) {
       this.roleModel.control.markAsTouched();
+      Swal.fire({
+        title: "Error",
+        text: "Por favor indique un elija un rol!",
+        icon: "warning",
+      });
+      return;
     }
-
     this.ne();
     this.resetForm();
   }
@@ -141,21 +149,23 @@ export class UserAdminComponent {
       photo: this.user.photo,
       status: this.user.status,
       role: {
-        name: this.user.role?.name || ''
-      }
+        name: this.user.role?.name || "",
+      },
     };
     this.userService.updateOrSave(payload as IUser2).subscribe({
       next: (response: any) => {
         this.validSignup = true;
         Swal.fire({
-          title: response.message || "Usuario guardado/actualizado correctamente!!",
+          title:
+            response.message || "Usuario guardado/actualizado correctamente!!",
           text: "Operación completada exitosamente!!",
           icon: "success",
         });
+        window.location.reload();
+
         this.resetForm();
       },
       error: (err: any) => {
-
         this.signUpError = err.error?.description || err.message;
         Swal.fire({
           title: "Error",
@@ -169,7 +179,7 @@ export class UserAdminComponent {
   ngOnInit() {
     this.userService.getAll();
   }
-   changePage(page: number) {
+  changePage(page: number) {
     if (page >= 1 && page <= (this.userService.search?.totalPages ?? 1)) {
       this.userService.search.page = page;
       this.userService.getAll();

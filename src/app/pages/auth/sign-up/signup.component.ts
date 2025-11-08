@@ -152,16 +152,15 @@ export class SigUpComponent {
           text: "Ahora puede ir al inicio de sesión para ingresar!!",
           icon: "success",
         });
-        return;
       },
       error: (err: any) => {
+        const errorMessage = err.error?.message || err.error?.description || "El Usuario o Correo ya se encuentran registrados";
         this.signUpError = err.description;
         Swal.fire({
-          title: "Usuario registrado correctamente!!",
-          text: "Ahora puede ir al inicio de sesión para ingresar!!" + err,
-          icon: "success",
+          title: "Puede intentar nuevamente con un usuario o correo distinto!!",
+          text: errorMessage + err,
+          icon: "error",
         });
-        return;
       },
     });
   }
