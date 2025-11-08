@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { BaseService } from './base-service';
-import { ISearch, IUser, IResponse } from '../interfaces';
+import { ISearch, IUser, IResponse, IUser2 } from '../interfaces';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { AlertService } from './alert.service';
 
@@ -60,7 +60,7 @@ export class UserService extends BaseService<IUser> {
     });
   }
 
-  updateOrSave(user: IUser) {
+  updateOrSave(user: IUser2) {
     const payload = {
       email: user.email,
       username: user.username,
@@ -73,7 +73,7 @@ export class UserService extends BaseService<IUser> {
         name: user.role?.name
       }
     };
-    return this.http.put<IResponse<IUser>>(`${this.source}/update`, payload);
+    return this.http.put<IResponse<IUser2>>(`${this.source}/update`, payload);
   }
 
   delete(user: IUser) {

@@ -111,7 +111,7 @@ export class AuthService {
   }
 
   public signup(user: IUser): Observable<any> {
-    return this.http.post("auth/signup", user);
+    return this.http.post("users/addUser", user);
   }
 
   public pass (user: {email: string; password: string}): Observable<any>{

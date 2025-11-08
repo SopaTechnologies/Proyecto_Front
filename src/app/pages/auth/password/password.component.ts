@@ -43,20 +43,26 @@ export class PasswordComponent {
         icon: "warning",
       });
       return;
-    } 
-    else {
+    } else {
       this.authService.pass(this.passForm).subscribe({
         next: (response: any) => {
           this.router.navigateByUrl("/login");
           Swal.fire({
             title: "Contraseña modificada Exitosamente!!",
-            text:
-              "Ahora puede iniciar sesión",
+            text: "Ahora puede iniciar sesión",
             icon: "success",
           });
         },
 
-        error: (err: any) => (this.passError = err.error.description),
+        error: (err: any) => {
+          const errorMessage =  " Usuario no encontrado";
+          this.passError = errorMessage;
+          Swal.fire({
+            title: "Error",
+            text: errorMessage,
+            icon: "error",
+          });
+        },
       });
     }
   }

@@ -4,7 +4,7 @@ import { FormsModule, NgModel } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { UserService } from "../../services/user.service";
-import { IUser } from "../../../app/interfaces/index";
+import { IUser2 } from "../../../app/interfaces/index";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import Swal from "sweetalert2";
 import { UserListComponent } from "../../components/user/user-list/user-list.component";
@@ -31,7 +31,17 @@ export class UserAdminComponent {
   @ViewChild("role") roleModel!: NgModel;
   @ViewChild("photoInput") photoInput!: any;
 
-  public user: IUser = { role: { name: '', id: 0, description: '', createdAt: '', updatedAt: '' } };
+  public user: IUser2 = { role: { name: ''} };
+
+  get roleName(): string {
+    return this.user.role?.name || '';
+  }
+
+  set roleName(value: string) {
+    if (!this.user.role) this.user.role = { name: '' };
+    this.user.role.name = value;
+  }
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -85,7 +95,7 @@ export class UserAdminComponent {
   resetForm() {
     this.previewUrl = null;
     this.selectedFile = null;
-    this.user = { role: { name: '', id: 0, description: '', createdAt: '', updatedAt: '' } };
+    this.user = { role: { name: ''} };
     this.signUpError = "";
     this.validSignup = false;
     if (this.photoInput) {
@@ -122,7 +132,19 @@ export class UserAdminComponent {
   }
 
   ne() {
-    this.userService.updateOrSave(this.user).subscribe({
+    const payload = {
+      email: this.user.email,
+      username: this.user.username,
+      lastname: this.user.lastname,
+      password: this.user.password,
+      name: this.user.name,
+      photo: this.user.photo,
+      status: this.user.status,
+      role: {
+        name: this.user.role?.name || ''
+      }
+    };
+    this.userService.updateOrSave(payload as IUser2).subscribe({
       next: (response: any) => {
         this.validSignup = true;
         Swal.fire({
@@ -133,6 +155,7 @@ export class UserAdminComponent {
         this.resetForm();
       },
       error: (err: any) => {
+
         this.signUpError = err.error?.description || err.message;
         Swal.fire({
           title: "Error",
