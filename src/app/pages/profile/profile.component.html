@@ -84,7 +84,7 @@
             />
           </div>
         </div>
-        <button type="submit" class="btn btn-primary" [disabled]="!userUpdateForm.form.valid">Update Personal Data</button>
+        <button type="submit" class="btn btn-primary btn-block  dark-submit-btn" [disabled]="!userUpdateForm.form.valid">Update Personal Data</button>
       </form>
     </div>
   </div>
@@ -94,14 +94,14 @@
 <div class="row mt-4">
   <div class="col-12">
     <div class="shadow-sm bg-body rounded px-4 py-4">
-      <h5>Cambiar la Contraseña</h5>
+      <h1>Cambiar la Contraseña</h1>
       <form (ngSubmit)="updatePassword()" #passwordUpdateForm="ngForm">
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="passwordEmail" class="form-label">Correo</label>
             <input
               type="email"
-              class="form-control"
+              class="form-control mb-4"
               id="passwordEmail"
               name="email"
               [(ngModel)]="passwordForm.email"
@@ -121,7 +121,7 @@
             />
           </div>
         </div>
-        <button type="submit" class="btn btn-primary" [disabled]="!passwordUpdateForm.form.valid">Update Password</button>
+        <button type="submit" class=" mb-4 btn btn-primary btn-block  dark-submit-btn" [disabled]="!passwordUpdateForm.form.valid">Actualiza la contraseña</button>
       </form>
     </div>
   </div>
