@@ -52,8 +52,23 @@ export class PasswordComponent {
       return;
     }
 
+    const c = this.passForm.password.length;
+    
+    console.log(c);
+
+    if (c < 8  || c > 16){
+      Swal.fire({
+        title: "Error",
+        text: "La contraseña debe ser mayor o igual 8 caracteres y menor o igual a 16",
+        icon: "warning",
+      });
+      return;
+    } 
+
+    
+
     if (this.passForm.password != this.f.passwordConf){
-      console.log(this.f.passwordConf, this.passForm.password);
+      console.log(c);
       Swal.fire({
         title: "Error",
         text: "La contraseña debe ser igual a la anterior",

@@ -19,9 +19,13 @@ export const handleErrorsInterceptor: HttpInterceptorFn = (req, next) => {
         throw error.error;
       }
       if (error.status === 404) {
-        throw { status: false };
+        throw error;
       }
-      return of({ status: false });
+
+      if (req.url.includes('auth')) {
+        throw error;
+      }
+      return error;
     })
   );
 };

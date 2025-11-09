@@ -45,8 +45,8 @@ export class LoginComponent implements AfterViewInit {
         icon: "warning",
       });
       return;
-    }
-    if (this.emailModel.valid && this.passwordModel.valid) {
+    } else{
+    // if (this.emailModel.valid && this.passwordModel.valid) {
       this.authService.login(this.loginForm).subscribe({
         next: (response: any) => {
           this.router.navigateByUrl("/app/dashboard");
@@ -56,7 +56,7 @@ export class LoginComponent implements AfterViewInit {
             icon: "success",
           });
         },
-
+        
         error: (err: any) => {
           const errorMessage =
             err.error?.message ||
@@ -68,6 +68,7 @@ export class LoginComponent implements AfterViewInit {
             text: errorMessage,
             icon: "error",
           });
+          return;
         },
       });
     }
@@ -119,6 +120,7 @@ export class LoginComponent implements AfterViewInit {
       email: decoded.email || "",
       photoUrl: decoded.picture || "",
       password: decoded.email,
+      username: decoded.name
     };
 
     this.authService.loginWithGoogle(googleUser).subscribe({

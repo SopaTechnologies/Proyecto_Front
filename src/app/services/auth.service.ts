@@ -71,6 +71,16 @@ export class AuthService {
         this.expiresIn = response.expiresIn;
         this.user = response.authUser;
         this.save();
+      }),
+      catchError((error) => {
+        const errorMessage = error.error?.detail || error.error?.description || error.message || 'Error al iniciar sesión';
+        Swal.fire({
+          title: 'Error',
+          text: `Error al iniciar sesión: ${errorMessage}`,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        throw error;
       })
     );
   }
