@@ -67,52 +67,72 @@
         </button>
       </div>
 
-      <!-- Indicador de año en la parte inferior -->
-      <div class="year-indicator" *ngIf="messages.length > 0">
-        <div class="year-circle"></div>
-        <span class="year-text">Año</span>
-        <p class="year-description">Posibilidad de cambiar el time line imagen o esto</p>
-      </div>
-    </div>
-  </div>
-</div>
+  
 
 <!-- Modal para crear/editar mensaje -->
-<div class="modal-overlay book-modal-overlay" [class.show]="showModal" (click)="closeModal()">
-  <div class="modal-dialog book-modal-dialog" (click)="$event.stopPropagation()" [class.show]="showModal">
+<div *ngIf="showModal" class="modal-overlay book-modal-overlay show" (click)="closeModal()">
+  <div class="modal-dialog book-modal-dialog show" (click)="$event.stopPropagation()">
     <div class="modal-content book-modal-content">
+
       <div class="modal-header book-modal-header">
         <div class="book-title-section">
           <i class="fas fa-feather-alt book-icon"></i>
-          <h3 class="book-modal-title">{{editingMessage ? 'Editar Línea de tiempo' : 'Línea de tiempo'}}</h3>
+          <h3 class="book-modal-title">
+            {{ editingMessage ? 'Editar Línea de tiempo' : 'Línea de tiempo' }}
+          </h3>
         </div>
+
         <button type="button" class="book-close-btn" (click)="closeModal()">
           <i class="fas fa-times"></i>
         </button>
       </div>
+
       <form (ngSubmit)="saveMessage()" #messageForm="ngForm" class="book-form">
         <div class="modal-body book-modal-body">
+
           <div class="book-form-group">
-            <label for="subtitulo" class="book-label">Año <span class="required-mark">*</span></label>
-            <input type="text" class="book-input" id="titulo" [(ngModel)]="currentMessage.titulo" name="titulo" required maxlength="255" placeholder="El principio">
+            <label class="book-label">Año <span class="required-mark">*</span></label>
+            <input type="text" class="book-input"
+                   [(ngModel)]="currentMessage.titulo"
+                   name="titulo"
+                   required maxlength="255"
+                   placeholder="El principio">
           </div>
+
           <div class="book-form-group">
-            <label for="titulo" class="book-label">Título</label>
-             <input type="text" class="book-input" id="subtitulo" [(ngModel)]="currentMessage.subtitulo" name="subtitulo" maxlength="500" placeholder="Subtitulo">
-            
+            <label class="book-label">Título</label>
+            <input type="text" class="book-input"
+                   [(ngModel)]="currentMessage.subtitulo"
+                   name="subtitulo"
+                   maxlength="500"
+                   placeholder="Subtítulo">
           </div>
+
           <div class="book-form-group">
-            <label for="textoGrande" class="book-label">Contenido <span class="required-mark">*</span></label>
-            <textarea class="book-textarea" id="textoGrande" rows="12" [(ngModel)]="currentMessage.textoGrande" name="textoGrande" required placeholder="Texto"></textarea>
+            <label class="book-label">Contenido <span class="required-mark">*</span></label>
+            <textarea class="book-textarea"
+                      [(ngModel)]="currentMessage.textoGrande"
+                      name="textoGrande"
+                      rows="12"
+                      required
+                      placeholder="Texto"></textarea>
           </div>
+
         </div>
+
         <div class="modal-footer book-modal-footer">
-          <button type="button" class="book-btn book-btn-secondary" (click)="closeModal()">Cancelar</button>
-          <button type="submit" class="book-btn book-btn-primary" [disabled]="!messageForm.form.valid || creating">
-            {{creating ? 'Guardando...' : (editingMessage ? 'Actualizar Capítulo' : 'Guardar')}}
+          <button type="button" class="book-btn book-btn-secondary" (click)="closeModal()">
+            Cancelar
+          </button>
+
+          <button type="submit" class="book-btn book-btn-primary"
+                  [disabled]="!messageForm.form.valid || creating">
+            {{ creating ? 'Guardando...' : (editingMessage ? 'Actualizar Capítulo' : 'Guardar') }}
           </button>
         </div>
+
       </form>
+
     </div>
   </div>
 </div>
