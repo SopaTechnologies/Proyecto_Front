@@ -1,13 +1,14 @@
 export interface HistoriaModel {
     id: number;
-    contenido: string;
+    titulo: string;
+    content: string;
     // idUsuarioCreador: number;
 }
 
 export interface CrearHistoriaModel {
     // id: number;
     titulo: string;
-    descripcion: string;
+    description: string;
     genero: string;
     contieneJuego: boolean;
 
