@@ -167,7 +167,8 @@ export const routes: Routes = [
           data: {
             authorities: [
               IRoleType.admin,
-              IRoleType.superAdmin
+              IRoleType.superAdmin,
+              IRoleType.user
             ],
             name: 'Personajes',
             showInSidebar: true
