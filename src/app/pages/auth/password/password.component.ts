@@ -20,12 +20,18 @@ export class PasswordComponent {
 
   @ViewChild("email") emailModel!: NgModel;
   @ViewChild("password") passwordModel!: NgModel;
+  @ViewChild("passConf") passworConfirModel!: NgModel;
 
   public passForm: { email: string; password: string } = {
     email: "",
     password: "",
   };
 
+  public f : {passwordConf: string} = {
+    passwordConf: ""
+  }
+
+  
   public passChange(event: Event) {
     event.preventDefault();
     if (!this.emailModel.control.valid) {
@@ -36,6 +42,7 @@ export class PasswordComponent {
       });
       return;
     }
+    
     if (!this.passwordModel.control.valid) {
       Swal.fire({
         title: "Error",
@@ -43,7 +50,19 @@ export class PasswordComponent {
         icon: "warning",
       });
       return;
-    } else {
+    }
+
+    if (this.passForm.password != this.f.passwordConf){
+      console.log(this.f.passwordConf, this.passForm.password);
+      Swal.fire({
+        title: "Error",
+        text: "La contraseña debe ser igual a la anterior",
+        icon: "warning",
+      });
+      return;
+    }
+
+    else {
       this.authService.pass(this.passForm).subscribe({
         next: (response: any) => {
           this.router.navigateByUrl("/login");
