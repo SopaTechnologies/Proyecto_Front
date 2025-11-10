@@ -94,19 +94,14 @@ export const routes: Routes = [
         }
       },
        {
-        path: "linetime",
-        component: MensajesComponent,
-        canActivate:[AdminRoleGuard],
-        data: { 
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin,
-            IRoleType.user
-          ],
-          name: 'Linea de tiempo',
-          showInSidebar: true
-        }
-      },
+  path: 'linetime',
+  component: MensajesComponent,
+  canActivate: [AuthGuard],
+  data: {
+    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+    showInSidebar: true
+  }
+},
       {
         path: "histories",
         component: HistoriesCardComponent,
@@ -148,19 +143,14 @@ export const routes: Routes = [
         }
       },
         {
-          path: 'personajes',
-          component: PersonajesComponent,
-          canActivate: [AdminRoleGuard],
-          data: {
-            authorities: [
-              IRoleType.admin,
-              IRoleType.superAdmin,
-              IRoleType.user
-            ],
-            name: 'Personajes',
-            showInSidebar: true
-          }
-        },
+  path: 'personajes',
+  component: PersonajesComponent,
+  canActivate: [AuthGuard],
+  data: {
+    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+    showInSidebar: true
+  }
+},
     ],
   },
 ];
