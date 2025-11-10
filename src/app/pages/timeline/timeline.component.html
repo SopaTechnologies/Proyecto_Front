@@ -1,6 +1,6 @@
 <!-- Botón crear mensaje en la línea de tiempo -->
 <div class="timeline-header">
-  <button class="create-timeline-btn" (click)="openCreateModal()">
+  <button class="create-timeline-btn" (click)="onCreateMessage()">
     <i class="fas fa-plus"></i>
     Crear mensaje
   </button>
@@ -18,121 +18,25 @@
   {{error}}
 </div>
 
-<!-- Contenedor con scroll para el timeline -->
-<div class="timeline-scroll-container" *ngIf="!loading">
-  <div class="timeline-container">
-    <div class="timeline-content">
-      <!-- Mensajes como tarjetas de timeline -->
-      <div class="timeline-items" *ngIf="messages.length > 0">
-        <div class="timeline-item" *ngFor="let message of sortedMessages; let i = index">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-card-header">
-              <h3 class="timeline-title">{{message.titulo}}</h3>
-              <div class="timeline-actions">
-                <button class="action-btn edit-btn" (click)="editMessage(message)">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="action-btn delete-btn" (click)="deleteMessage(message.id!)" [disabled]="deleting">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-            </div>
-            <div class="timeline-subtitle" *ngIf="message.subtitulo">
-              {{message.subtitulo}}
-            </div>
-            <div class="timeline-content-text">
-              {{message.textoGrande}}
-            </div>
-            <div class="timeline-meta">
-              <span class="timeline-date">
-                <i class="fas fa-calendar"></i>
-                {{message.createdAt | date:'dd/MM/yyyy'}}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mensaje cuando no hay datos -->
-      <div *ngIf="messages.length === 0" class="empty-state">
-        <div class="empty-icon">
-          <i class="fas fa-book-open"></i>
-        </div>
-        <h3>Tu línea de tiempo está vacía</h3>
-        <p>Comienza a escribir tu historia agregando el primer capítulo</p>
-        <button class="create-first-btn" (click)="openCreateModal()">
-          <i class="fas fa-plus"></i>
-          Crear primer capítulo
-        </button>
-      </div>
-
-  
-
-<!-- Modal para crear/editar mensaje -->
-<div *ngIf="showModal" class="modal-overlay book-modal-overlay show" (click)="closeModal()">
-  <div class="modal-dialog book-modal-dialog show" (click)="$event.stopPropagation()">
-    <div class="modal-content book-modal-content">
-
-      <div class="modal-header book-modal-header">
-        <div class="book-title-section">
-          <i class="fas fa-feather-alt book-icon"></i>
-          <h3 class="book-modal-title">
-            {{ editingMessage ? 'Editar Línea de tiempo' : 'Línea de tiempo' }}
-          </h3>
-        </div>
-
-        <button type="button" class="book-close-btn" (click)="closeModal()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-
-      <form (ngSubmit)="saveMessage()" #messageForm="ngForm" class="book-form">
-        <div class="modal-body book-modal-body">
-
-          <div class="book-form-group">
-            <label class="book-label">Año <span class="required-mark">*</span></label>
-            <input type="text" class="book-input"
-                   [(ngModel)]="currentMessage.titulo"
-                   name="titulo"
-                   required maxlength="255"
-                   placeholder="El principio">
-          </div>
-
-          <div class="book-form-group">
-            <label class="book-label">Título</label>
-            <input type="text" class="book-input"
-                   [(ngModel)]="currentMessage.subtitulo"
-                   name="subtitulo"
-                   maxlength="500"
-                   placeholder="Subtítulo">
-          </div>
-
-          <div class="book-form-group">
-            <label class="book-label">Contenido <span class="required-mark">*</span></label>
-            <textarea class="book-textarea"
-                      [(ngModel)]="currentMessage.textoGrande"
-                      name="textoGrande"
-                      rows="12"
-                      required
-                      placeholder="Texto"></textarea>
-          </div>
-
-        </div>
-
-        <div class="modal-footer book-modal-footer">
-          <button type="button" class="book-btn book-btn-secondary" (click)="closeModal()">
-            Cancelar
-          </button>
-
-          <button type="submit" class="book-btn book-btn-primary"
-                  [disabled]="!messageForm.form.valid || creating">
-            {{ creating ? 'Guardando...' : (editingMessage ? 'Actualizar Capítulo' : 'Guardar') }}
-          </button>
-        </div>
-
-      </form>
-
-    </div>
-  </div>
+<!-- Success message -->
+<div *ngIf="successMessage" class="success-message">
+  <i class="fas fa-check-circle"></i>
+  {{successMessage}}
 </div>
+
+<!-- Timeline List Component -->
+<app-timeline-list 
+  *ngIf="!loading"
+  [messages]="messages"
+  (createMessage)="onCreateMessage()"
+  (editMessage)="onEditMessage($event)"
+  (deleteMessage)="onDeleteMessage($event)">
+</app-timeline-list>
+
+<!-- Timeline Form Component (Modal) -->
+<app-timeline-form
+  *ngIf="showModal"
+  [message]="currentMessage"
+  (save)="onSaveMessage($event)"
+  (close)="onCloseModal()">
+</app-timeline-form>
