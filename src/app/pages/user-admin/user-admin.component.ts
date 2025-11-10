@@ -103,34 +103,12 @@ export class UserAdminComponent {
 
   public handleSignup(event: Event) {
     event.preventDefault();
-    if (!this.nameModel.valid) {
-      this.nameModel.control.markAsTouched();
-    }
-
-    if (!this.lastnameModel.valid) {
-      this.lastnameModel.control.markAsTouched();
-    }
 
     if (!this.emailModel.valid) {
       this.emailModel.control.markAsTouched();
       Swal.fire({
         title: "Error",
         text: "Por favor indique un Correo para actualizar el cliente!!",
-        icon: "warning",
-      });
-      return;
-    }
-    if (!this.passwordModel.valid) {
-      this.passwordModel.control.markAsTouched();
-    }
-    if (!this.usernameModel.valid) {
-      this.usernameModel.control.markAsTouched();
-    }
-    if (!this.roleModel.valid) {
-      this.roleModel.control.markAsTouched();
-      Swal.fire({
-        title: "Error",
-        text: "Por favor indique un elija un rol!",
         icon: "warning",
       });
       return;
@@ -160,9 +138,9 @@ export class UserAdminComponent {
             response.message || "Usuario guardado/actualizado correctamente!!",
           text: "Operación completada exitosamente!!",
           icon: "success",
+          confirmButtonText: "ok"
         });
-        window.location.reload();
-
+        this.ngOnInit();
         this.resetForm();
       },
       error: (err: any) => {
