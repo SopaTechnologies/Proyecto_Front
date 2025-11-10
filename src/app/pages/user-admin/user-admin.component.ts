@@ -113,6 +113,17 @@ export class UserAdminComponent {
       });
       return;
     }
+    if (this.user.password != null){
+      const c = this.user.password.length;
+      if (c < 8  || c > 16){
+            Swal.fire({
+              title: "Error",
+              text: "La contraseña debe ser mayor o igual 8 caracteres y menor o igual a 16",
+              icon: "warning",
+            });
+            return;
+          } 
+    }
     this.ne();
     this.resetForm();
   }
