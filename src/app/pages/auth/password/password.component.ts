@@ -20,12 +20,18 @@ export class PasswordComponent {
 
   @ViewChild("email") emailModel!: NgModel;
   @ViewChild("password") passwordModel!: NgModel;
+  @ViewChild("passConf") passworConfirModel!: NgModel;
 
   public passForm: { email: string; password: string } = {
     email: "",
     password: "",
   };
 
+  public f : {passwordConf: string} = {
+    passwordConf: ""
+  }
+
+  
   public passChange(event: Event) {
     event.preventDefault();
     if (!this.emailModel.control.valid) {
@@ -36,6 +42,7 @@ export class PasswordComponent {
       });
       return;
     }
+    
     if (!this.passwordModel.control.valid) {
       Swal.fire({
         title: "Error",
@@ -43,20 +50,51 @@ export class PasswordComponent {
         icon: "warning",
       });
       return;
+    }
+
+    const c = this.passForm.password.length;
+
+    if (c < 8  || c > 16){
+      Swal.fire({
+        title: "Error",
+        text: "La contraseña debe ser mayor o igual 8 caracteres y menor o igual a 16",
+        icon: "warning",
+      });
+      return;
     } 
+
+    
+
+    if (this.passForm.password != this.f.passwordConf){
+      console.log(c);
+      Swal.fire({
+        title: "Error",
+        text: "Ambas contraseñas deben ser iguales",
+        icon: "warning",
+      });
+      return;
+    }
+
     else {
       this.authService.pass(this.passForm).subscribe({
         next: (response: any) => {
           this.router.navigateByUrl("/login");
           Swal.fire({
             title: "Contraseña modificada Exitosamente!!",
-            text:
-              "Ahora puede iniciar sesión",
+            text: "Ahora puede iniciar sesión",
             icon: "success",
           });
         },
 
-        error: (err: any) => (this.passError = err.error.description),
+        error: (err: any) => {
+          const errorMessage = err.error?.message || err.error?.description || "El usuario indicado no se encuentra registrado";
+          this.passError = errorMessage;
+          Swal.fire({
+            title: "Error",
+            text: errorMessage,
+            icon: "error",
+          });
+        },
       });
     }
   }

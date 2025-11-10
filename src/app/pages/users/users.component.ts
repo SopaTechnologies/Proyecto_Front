@@ -33,7 +33,7 @@ export class UsersComponent {
     name: ['', Validators.required],
     lastname: ['', Validators.required],
     password: ['', Validators.required],
-    updatedAt: ['', Validators.required],
+    
   })
 
   constructor() {

@@ -6,9 +6,11 @@ import {
   IRoleType,
   IUser,
 } from "../interfaces";
-import { Observable, firstValueFrom, of, tap } from "rxjs";
+import { Observable, firstValueFrom, of, pipe, tap } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { throwError, catchError } from "rxjs";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import Swal from 'sweetalert2';
 @Injectable({
   providedIn: "root",
 })
@@ -17,6 +19,7 @@ export class AuthService {
   private expiresIn!: number;
   private user: IUser = { email: "", authorities: [] };
   private http: HttpClient = inject(HttpClient);
+  private snackBar: MatSnackBar = inject(MatSnackBar);
 
   constructor() {
     this.load();
@@ -68,6 +71,16 @@ export class AuthService {
         this.expiresIn = response.expiresIn;
         this.user = response.authUser;
         this.save();
+      }),
+      catchError((error) => {
+        const errorMessage = error.error?.detail || error.error?.description || error.message || 'Error al iniciar sesión';
+        Swal.fire({
+          title: 'Error',
+          text: `Error al iniciar sesión: ${errorMessage}`,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        throw error;
       })
     );
   }
@@ -111,11 +124,47 @@ export class AuthService {
   }
 
   public signup(user: IUser): Observable<any> {
-    return this.http.post("auth/signup", user);
+    return this.http.post("users/addUser", user).pipe(
+      tap(()=>{
+        Swal.fire({
+          title: 'Se realiza el registro!',
+          text: 'Se registro el usuario correctamente, favor iniciar sesión',
+          icon: 'success'
+        });
+      }),
+       catchError((error) => {
+        Swal.fire({
+          title: 'Error',
+          text: `Error al registrar usuario: ${error.message}`,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        throw error;
+      })
+
+    );
   }
 
   public pass (user: {email: string; password: string}): Observable<any>{
-    return this.http.put(`users/pass/${user.email}`, user);
+    return this.http.put(`users/pass/${user.email}`, user).pipe(
+      tap(() => {
+        Swal.fire({
+          title: 'Se cambia la contraseña!',
+          text: 'Se realiza el cambio de contraseña',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      }),
+      catchError((error) => {
+        Swal.fire({
+          title: 'Error',
+          text: `Error al cambiar la contraseña: ${error.message}`,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        throw error;
+      })
+    );
   }
 
   public logout() {

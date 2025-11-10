@@ -54,19 +54,19 @@ export const routes: Routes = [
         redirectTo: 'users',
         pathMatch: 'full',
       },
-      {
-        path: 'users',
-        component: UsersComponent,
-        canActivate: [AdminRoleGuard],
-        data: {
-          authorities: [
-            IRoleType.admin,
-            IRoleType.superAdmin
-          ],
-          name: 'Users',
-          showInSidebar: false
-        }
-      },
+      // {
+      //   path: 'users',
+      //   component: UsersComponent,
+      //   canActivate: [AdminRoleGuard],
+      //   data: {
+      //     authorities: [
+      //       IRoleType.admin,
+      //       IRoleType.superAdmin
+      //     ],
+      //     name: 'Users',
+      //     showInSidebar: false
+      //   }
+      // },
       {
         path: 'dashboard',
         component: DashboardComponent,
@@ -89,7 +89,7 @@ export const routes: Routes = [
             IRoleType.superAdmin,
             IRoleType.user
           ],
-          name: 'profile',
+          name: 'Perfil',
           showInSidebar: false
         }
       },
