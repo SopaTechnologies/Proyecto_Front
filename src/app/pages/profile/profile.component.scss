@@ -1,127 +1,171 @@
-div{
-  background-color: #2b1d1d;
-  color: #fff;
+/* === Variables de color === */
+:root {
+  --color-bg: #3a2020;         /* Fondo general */
+  --color-bg-light: #4a2b2b;   /* Fondo de tarjetas */
+  --color-accent: #a15c3e;     /* Detalles / Bordes / Botones */
+  --color-text: #f8f4ec;       /* Texto principal */
+  --color-muted: #d9a77a;      /* Texto suave / secundario */
 }
 
-.logo-text {
-  color: white;
-  font-weight: 600;
-  font-size: 18px;
-  padding: 10px;
-  
+/* === Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.nav-buttons .btn-link {
-  color: white;
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  overflow: hidden;
+}
+
+/* === Layout principal === */
+.app-layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.sidebar-wrapper {
+  flex-shrink: 0;
+  width: 250px;
+  background-color: var(--color-bg);
+  transition: width 0.3s ease;
+}
+
+.sidebar-wrapper.close_icon {
+  width: 60px;
+}
+
+.page-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-bg);
+}
+
+.page-body main.container-fluid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 1.5rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.page-body main.container-fluid::-webkit-scrollbar {
+  display: none;
+}
+
+/* === Footer === */
+.footer {
+  background-color: var(--color-bg);
+  color: var(--color-muted);
+  border-top: 2px solid var(--color-accent);
+  padding: 0.75rem 0;
+  text-align: center;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+/* === Tarjetas, formularios y secciones === */
+.card,
+mat-card,
+section,
+form {
+  background-color: var(--color-bg-light) !important;
+  border: 1px solid var(--color-accent);
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: var(--color-text);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* === Inputs === */
+input,
+textarea,
+select {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-accent);
+  color: var(--color-text);
+  border-radius: 6px;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-muted);
+}
+
+label {
+  color: var(--color-muted);
+}
+
+/* === Botones === */
+button,
+.mat-raised-button,
+.mat-flat-button {
+  background-color: var(--color-accent);
+  color: var(--color-text);
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover,
+.mat-raised-button:hover,
+.mat-flat-button:hover {
+  background-color: #c97b56;
+}
+
+/* === Títulos === */
+h1, h2, h3, h4, h5 {
+  color: var(--color-muted);
+}
+
+/* === Tablas === */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-bg-light);
+  color: var(--color-text);
+}
+
+th, td {
+  border: 1px solid var(--color-accent);
+  padding: 0.75rem;
+}
+
+th {
+  background-color: #5c3128;
+}
+
+/* === Enlaces === */
+a {
+  color: var(--color-muted);
   text-decoration: none;
 }
 
-.nav-buttons .btn-secondary {
-  background-color: #d4a574;
-  color: white;
-  border: none;
-  padding: 8px 24px;
-  border-radius: 4px;
+a:hover {
+  color: var(--color-accent);
 }
 
-.up-main {
-  padding: 20px 40px;
-  background-color: #2b1d1d;
-}
-
-.up-main h1 {
-  color: white;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.form-label {
-  color: #fff;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.dark-input {
-  background-color: transparent;
-  border: 1px solid #555;
-  border-radius: 6px;
-  color: white;
-  padding: 12px;
-}
-
-input[type="text"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #2b1d1d;
-  border: 2px solid #d4a574;
-  color: #d4a574;
-}
-
-input[type="password"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #2b1d1d;
-  border: 2px solid #d4a574;
-  color: #d4a574;
-}
-
-input[type="email"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #2b1d1d;
-  border: 2px solid #d4a574;
-  color: #d4a574;
-}
-
-
-.dark-input::placeholder {
-  color: #33271a;
-}
-
-.dark-submit-btn {
-  background-color: #d4a574;
-  border: none;
-  padding: 12px;
-  border-radius: 6px;
-  font-weight: 600;
-  transition: background-color 0.3s;
-}
-
-.dark-submit-btn:hover {
-  background-color: #c99563;
-}
-
-h1{
-  color: white;
-}
-
-
-.text-primary {
-  color: #d4a574 !important;
-}
-
-.btn-link
-{
-  margin-top: 20px;
-}
-
-.upload-spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.ag-column-drop-title {
-    font-family: 'Brush Script MT';
-    font-size: 1.5em;
-    color: white;
+/* === Responsive === */
+@media (max-width: 768px) {
+  .page-body main.container-fluid {
+    padding: 0.75rem;
+  }
 }
