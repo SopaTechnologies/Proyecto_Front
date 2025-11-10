@@ -94,7 +94,7 @@ export const routes: Routes = [
         }
       },
        {
-  path: 'linetime',
+  path: 'linea de tiempo',
   component: MensajesComponent,
   canActivate: [AuthGuard],
   data: {
