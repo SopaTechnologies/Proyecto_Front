@@ -1,0 +1,51 @@
+<!-- Contenedor con scroll para el timeline -->
+<div class="timeline-scroll-container">
+  <div class="timeline-container">
+    <div class="timeline-content">
+      <!-- Mensajes como tarjetas de timeline -->
+      <div class="timeline-items" *ngIf="messages.length > 0">
+        <div class="timeline-item" *ngFor="let message of sortedMessages; let i = index">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <h3 class="timeline-title">{{message.titulo}}</h3>
+              <div class="timeline-actions">
+                <button class="action-btn edit-btn" (click)="onEditMessage(message)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="action-btn delete-btn" (click)="onDeleteMessage(message.id!)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="timeline-subtitle" *ngIf="message.subtitulo">
+              {{message.subtitulo}}
+            </div>
+            <div class="timeline-content-text">
+              {{message.textoGrande}}
+            </div>
+            <div class="timeline-meta">
+              <span class="timeline-date">
+                <i class="fas fa-calendar"></i>
+                {{message.createdAt | date:'dd/MM/yyyy'}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje cuando no hay datos -->
+      <div *ngIf="messages.length === 0" class="empty-state">
+        <div class="empty-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <h3>Tu línea de tiempo está vacía</h3>
+        <p>Comienza a escribir tu historia agregando el primer capítulo</p>
+        <button class="create-first-btn" (click)="onCreateMessage()">
+          <i class="fas fa-plus"></i>
+          Crear primer capítulo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
