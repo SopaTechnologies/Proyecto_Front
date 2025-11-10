@@ -6,7 +6,7 @@ import {
   IRoleType,
   IUser,
 } from "../interfaces";
-import { Observable, firstValueFrom, of, tap } from "rxjs";
+import { Observable, firstValueFrom, of, pipe, tap } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { throwError, catchError } from "rxjs";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -124,15 +124,33 @@ export class AuthService {
   }
 
   public signup(user: IUser): Observable<any> {
-    return this.http.post("users/addUser", user);
+    return this.http.post("users/addUser", user).pipe(
+      tap(()=>{
+        Swal.fire({
+          title: 'Se realiza el registro!',
+          text: 'Se registro el usuario correctamente, favor iniciar sesión',
+          icon: 'success'
+        });
+      }),
+       catchError((error) => {
+        Swal.fire({
+          title: 'Error',
+          text: `Error al registrar usuario: ${error.message}`,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        throw error;
+      })
+
+    );
   }
 
   public pass (user: {email: string; password: string}): Observable<any>{
     return this.http.put(`users/pass/${user.email}`, user).pipe(
       tap(() => {
         Swal.fire({
-          title: 'Success!',
-          text: 'Password updated successfully',
+          title: 'Se cambia la contraseña!',
+          text: 'Se realiza el cambio de contraseña',
           icon: 'success',
           confirmButtonText: 'OK'
         });
@@ -140,7 +158,7 @@ export class AuthService {
       catchError((error) => {
         Swal.fire({
           title: 'Error',
-          text: `Error updating password: ${error.message}`,
+          text: `Error al cambiar la contraseña: ${error.message}`,
           icon: 'error',
           confirmButtonText: 'OK'
         });

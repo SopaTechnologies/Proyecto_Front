@@ -79,7 +79,7 @@
                 class="form-control"
                 id="email"
                 name="email"
-                placeholder="Correo"
+                placeholder="Correo@gmail.com"
                 [(ngModel)]="user.email"
                 [ngClass]="{
                   'is-invalid': email.invalid && email.touched,
@@ -138,6 +138,29 @@
               </div>
             </div>
 
+            <div class="form-group mb-5">
+              <label for="passworConfirModel" class="form-label mb-2">Confirmar contraseña</label>
+              <div class="form-input position-relative">
+                <input
+                  #password="ngModel"
+                  type="password"
+                  class="form-control"
+                  id="passworConfirModel"
+                  name="passworConfirModel"
+                  placeholder="Contraseña"
+                  [(ngModel)]="f.passwordConf"
+                  [ngClass]="{
+                    'is-invalid': password.invalid && password.touched,
+                    'is-valid': password.valid && password.touched
+                  }"
+                  required
+                />
+                <div *ngIf="password.invalid" class="invalid-feedback">
+                  Por favor ingrese una contraseña
+                </div>
+              </div>
+            </div>
+            
             <div class="d-flex align-items-center mb-3">
               <div class="form-group px-1">
                 <label for="photo" class="form-label mb-2"

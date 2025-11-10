@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ViewChild } from "@angular/core";
+import { Component, input, ViewChild } from "@angular/core";
 import { FormsModule, NgModel } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
@@ -24,14 +24,33 @@ export class SigUpComponent {
   @ViewChild("username") usernameModel!: NgModel;
   @ViewChild("password") passwordModel!: NgModel;
   @ViewChild("photoInput") photoInput!: any;
+  @ViewChild("passConf") passworConfirModel!: NgModel;
 
-  public user: IUser = {};
+  public user: {
+    username: string;
+      name: string;
+      lastname: "",
+      email: "",
+      password: "",
+      photo: ""
+  } ={
+    username: "",
+      name: "",
+      lastname: "",
+      email: "",
+      password: "",
+      photo: ""
+  }
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private http: HttpClient
   ) {}
+
+  public f: { passwordConf: string } = {
+    passwordConf: "",
+  };
 
   previewUrl: string | null = null;
   selectedFile: File | null = null;
@@ -80,7 +99,7 @@ export class SigUpComponent {
   resetForm() {
     this.previewUrl = null;
     this.selectedFile = null;
-    this.user = {};
+    //this.user = {};
     this.signUpError = "";
     this.validSignup = false;
     if (this.photoInput) {
@@ -114,11 +133,44 @@ export class SigUpComponent {
       this.emailModel.control.markAsTouched();
       Swal.fire({
         title: "Error",
-        text: "Por favor indique un correo electronico",
+        text: "Por favor indique un correo electrónico",
         icon: "warning",
       });
       return;
     }
+
+    // Custom email validation for @ and .com
+    const emailRegex = /^[^\s@]+@[^\s@]/;
+    if (!emailRegex.test(this.user.email)) {
+      Swal.fire({
+        title: "Error",
+        text: "Ingrese un correo electrónico Valido",
+        icon: "warning",
+      });
+      return;
+    }
+
+    const c = this.user.password?.length;
+
+    if (c < 8  || c > 16 ) {
+      Swal.fire({
+        title: "Error",
+        text: "La contraseña debe ser mayor o igual 8 caracteres y menor o igual a 16",
+        icon: "warning",
+      });
+      return;
+    }
+
+    if (this.user.password != this.f.passwordConf){
+          console.log(c);
+          Swal.fire({
+            title: "Error",
+            text: "Ambas contraseñas deben ser iguales",
+            icon: "warning",
+          });
+          return;
+        }
+
     if (!this.passwordModel.valid) {
       this.passwordModel.control.markAsTouched();
       Swal.fire({
@@ -154,11 +206,14 @@ export class SigUpComponent {
         });
       },
       error: (err: any) => {
-        const errorMessage = err.error?.message || err.error?.description || "El Usuario o Correo ya se encuentran registrados";
+        const errorMessage =
+          err.error?.message ||
+          err.error?.description ||
+          "El Usuario o Correo ya se encuentran registrados";
         this.signUpError = err.description;
         Swal.fire({
           title: "Puede intentar nuevamente con un usuario o correo distinto!!",
-          text: errorMessage + err,
+          text: errorMessage,
           icon: "error",
         });
       },

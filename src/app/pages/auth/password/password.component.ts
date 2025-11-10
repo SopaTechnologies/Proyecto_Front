@@ -53,8 +53,6 @@ export class PasswordComponent {
     }
 
     const c = this.passForm.password.length;
-    
-    console.log(c);
 
     if (c < 8  || c > 16){
       Swal.fire({
@@ -71,7 +69,7 @@ export class PasswordComponent {
       console.log(c);
       Swal.fire({
         title: "Error",
-        text: "La contraseña debe ser igual a la anterior",
+        text: "Ambas contraseñas deben ser iguales",
         icon: "warning",
       });
       return;
