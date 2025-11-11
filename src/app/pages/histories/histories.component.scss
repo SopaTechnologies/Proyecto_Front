@@ -1,0 +1,158 @@
+.histories-container {
+  padding: 30px;
+  background-color: #2b1d1d;
+  min-height: 100vh;
+}
+
+.histories-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  h2 {
+    color: #fff;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+  }
+}
+
+.btn-add-history {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #d48656 !important;
+  color: #1b0f0f !important;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+
+  i {
+    font-size: 18px;
+  }
+
+  &:hover {
+    background-color: #e29a6f !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.histories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.history-card {
+  background-color: #4D3333;
+  border: 2px solid #a15c3e;
+  border-radius: 16px;
+  padding: 30px 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    border-color: #d48656;
+  }
+}
+
+.history-card-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.history-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #d48656 0%, #a15c3e 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+
+  i {
+    font-size: 36px;
+    color: #1b0f0f;
+  }
+}
+
+.history-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  margin: 10px 0;
+}
+
+.history-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.history-card:hover .history-actions {
+  opacity: 1;
+}
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+
+  i {
+    color: #1b0f0f;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.btn-edit {
+  background-color: #d48656;
+
+  &:hover {
+    background-color: #e29a6f;
+  }
+}
+
+.btn-delete {
+  background-color: #c94545;
+
+  &:hover {
+    background-color: #e05555;
+  }
+}
+
+.no-histories {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+
+  p {
+    color: #d9a77a;
+    font-size: 18px;
+  }
+}

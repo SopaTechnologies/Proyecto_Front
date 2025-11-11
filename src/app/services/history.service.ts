@@ -41,5 +41,12 @@ export class HistoriaService {
     return this.http.get(`${this.genresAPIUrl}`);
   }
 
+  getAll(): Observable<any> {
+    return this.http.get<HistoriaModel[]>(this.apiUrl);
+  }
+
+  deleteHistoria(idHistoria: Number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${idHistoria}`);
+  }
 
 }
