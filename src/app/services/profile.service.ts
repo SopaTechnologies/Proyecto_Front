@@ -8,48 +8,42 @@ import Swal from "sweetalert2";
   providedIn: "root",
 })
 export class ProfileService extends BaseService<IUser> {
-  protected override source: string = "users/me";
+  
   private userSignal = signal<IUser>({});
 
   get user$() {
     return this.userSignal;
   }
 
-  getUserInfoSignal() {
-    this.findAll().subscribe({
-      next: (response: any) => {
-        this.userSignal.set(response);
-      },
-      error: (error: any) => {
-        Swal.fire({
-          title: "Error",
-          text: `Error getting user profile info: ${error.message}`,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      },
-    });
+  getUserByEmail(email: string): Observable<any> {
+    return this.http.get(`users/${email}`);
   }
 
-  updateUser(userData: Partial<IUser>): Observable<any> {
-    return this.customEdit(userData).pipe(
-      tap(() => {
-        Swal.fire({
-          title: "Usuario Modificado!!",
-          text: "Puede validar la información",
-          icon: "success",
-        });
-        this.getUserInfoSignal();
-      }),
-      catchError((error) => {
-        Swal.fire({
-          title: "Error",
-          text: error,
-          icon: "error",
-        });
-        throw error;
-      })
-    );
+  getUserInfoSignal() {
+    const authUser = localStorage.getItem('auth_user');
+    console.log('authUser from localStorage:', authUser);
+    if (authUser) {
+      const user = JSON.parse(authUser);
+      const email = user.email;
+      console.log('Email used for API call:', email);
+      console.log('Parsed user:', user);
+      this.getUserByEmail(email).subscribe({
+        next: (response: any) => {
+          console.log('User info response:', response);
+          this.userSignal.set(response.data || response);
+        },
+        error: (error: any) => {
+          Swal.fire({
+            title: "Error",
+            text: `Error getting user profile info: ${error.message}`,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        },
+      });
+    } else {
+      console.log('No auth_user in localStorage');
+    }
   }
 
   updatePassword(email: string, newPassword: string): Observable<any> {

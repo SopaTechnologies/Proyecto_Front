@@ -23,19 +23,6 @@ export interface IUser {
   role?: IRole
 }
 
-export interface IUser {
-  id?: number;
-  username?: string;
-  name?: string;
-  lastname?: string;
-  email?: string;
-  password?: string;
-  status?: boolean;
-  photo?: string;
-  authorities?: IAuthority[];
-  role?: IRole
-}
-
 export interface IUser2 {
   id?: number;
   username?: string;
@@ -54,8 +41,6 @@ export interface IRole2 {
   name : string;
   
 }
-
-
 
 export interface IAuthority {
   authority: string;

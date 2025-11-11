@@ -3,6 +3,7 @@ import { ProfileService } from "../../services/profile.service";
 import { CommonModule } from "@angular/common";
 import { FormsModule, NgModel } from "@angular/forms";
 import { IUser } from "../../interfaces";
+
 import Swal from "sweetalert2";
 import { UserService } from "../../services/user.service";
 @Component({
@@ -83,6 +84,7 @@ export class ProfileComponent {
   ngOnInit() {
     setTimeout(() => {
       const user = this.profileService.user$();
+      console.log(user)
       this.userForm = {
         name: user.name || "",
         lastname: user.lastname || "",
