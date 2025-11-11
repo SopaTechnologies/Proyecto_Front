@@ -2,6 +2,10 @@
 <div class="timeline-scroll-container">
   <div class="timeline-container">
     <div class="timeline-content">
+
+      <!-- Título del timeline -->
+      <h2 class="timeline-title-text">Línea de tiempo</h2>
+
       <!-- Mensajes como tarjetas de timeline -->
       <div class="timeline-items" *ngIf="messages.length > 0">
         <div class="timeline-item" *ngFor="let message of sortedMessages; let i = index">
@@ -46,6 +50,7 @@
           Crear primer capítulo
         </button>
       </div>
+
     </div>
   </div>
 </div>
