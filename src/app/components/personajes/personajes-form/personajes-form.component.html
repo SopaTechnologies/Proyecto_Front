@@ -1,0 +1,150 @@
+<div class="modal-overlay show" (click)="close()">
+  <div class="modal-dialog show" (click)="$event.stopPropagation()">
+    <div class="modal-content book-modal-content">
+
+      <div class="modal-header book-modal-header">
+        <h3 class="book-modal-title">
+          {{ personaje ? 'Editar Personaje' : 'Crear Personaje con IA' }}
+        </h3>
+
+        <button class="book-close-btn" (click)="close()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <form (ngSubmit)="save()" class="book-form">
+
+        <div class="modal-body book-modal-body">
+
+          <!-- NOMBRE -->
+          <div class="book-form-group">
+            <label class="book-label">Nombre *</label>
+            <input class="book-input" type="text"
+                   [(ngModel)]="current.nombre"
+                   name="nombre"
+                   required maxlength="50">
+          </div>
+
+          <!-- APELLIDO -->
+          <div class="book-form-group">
+            <label class="book-label">Apellido *</label>
+            <input class="book-input" type="text"
+                   [(ngModel)]="current.apellido"
+                   name="apellido"
+                   required maxlength="50">
+          </div>
+
+          <!-- ENTIDAD -->
+          <div class="book-form-group">
+            <label class="book-label">Entidad o Grupo</label>
+            <input class="book-input" type="text"
+                   [(ngModel)]="current.entidadOGrupo"
+                   name="entidadOGrupo"
+                   maxlength="255">
+          </div>
+
+          <!-- ORIGEN -->
+          <div class="book-form-group">
+            <label class="book-label">País o Lugar de Origen</label>
+            <input class="book-input" type="text"
+                   [(ngModel)]="current.paisOLugarOrigen"
+                   name="paisOLugarOrigen"
+                   maxlength="255">
+          </div>
+
+          <!-- DESCRIPCIÓN -->
+          <div class="book-form-group">
+            <label class="book-label">Descripción para IA *</label>
+            <textarea class="book-textarea"
+                      [(ngModel)]="current.descripcion"
+                      name="descripcion"
+                      rows="5"
+                      maxlength="200"
+                      required>
+            </textarea>
+
+            <div class="character-counter">
+              {{ (current.descripcion || '').length }}/200
+            </div>
+          </div>
+
+          <!-- ESTADO -->
+          <div class="book-form-group">
+            <label class="book-label">Estado</label>
+            <select class="book-input"
+                    [(ngModel)]="current.estado"
+                    name="estado">
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+              <option value="principal">Principal</option>
+              <option value="secundario">Secundario</option>
+              <option value="antagonista">Antagonista</option>
+            </select>
+          </div>
+
+          <!-- UPLOAD -->
+          <div class="book-form-group">
+            <label class="book-label">Subir Imagen</label>
+
+            <input type="file"
+                   class="book-input"
+                   accept="image/*"
+                   (change)="onFileSelected($event)">
+          </div>
+
+          <!-- PREVIEW -->
+          <div class="image-preview-container" *ngIf="current.imagenUrl">
+            <img [src]="current.imagenUrl" class="image-preview">
+
+            <div class="image-actions">
+              <button type="button"
+                      class="regenerate-image-btn"
+                      (click)="generateImage()"
+                      [disabled]="generatingImage">
+                {{ generatingImage ? 'Generando...' : 'Regenerar con IA' }}
+              </button>
+
+              <button type="button"
+                      class="upload-new-btn"
+                      (click)="null">
+                Cambiar Imagen
+              </button>
+            </div>
+          </div>
+
+          <div class="alert alert-info" *ngIf="!current.imagenUrl">
+            <i class="fas fa-info-circle"></i>
+            La generación de imágenes tarda 2–3 min.
+          </div>
+
+          <!-- MENSAJES -->
+          <p *ngIf="error" class="error-message">{{ error }}</p>
+          <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+
+        </div>
+
+        <div class="modal-footer book-modal-footer">
+          <button class="book-btn book-btn-secondary" type="button" (click)="close()">
+            Cancelar
+          </button>
+
+          <button class="book-btn book-btn-accent"
+                  type="button"
+                  (click)="generateImage()"
+                  [disabled]="generatingImage || !current.descripcion">
+            <i class="fas fa-magic"></i>
+            Generar con IA
+          </button>
+
+          <button class="book-btn book-btn-primary"
+                  type="submit"
+                  [disabled]="creatingPersonaje">
+            <i class="fas fa-save"></i>
+            {{ creatingPersonaje ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
