@@ -29,6 +29,11 @@ export class ProfileComponent {
     username: ""
   };
 
+  public idForm: Partial<IUser> ={
+    id: 0,
+    email:""
+  }
+
   previewUrl: string | null = null;
   selectedFile: File | null = null;
   isUploadingPhoto: boolean = false;
@@ -84,13 +89,16 @@ export class ProfileComponent {
   ngOnInit() {
     setTimeout(() => {
       const user = this.profileService.user$();
-      console.log(user)
       this.userForm = {
         name: user.name || "",
         lastname: user.lastname || "",
         email: user.email || "",
         username: user.username || "",
       };
+      this.idForm = {
+        id: user.id || 0,
+        email: user.email || "",
+      }
       this.passwordForm.email = user.email || "";
     }, 100);
   }
@@ -100,11 +108,12 @@ export class ProfileComponent {
       next: (response: any) => {
         Swal.fire({
           title:
-            response.message || "Usuario guardado/actualizado correctamente!!",
+            response.message || "Usuario actualizado correctamente!!",
           text: "Operación completada exitosamente!!",
           icon: "success",
           confirmButtonText: "ok",
         });
+        this.ngOnInit();
       },
       error: (err: any) => {
         const rr = err.error?.description || err.message;
@@ -115,6 +124,20 @@ export class ProfileComponent {
         });
       },
     });
+  }
+
+  updateEmail(){
+    const emailRegex = /^[^\s@]+@[^\s@]/;
+        if (!emailRegex.test(this.idForm.email!)) {
+          Swal.fire({
+            title: "Error",
+            text: "Ingrese un correo electrónico Valido",
+            icon: "warning",
+          });
+          return;
+        }
+    this.profileService.updateEmail(this.idForm.id!, this.idForm.email!).subscribe();
+    this.profileService.getUserByEmail(this.idForm.email!);
     this.ngOnInit();
   }
 

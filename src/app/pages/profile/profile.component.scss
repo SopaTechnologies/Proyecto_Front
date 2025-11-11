@@ -66,6 +66,17 @@ select {
   color: #d4a574;
 }
 
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #2b1d1d;
+  border: 2px solid #d4a574;
+  color: #d4a574;
+}
+
 input[type="password"],
 textarea,
 select {

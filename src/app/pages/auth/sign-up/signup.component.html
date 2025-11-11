@@ -81,6 +81,7 @@
                 name="email"
                 placeholder="Correo@gmail.com"
                 [(ngModel)]="user.email"
+                (ngModelChange)="user.username = $event"
                 [ngClass]="{
                   'is-invalid': email.invalid && email.touched,
                   'is-valid': email.valid && email.touched
@@ -89,29 +90,6 @@
               />
               <div *ngIf="email.invalid" class="invalid-feedback">
                 Por favor ingrese una direccion de correo valida
-              </div>
-            </div>
-
-            <div class="form-group mb-3">
-              <label for="username" class="form-label mb-2">
-                Nombre de Usuario
-              </label>
-              <input
-                #username="ngModel"
-                type="text"
-                class="form-control"
-                id="username"
-                name="username"
-                placeholder="Nombre de Usuario, opcional"
-                [(ngModel)]="user.username"
-                [ngClass]="{
-                  'is-invalid': username.invalid && username.touched,
-                  'is-valid': username.valid && username.touched
-                }"
-                required
-              />
-              <div *ngIf="username.invalid" class="invalid-feedback">
-                Por favor ingrese un nombre de usuario
               </div>
             </div>
 

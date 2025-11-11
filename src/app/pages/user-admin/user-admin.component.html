@@ -60,6 +60,7 @@
         name="email"
         placeholder="Correo"
         [(ngModel)]="user.email"
+        (ngModelChange)="user.username = $event"
         [ngClass]="{
           'is-invalid': email.invalid && email.touched,
           'is-valid': email.valid && email.touched
