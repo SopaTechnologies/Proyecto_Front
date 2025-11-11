@@ -1,16 +1,16 @@
-<!-- Loading -->
+<!-- LOADING -->
 <div *ngIf="loading" class="loading-section">
   <div class="spinner"></div>
   <p>Cargando personajes...</p>
 </div>
 
-<!-- Error -->
+<!-- ERROR -->
 <div *ngIf="error" class="error-message">
   <i class="fas fa-exclamation-triangle"></i>
   {{ error }}
 </div>
 
-<!-- Empty State -->
+<!-- VACÍO -->
 <div *ngIf="!loading && personajes.length === 0" class="empty-state">
   <div class="empty-icon">
     <i class="fas fa-user-plus"></i>
@@ -24,12 +24,9 @@
 
 <!-- GRID -->
 <div class="personajes-grid" *ngIf="personajes.length > 0">
-
   <div class="personaje-card" *ngFor="let p of personajes">
     <div class="personaje-image-container">
-      <img class="personaje-image"
-           [src]="p.imagenUrl"
-           (error)="onImageError($event)">
+      <img class="personaje-image" [src]="p.imagenUrl" (error)="onImageError($event)" />
 
       <div class="personaje-overlay">
         <button class="overlay-btn edit-btn" (click)="editar.emit(p)">
@@ -49,7 +46,7 @@
       <div class="personaje-meta">
         <span class="personaje-fecha">
           <i class="fas fa-calendar"></i>
-          {{ p.createdAt | date:'dd/MM/yyyy' }}
+          {{ p.createdAt | date: 'dd/MM/yyyy' }}
         </span>
 
         <span class="personaje-status" [ngClass]="'status-' + p.estado">
@@ -59,12 +56,13 @@
       </div>
     </div>
   </div>
-
 </div>
 
-<!-- Footer badge -->
-<div class="gallery-indicator" *ngIf="personajes.length > 0">
-  <div class="gallery-circle"></div>
-  <span class="gallery-text">Galería de Personajes</span>
-  <p class="gallery-description">Generados con inteligencia artificial</p>
-</div>
+<!-- BOTÓN FLOTANTE: Generar con IA -->
+<button
+  class="floating-generate-btn"
+  (click)="crear.emit()"
+  aria-label="Generar personaje con IA"
+>
+  <i class="fas fa-magic"></i>
+</button>
