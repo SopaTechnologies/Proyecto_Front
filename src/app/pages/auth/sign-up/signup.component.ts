@@ -21,7 +21,6 @@ export class SigUpComponent {
   @ViewChild("lastname") lastnameModel!: NgModel;
   @ViewChild("email") emailModel!: NgModel;
   @ViewChild("photo") photoModel!: NgModel;
-  @ViewChild("username") usernameModel!: NgModel;
   @ViewChild("password") passwordModel!: NgModel;
   @ViewChild("photoInput") photoInput!: any;
   @ViewChild("passConf") passworConfirModel!: NgModel;
@@ -99,7 +98,6 @@ export class SigUpComponent {
   resetForm() {
     this.previewUrl = null;
     this.selectedFile = null;
-    //this.user = {};
     this.signUpError = "";
     this.validSignup = false;
     if (this.photoInput) {
@@ -139,7 +137,6 @@ export class SigUpComponent {
       return;
     }
 
-    // Custom email validation for @ and .com
     const emailRegex = /^[^\s@]+@[^\s@]/;
     if (!emailRegex.test(this.user.email)) {
       Swal.fire({
@@ -162,7 +159,6 @@ export class SigUpComponent {
     }
 
     if (this.user.password != this.f.passwordConf){
-          console.log(c);
           Swal.fire({
             title: "Error",
             text: "Ambas contraseñas deben ser iguales",
@@ -176,15 +172,6 @@ export class SigUpComponent {
       Swal.fire({
         title: "Error",
         text: "Por favor indique una contraseña",
-        icon: "warning",
-      });
-      return;
-    }
-    if (!this.usernameModel.valid) {
-      this.usernameModel.control.markAsTouched();
-      Swal.fire({
-        title: "Error",
-        text: "Por favor indique un nombre de usuario",
         icon: "warning",
       });
       return;

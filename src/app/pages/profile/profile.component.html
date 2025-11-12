@@ -1,128 +1,200 @@
-
-<div class="row info-container">
-  <div class="col-6">
-    <div class="shadow-sm bg-body rounded px-4 py-4 h-100">
-      <div class="text-center mb-3">
-        <img
-          [src]="profileService.user$().photo || 'assets/img/default-avatar.png'"
-          alt="Profile Photo"
-          class="rounded-circle"
-          style="width: 300; height: 300; object-fit: cover;"
-        />
-      </div>
-      <div class="border-bottom my-3">
-        <label>Nombre:</label>
-        <p>{{profileService.user$().name}}</p>
-      </div>
-      <div class="border-bottom my-3">
-        <label>Apellido:</label>
-        <p>{{profileService.user$().lastname}}</p>
-      </div>
-      <div class="border-bottom my-3">
-        <label>Corrreo:</label>
-        <p>{{profileService.user$().email}}</p>
-      </div>
-
-    </div>
+<div class="px-4 py-4">
+  <div class="text-center mb-3">
+    <img
+      [src]="profileService.user$().photo || 'assets/img/default-avatar.png'"
+      alt="Profile Photo"
+      class="rounded-circle"
+      style="width: 300; height: 300; object-fit: cover"
+    />
   </div>
-  <div class="col-6">
-    <div class="row">
-      <div class="col-12 shadow-sm bg-body rounded px-4 py-4 mb-3">
-        <label>Rol:</label>
-        <div class="border-bottom my-3">
-          <label>Name:</label>
-          <p>{{profileService.user$().role?.name}}</p>
-        </div>
-        <div class="border-bottom my-3">
-          <label>Description:</label>
-          <p>{{profileService.user$().role?.description}}</p>
-        </div>
-      </div>
+  <form class="form-label">
+    <div class="border-bottom my-3">
+      <label>Nombre:</label>
+      <p>{{ profileService.user$().name }}</p>
     </div>
-  </div>
-</div>
+    <div class="border-bottom my-3">
+      <label>Apellido:</label>
+      <p>{{ profileService.user$().lastname }}</p>
+    </div>
+    <div class="border-bottom my-3">
+      <label>Corrreo:</label>
+      <p>{{ profileService.user$().email }}</p>
+    </div>
 
+    <div class="border-bottom my-3">
+      <label>Nombre de Usuario:</label>
+      <p>{{ profileService.user$().username }}</p>
+    </div>
 
-<div class="row mt-4">
-  <div class="col-12">
-    <div class="shadow-sm bg-body rounded px-4 py-4">
-      <h5>Actualiza tus datos personales</h5>
-      <form (ngSubmit)="updateUser()" #userUpdateForm="ngForm">
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <label for="name" class="form-label">Nombre</label>
-            <input
-              type="text"
-              class="form-control"
-              id="name"
-              name="name"
-              [(ngModel)]="userForm.name"
-              required
-            />
+    <div class="border-bottom my-3">
+      <label>Description:</label>
+      <p>{{ profileService.user$().role?.description }}</p>
+    </div>
+
+    <!-- ------------------------------------------------------------------------------------------------------>
+  </form>
+  <div class="rounded px-4 py-4">
+    <h1>Actualiza tus datos personales</h1>
+    <form (ngSubmit)="updateUser()" #userUpdateForm="ngForm">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="email" class="form-label">Correo</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            [(ngModel)]="userForm.email"
+            required
+            readonly
+          />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="name" class="form-label">Nombre</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            [(ngModel)]="userForm.name"
+            required
+          />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="lastname" class="form-label">Apellido</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lastname" 
+            name="lastname"
+            [(ngModel)]="userForm.lastname"
+            required
+          />
+        </div>
         
-          </div>
-          <div class="col-md-4 mb-3">
-            <label for="lastname" class="form-label">Lastname</label>
-            <input
-              type="text"
-              class="form-control"
-              id="lastname"
-              name="lastname"
-              [(ngModel)]="userForm.lastname"
-              required
-            />
-          </div>
-          <div class="col-md-4 mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              [(ngModel)]="userForm.email"
-              required
-            />
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block  dark-submit-btn" [disabled]="!userUpdateForm.form.valid">Update Personal Data</button>
-      </form>
-    </div>
-  </div>
-</div>
+      </div>
 
+      <div class="d-flex align-items-center mb-3">
+        <div class="form-group px-1">
+          <label for="photo" class="form-label mb-2">Foto de perfil</label>
+          <input
+            #photoInput
+            type="file"
+            class="form-control"
+            id="photo"
+            (change)="onPhotoSelected($event)"
+          />
 
-<div class="row mt-4">
-  <div class="col-12">
-    <div class="shadow-sm bg-body rounded px-4 py-4">
-      <h1>Cambiar la Contraseña</h1>
-      <form (ngSubmit)="updatePassword()" #passwordUpdateForm="ngForm">
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="passwordEmail" class="form-label">Correo</label>
-            <input
-              type="email"
-              class="form-control mb-4"
-              id="passwordEmail"
-              name="email"
-              [(ngModel)]="passwordForm.email"
-              required
-              readonly
-            />
+          <img
+            *ngIf="previewUrl"
+            [src]="previewUrl"
+            class="img-thumbnail mt-2"
+            width="150"
+          />
+
+          <div *ngIf="isUploadingPhoto" class="upload-spinner mt-2">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Subiendo foto...</span>
+            </div>
           </div>
-          <div class="col-md-6 mb-3">
-            <label for="newPassword" class="form-label">Indique la nueva contraseña</label>
-            <input
-              type="password"
-              class="form-control"
-              id="newPassword"
-              name="newPassword"
-              [(ngModel)]="passwordForm.newPassword"
-              required
-            />
-          </div>
+
+          <button
+            *ngIf="previewUrl && !userForm.photo && !isUploadingPhoto"
+            class="btn btn-primary btn-block w-100 dark-submit-btn"
+            (click)="confirmPhotoUpload()"
+          >
+            Confirmar Foto
+          </button>
         </div>
-        <button type="submit" class=" mb-4 btn btn-primary btn-block  dark-submit-btn" [disabled]="!passwordUpdateForm.form.valid">Actualiza la contraseña</button>
-      </form>
-    </div>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary btn-block dark-submit-btn"
+        [disabled]="!userUpdateForm.form.valid"
+      >
+        Actualizar datos personales
+      </button>
+    </form>
   </div>
+  <!-- ------------------------------------------------------------------------------------------------------ -->
+  <div class="px-4 py-4">
+    <h1>Cambiar la Contraseña</h1>
+    <form (ngSubmit)="updatePassword()" #passwordUpdateForm="ngForm">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="passwordEmail" class="form-label">Correo</label>
+          <input
+            type="email"
+            class="form-control mb-4"
+            id="passwordEmail"
+            name="email"
+            [(ngModel)]="passwordForm.email"
+            required
+            readonly
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="newPassword" class="form-label"
+            >Indique la nueva contraseña</label
+          >
+          <input
+            type="password"
+            class="form-control"
+            id="newPassword"
+            name="newPassword"
+            [(ngModel)]="passwordForm.newPassword"
+            required
+          />
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="mb-4 btn btn-primary btn-block dark-submit-btn"
+        [disabled]="!passwordUpdateForm.form.valid"
+      >
+        Actualiza la contraseña
+      </button>
+    </form>
+  </div>
+<!-- ------------------------------------------------------------------------------------------------------ -->
+  <div class="px-4 py-4">
+    <h1>Cambiar la Contraseña</h1>
+    <form (ngSubmit)="updateEmail()" #emailUpdateForm="ngForm">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="idForm" class="form-label">Id de Usuario</label>
+          <input
+            type="number"
+            class="form-control mb-4"
+            id="idForm"
+            name="idForm"
+            [(ngModel)]="idForm.id"
+            required
+            readonly
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="newEmail" class="form-label"
+            >Cambiar Correo</label
+          >
+          <input
+            type="email"
+            class="form-control"
+            id="newEmail"
+            placeholder="correo@gmail.com"
+            name="newEmail"
+            [(ngModel)]="idForm.email"
+            required
+          />
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="mb-4 btn btn-primary btn-block dark-submit-btn"
+      >
+        Actualizar Correo
+      </button>
+    </form>
+  </div>
+  
 </div>
