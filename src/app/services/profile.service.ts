@@ -40,8 +40,7 @@ export class ProfileService extends BaseService<IUser> {
           });
         },
       });
-    } else {
-      console.log("No auth_user in localStorage");
+      
     }
   }
 
@@ -67,27 +66,4 @@ export class ProfileService extends BaseService<IUser> {
       );
   }
 
-  updateEmail(id: number, email: string): Observable<any> {
-    return this.http.put(`users/updateEmail/${id}`, { email }).pipe(
-      tap(() => {
-        Swal.fire({
-          title: "Email actualizado exitosamente!!",
-          text: "El correo electrónico ha sido actualizado, por favor inicie sesión nuevamente..",
-          icon: "success",
-          confirmButtonText: "Aceptar",
-        }).then(() => {
-          this.auth.logout();
-          window.location.reload();
-        });
-      }),
-      catchError((error) => {
-        Swal.fire({
-          title: "Error",
-          text: error,
-          icon: "error",
-        });
-        throw error;
-      })
-    );
-  }
 }

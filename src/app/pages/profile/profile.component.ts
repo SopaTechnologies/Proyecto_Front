@@ -126,21 +126,6 @@ export class ProfileComponent {
     });
   }
 
-  updateEmail(){
-    const emailRegex = /^[^\s@]+@[^\s@]/;
-        if (!emailRegex.test(this.idForm.email!)) {
-          Swal.fire({
-            title: "Error",
-            text: "Ingrese un correo electrónico Valido",
-            icon: "warning",
-          });
-          return;
-        }
-    this.profileService.updateEmail(this.idForm.id!, this.idForm.email!).subscribe();
-    this.profileService.getUserByEmail(this.idForm.email!);
-    this.ngOnInit();
-  }
-
   updatePassword() {
     const c = this.passwordForm.newPassword.length;
     if (c < 8 || c > 16) {
