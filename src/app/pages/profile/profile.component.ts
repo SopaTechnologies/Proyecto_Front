@@ -83,7 +83,7 @@ export class ProfileComponent {
   };
 
   constructor() {
-    this.profileService.getUserInfoSignal();
+    this.profileService.getUserInfoSignal().subscribe();
   }
 
   ngOnInit() {
@@ -112,8 +112,23 @@ export class ProfileComponent {
           text: "Operación completada exitosamente!!",
           icon: "success",
           confirmButtonText: "ok",
+        }).then(() => {
+          this.profileService.getUserInfoSignal().subscribe(() => {
+            const updatedUser = this.profileService.user$();
+            this.userForm = {
+              name: updatedUser.name || "",
+              lastname: updatedUser.lastname || "",
+              email: updatedUser.email || "",
+              username: updatedUser.username || "",
+            };
+            this.idForm = {
+              id: updatedUser.id || 0,
+              email: updatedUser.email || "",
+            };
+            this.previewUrl = null;
+            this.selectedFile = null;
+          });
         });
-        this.ngOnInit();
       },
       error: (err: any) => {
         const rr = err.error?.description || err.message;

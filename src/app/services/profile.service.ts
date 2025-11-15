@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from "@angular/core";
 import { BaseService } from "./base-service";
 import { IUser } from "../interfaces";
-import { Observable, tap, catchError } from "rxjs";
+import { Observable, tap, catchError, of } from "rxjs";
 import Swal from "sweetalert2";
 import { AuthService } from "./auth.service";
 
@@ -22,26 +22,27 @@ export class ProfileService extends BaseService<IUser> {
     return this.http.get(`users/${email}`);
   }
 
-  getUserInfoSignal() {
+  getUserInfoSignal(): Observable<any> {
     const authUser = localStorage.getItem("auth_user");
     if (authUser) {
       const user = JSON.parse(authUser);
       const email = user.email;
-      this.getUserByEmail(email).subscribe({
-        next: (response: any) => {
+      return this.getUserByEmail(email).pipe(
+        tap((response: any) => {
           this.userSignal.set(response.data || response);
-        },
-        error: (error: any) => {
+        }),
+        catchError((error) => {
           Swal.fire({
             title: "Error",
             text: `Error getting user profile info: ${error.message}`,
             icon: "error",
             confirmButtonText: "OK",
           });
-        },
-      });
-      
+          return of(null);
+        })
+      );
     }
+    return of(null);
   }
 
   updatePassword(email: string, newPassword: string): Observable<any> {
@@ -65,5 +66,4 @@ export class ProfileService extends BaseService<IUser> {
         })
       );
   }
-
 }
