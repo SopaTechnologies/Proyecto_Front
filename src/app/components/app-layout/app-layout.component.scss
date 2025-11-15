@@ -1,0 +1,113 @@
+.floating-chat-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1080;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.floating-chat-panel {
+  position: fixed;
+  top: 72px;
+  right: 16px;
+  z-index: 1090;
+  width: 340px;
+  max-height: 70vh;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  background: #f8f9fb;
+}
+
+.panel-header h5 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.panel-body {
+  padding: 12px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.msg {
+  padding: 8px 10px;
+  border-radius: 10px;
+  max-width: 85%;
+}
+
+.msg.user {
+  align-self: flex-end;
+  background: #007bff;
+  color: white;
+}
+
+.msg.ai {
+  align-self: flex-start;
+  background: #f1f3f5;
+  color: #333;
+}
+
+.empty {
+  color: #666;
+  font-size: 13px;
+}
+
+.panel-footer {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  border-top: 1px solid #eee;
+}
+
+.panel-footer input[type="text"] {
+  flex: 1 1 auto;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.send-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
