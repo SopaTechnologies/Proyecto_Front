@@ -14,7 +14,7 @@
     </thead>
     <tbody>
       @for (item of users; track item.id) {
-        <tr>
+        <tr (dblclick)="onEditUser(item)">
           <td>{{ item.id }}</td>
           <td>{{ item.name }}</td>
           <td>{{ item.lastname }}</td>

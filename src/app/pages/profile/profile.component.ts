@@ -83,7 +83,7 @@ export class ProfileComponent {
   };
 
   constructor() {
-    this.profileService.getUserInfoSignal();
+    this.profileService.getUserInfoSignal().subscribe();
   }
 
   ngOnInit() {
@@ -112,8 +112,23 @@ export class ProfileComponent {
           text: "Operación completada exitosamente!!",
           icon: "success",
           confirmButtonText: "ok",
+        }).then(() => {
+          this.profileService.getUserInfoSignal().subscribe(() => {
+            const updatedUser = this.profileService.user$();
+            this.userForm = {
+              name: updatedUser.name || "",
+              lastname: updatedUser.lastname || "",
+              email: updatedUser.email || "",
+              username: updatedUser.username || "",
+            };
+            this.idForm = {
+              id: updatedUser.id || 0,
+              email: updatedUser.email || "",
+            };
+            this.previewUrl = null;
+            this.selectedFile = null;
+          });
         });
-        this.ngOnInit();
       },
       error: (err: any) => {
         const rr = err.error?.description || err.message;
@@ -124,21 +139,6 @@ export class ProfileComponent {
         });
       },
     });
-  }
-
-  updateEmail(){
-    const emailRegex = /^[^\s@]+@[^\s@]/;
-        if (!emailRegex.test(this.idForm.email!)) {
-          Swal.fire({
-            title: "Error",
-            text: "Ingrese un correo electrónico Valido",
-            icon: "warning",
-          });
-          return;
-        }
-    this.profileService.updateEmail(this.idForm.id!, this.idForm.email!).subscribe();
-    this.profileService.getUserByEmail(this.idForm.email!);
-    this.ngOnInit();
   }
 
   updatePassword() {

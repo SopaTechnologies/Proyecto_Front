@@ -7,32 +7,6 @@
       style="width: 300; height: 300; object-fit: cover"
     />
   </div>
-  <form class="form-label">
-    <div class="border-bottom my-3">
-      <label>Nombre:</label>
-      <p>{{ profileService.user$().name }}</p>
-    </div>
-    <div class="border-bottom my-3">
-      <label>Apellido:</label>
-      <p>{{ profileService.user$().lastname }}</p>
-    </div>
-    <div class="border-bottom my-3">
-      <label>Corrreo:</label>
-      <p>{{ profileService.user$().email }}</p>
-    </div>
-
-    <div class="border-bottom my-3">
-      <label>Nombre de Usuario:</label>
-      <p>{{ profileService.user$().username }}</p>
-    </div>
-
-    <div class="border-bottom my-3">
-      <label>Description:</label>
-      <p>{{ profileService.user$().role?.description }}</p>
-    </div>
-
-    <!-- ------------------------------------------------------------------------------------------------------>
-  </form>
   <div class="rounded px-4 py-4">
     <h1>Actualiza tus datos personales</h1>
     <form (ngSubmit)="updateUser()" #userUpdateForm="ngForm">
@@ -153,46 +127,6 @@
         [disabled]="!passwordUpdateForm.form.valid"
       >
         Actualiza la contraseña
-      </button>
-    </form>
-  </div>
-<!-- ------------------------------------------------------------------------------------------------------ -->
-  <div class="px-4 py-4">
-    <h1>Cambiar correo electrónico</h1>
-    <form (ngSubmit)="updateEmail()" #emailUpdateForm="ngForm">
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="idForm" class="form-label">Id de Usuario</label>
-          <input
-            type="number"
-            class="form-control mb-4"
-            id="idForm"
-            name="idForm"
-            [(ngModel)]="idForm.id"
-            required
-            readonly
-          />
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="newEmail" class="form-label"
-            >Cambiar Correo</label
-          >
-          <input
-            type="email"
-            class="form-control"
-            id="newEmail"
-            placeholder="correo@gmail.com"
-            name="newEmail"
-            [(ngModel)]="idForm.email"
-            required
-          />
-        </div>
-      </div>
-      <button
-        type="submit"
-        class="mb-4 btn btn-primary btn-block dark-submit-btn"
-      >
-        Actualizar Correo
       </button>
     </form>
   </div>
