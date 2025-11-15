@@ -67,17 +67,17 @@ export const routes: Routes = [
       //     showInSidebar: false
       //   }
       // },
-    {
-        path: 'Administración de usuarios',
-        component: UserAdminComponent,
-        canActivate:[AdminRoleGuard],
-        data: { 
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        data: {
           authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin
+            IRoleType.admin,
+            IRoleType.superAdmin,
+            IRoleType.user
           ],
-          name: 'Administración de usuarios',
-          showInSidebar: true
+          name: 'Dashboard',
+          showInSidebar: false
         }
       },
       {
@@ -129,7 +129,19 @@ export const routes: Routes = [
           showInSidebar: true
         }
       },
-     
+      {
+        path: 'Administración de usuarios',
+        component: UserAdminComponent,
+        canActivate:[AdminRoleGuard],
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin
+          ],
+          name: 'Administración de usuarios',
+          showInSidebar: true
+        }
+      },
         {
   path: 'personajes',
   component: PersonajesComponent,
