@@ -18,6 +18,7 @@ import { UserAdminComponent } from './pages/user-admin/user-admin.component';
 import { MensajesComponent } from './pages/timeline/timeline.component';
 import { PersonajesComponent } from './pages/personajes/personajes.component';
 import { HistoriesCardComponent } from './pages/histories/histories.component';
+import { PerlinNoiseComponent } from './pages/Maps/perlin-noise/perlin-noise.component';
 
 export const routes: Routes = [
   {
@@ -54,19 +55,19 @@ export const routes: Routes = [
         redirectTo: 'users',
         pathMatch: 'full',
       },
-      // {
-      //   path: 'users',
-      //   component: UsersComponent,
-      //   canActivate: [AdminRoleGuard],
-      //   data: {
-      //     authorities: [
-      //       IRoleType.admin,
-      //       IRoleType.superAdmin
-      //     ],
-      //     name: 'Users',
-      //     showInSidebar: false
-      //   }
-      // },
+      {
+        path: 'perlin-noise',
+        component: PerlinNoiseComponent,
+        canActivate: [AdminRoleGuard],
+        data: {
+          authorities: [
+            IRoleType.admin,
+            IRoleType.superAdmin
+          ],
+          name: 'Generador de Mapas',
+          showInSidebar: false
+        }
+      },
       {
         path: 'dashboard',
         component: DashboardComponent,
