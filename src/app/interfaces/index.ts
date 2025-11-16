@@ -66,3 +66,29 @@ export interface IGenre {
   id_usuario_creador?: number;
   fecha_creacion?: string;
 }
+
+export interface HexTile {
+  q: number;
+  r: number;
+  type: string;
+  color: string;
+  elevation: number;
+  moisture: number;
+  temperature: number;
+}
+
+export interface AxialCoord {
+  q: number;
+  r: number;
+}
+
+export interface CubeCoord {
+  x: number;
+  y: number;
+  z: number;
+}
+
+export interface Point {
+  x: number;
+  y: number;
+}

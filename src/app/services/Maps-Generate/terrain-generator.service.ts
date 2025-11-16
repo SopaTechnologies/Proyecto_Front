@@ -93,6 +93,3 @@ export class TerrainGeneratorService {
     return { q, r, type: 'snow', color: '#e8f4f8', elevation, moisture, temperature };
   }
 }
-//
-//
-//
