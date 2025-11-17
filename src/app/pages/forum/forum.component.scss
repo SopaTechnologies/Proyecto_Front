@@ -1,0 +1,43 @@
+.forum-container {
+  padding: 30px;
+  background-color: #2b1d1d;
+  min-height: 100vh;
+}
+
+.forum-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  h2 {
+    color: #fff;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+  }
+}
+
+.btn-add-post {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #d48656 !important;
+  color: #1b0f0f !important;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  i {
+    font-size: 18px;
+  }
+
+  &:hover {
+    background-color: #e29a6f !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+}

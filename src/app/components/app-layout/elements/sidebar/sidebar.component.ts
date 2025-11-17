@@ -28,8 +28,6 @@ export class SidebarComponent {
   constructor(private router: Router) {
     this.appRoutes = routes.find(route => route.path === 'app');
     this.permittedRoutes = this.authService.getPermittedRoutes(this.appRoutes?.children || []);
-    console.log('Rutas hijas de /app:', this.appRoutes?.children);
-    console.log('Rutas permitidas:', this.permittedRoutes);
   }
 
  toggleSidebar() {

@@ -1,0 +1,52 @@
+<div class="forum-container">
+  <!-- Header del foro -->
+  <div class="forum-header">
+    <h2>Foro de Historias</h2>
+    <button type="button" (click)="openModal()" class="btn-add-post">
+      <i class="fas fa-plus"></i>
+      <span>Nueva Historia</span>
+    </button>
+  </div>
+
+  <!-- Lista de publicaciones -->
+  <app-forum-list
+    [forumPosts]="forumService.forumPosts$()"
+    [currentUserName]="currentUserName"
+    (callEditMethod)="callEdition($event)"
+    (callDeleteMethod)="deletePost($event)"
+    (callOpenDetails)="openPostDetails($event)"
+  ></app-forum-list>
+
+  <!-- Loader -->
+  <ng-container *ngIf="forumService.loading$()">
+    <app-loader></app-loader>
+  </ng-container>
+
+  <!-- Modal para crear/editar publicación -->
+  <ng-template #addForumPostModal>
+    <app-modal [hideFooter]="true">
+      <app-forum-post-form
+        [forumForm]="forumPostForm"
+        [genres]="genreNames"
+        [availableStories]="stories"
+        (save)="savePost()"
+        (cancel)="closeModal()"
+      ></app-forum-post-form>
+    </app-modal>
+  </ng-template>
+
+  <!-- Modal de detalles de publicación -->
+  <ng-template #forumDetailsModal>
+    <app-modal [hideFooter]="true">
+      <div class="forum-details">
+        <h3>{{ selectedPost?.storyTitle }}</h3>
+        <p><strong>Autor:</strong> {{ selectedPost?.authorName }}</p>
+        <p><strong>Género:</strong> {{ selectedPost?.genre }}</p>
+        <p><strong>Publicado:</strong> {{ selectedPost?.publishedAt | date:'short' }}</p>
+        <p><strong>Sinopsis:</strong> {{ selectedPost?.synopsis }}</p>
+        <hr/>
+        <div [innerHTML]="selectedPost?.content"></div>
+      </div>
+    </app-modal>
+  </ng-template>
+</div>

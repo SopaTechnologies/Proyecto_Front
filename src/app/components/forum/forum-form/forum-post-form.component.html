@@ -1,0 +1,32 @@
+<div class="forum-modal-form">
+  <form [formGroup]="forumForm" (ngSubmit)="onSubmit()">
+    <label>Historia:</label>
+    <select formControlName="storyId" required>
+      <option value="" disabled selected>Selecciona una historia</option>
+      <option *ngFor="let story of availableStories" [value]="story.id">
+        {{ story.titulo }}
+      </option>
+    </select>
+
+    <label>Género:</label>
+    <select formControlName="genre" required>
+      <option value="" disabled selected>Selecciona un género</option>
+      <option *ngFor="let g of genres" [value]="g">
+        {{ g }}
+      </option>
+    </select>
+
+    <label>Sinopsis:</label>
+    <textarea formControlName="synopsis" placeholder="Escribe una sinopsis..." required></textarea>
+
+    <label>
+      <input type="checkbox" formControlName="isPublic" />
+      Público
+    </label>
+
+    <div class="modal-buttons">
+      <button type="submit" [disabled]="forumForm.invalid">Guardar</button>
+      <button type="button" (click)="onCancel()">Cerrar</button>
+    </div>
+  </form>
+</div>

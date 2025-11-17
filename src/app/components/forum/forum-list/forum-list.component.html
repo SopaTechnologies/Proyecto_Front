@@ -1,0 +1,35 @@
+<div class="forum-list-container">
+  <div class="forum-header">
+    <h2>Publicaciones en el Foro</h2>
+  </div>
+
+  <div *ngIf="forumPosts.length === 0" class="empty-message">
+    <p>No hay publicaciones aún.</p>
+  </div>
+
+  <div class="forum-table" *ngIf="forumPosts.length > 0">
+    <div class="forum-table-header">
+      <div>Título</div>
+      <div>Autor</div>
+      <div>Género</div>
+      <div>Visibilidad</div>
+      <div>Comentarios</div>
+      <div>Lecturas</div>
+      <div>Acciones</div>
+    </div>
+
+    <div class="forum-table-row" *ngFor="let post of forumPosts">
+      <div>{{ post.storyTitle }}</div>
+      <div>{{ post.authorName }}</div>
+      <div>{{ post.genre }}</div>
+      <div>{{ post.isPublic ? 'Pública' : 'Privada' }}</div>
+      <div>{{ post.comments }}</div>
+      <div>{{ post.views }}</div>
+      <div class="actions">
+        <button class="btn-view" (click)="openDetails(post)">Ver</button>
+        <button class="btn-edit" *ngIf="isOwner(post)" (click)="onEdit(post)">Editar</button>
+        <button class="btn-delete" *ngIf="isOwner(post)" (click)="onDelete(post)">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

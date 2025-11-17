@@ -10,14 +10,14 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestGuard } from './guards/guest.guard';
 import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { RedactarHistoriaComponent } from './components/histories/redactar-historia/redactar-historia.component';
-import { CrearHistoriaComponent } from './components/histories/crear-historia/crear-historia.component';
 import { GenresComponent } from './pages/genres/genres.component';
 import { PasswordComponent } from './pages/auth/password/password.component';
 import { UserAdminComponent } from './pages/user-admin/user-admin.component';
 import { MensajesComponent } from './pages/timeline/timeline.component';
 import { PersonajesComponent } from './pages/personajes/personajes.component';
 import { HistoriesCardComponent } from './pages/histories/histories.component';
+import { ForumComponent } from './pages/forum/forum.component';
+
 
 export const routes: Routes = [
   {
@@ -151,6 +151,20 @@ export const routes: Routes = [
     showInSidebar: true
   }
 },
+{
+  path: 'forum',
+  component: ForumComponent,
+  canActivate: [AuthGuard],
+  data: { 
+    authorities: [
+      IRoleType.admin, 
+      IRoleType.superAdmin,
+      IRoleType.user
+    ],
+    name: 'Foro',
+    showInSidebar: true
+  }
+}
     ],
   },
 ];

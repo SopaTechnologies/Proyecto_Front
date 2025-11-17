@@ -1,0 +1,102 @@
+.forum-modal-form {
+  background-color: #3a2828;
+  border-radius: 12px;
+  padding: 40px;
+  color: #fff;
+  min-width: 500px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    label {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #d9a77a;
+      font-size: 16px;
+      display: block;
+    }
+
+    select, textarea {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #4a2f2f;
+      border-radius: 8px;
+      font-size: 15px;
+      background-color: #1b0f0f;
+      color: #fff;
+      transition: all 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #a15c3e;
+        background-color: #2a1616;
+      }
+
+      option {
+        background-color: #1b0f0f;
+        color: #fff;
+        padding: 10px;
+      }
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+      font-family: inherit;
+      line-height: 1.6;
+    }
+
+    input[type="checkbox"] {
+      width: auto;
+      margin-right: 10px;
+      accent-color: #a15c3e;
+      transform: scale(1.2);
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+      margin-top: 30px;
+
+      button {
+        padding: 14px 30px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+
+        &[type="submit"] {
+          background-color: #d48656;
+          color: #1b0f0f;
+
+          &:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.6;
+          }
+
+          &:hover:not(:disabled) {
+            background-color: #e29a6f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 134, 86, 0.4);
+          }
+        }
+
+        &[type="button"] {
+          background-color: #802e2e;
+          color: #fff;
+
+          &:hover {
+            background-color: #a13b3b;
+            transform: translateY(-2px);
+          }
+        }
+      }
+    }
+  }
+}

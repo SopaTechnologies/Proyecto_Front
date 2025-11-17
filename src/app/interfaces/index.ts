@@ -85,3 +85,21 @@ export interface IGenre {
   id_usuario_creador?: number;
   fecha_creacion?: string;
 }
+
+export interface IForumPost {
+  id: number;
+  storyId: number;           // id de la historia
+  storyTitle: string;        // título de la historia
+  synopsis: string;
+  genre: string;
+  isPublic: boolean;
+  publishedAt: string;       // ISO string desde backend
+  views: number;
+  comments: number;
+  authorName: string;        // nombre del autor
+  content: string;           // contenido de la historia
+}
+
+
+
+
