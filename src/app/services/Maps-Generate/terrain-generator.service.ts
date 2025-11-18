@@ -59,37 +59,37 @@ export class TerrainGeneratorService {
 
 
     if (elevation < 0.3) {
-      return { q, r, type: 'deep_water', color: '#1e3a5f', elevation, moisture, temperature };
+      return { q, r, type: 'Lagos o aguas profundas', color: '#1e3a5f', elevation, moisture, temperature };
     }
 
 
     if (elevation < 0.4) {
-      return { q, r, type: 'shallow_water', color: '#2e5a8f', elevation, moisture, temperature };
+      return { q, r, type: 'Rios o aguas no tan profundas', color: '#2e5a8f', elevation, moisture, temperature };
     }
 
 
     if (elevation < 0.45) {
-      return { q, r, type: 'beach', color: '#f4e4c1', elevation, moisture, temperature };
+      return { q, r, type: 'Playa', color: '#f4e4c1', elevation, moisture, temperature };
     }
 
 
     if (temperature > 0.7) {
-      if (moisture < 0.3) return { q, r, type: 'desert', color: '#e8d4a0', elevation, moisture, temperature };
-      if (moisture < 0.6) return { q, r, type: 'savanna', color: '#c4b550', elevation, moisture, temperature };
-      return { q, r, type: 'jungle', color: '#2d5016', elevation, moisture, temperature };
+      if (moisture < 0.3) return { q, r, type: 'Desiertos', color: '#e8d4a0', elevation, moisture, temperature };
+      if (moisture < 0.6) return { q, r, type: 'Sabana', color: '#c4b550', elevation, moisture, temperature };
+      return { q, r, type: 'Jungla', color: '#2d5016', elevation, moisture, temperature };
     }
 
     if (temperature > 0.4) {
-      if (moisture < 0.3) return { q, r, type: 'grassland', color: '#88aa55', elevation, moisture, temperature };
-      if (moisture < 0.7) return { q, r, type: 'forest', color: '#2d6930', elevation, moisture, temperature };
-      return { q, r, type: 'swamp', color: '#3a4d2d', elevation, moisture, temperature };
+      if (moisture < 0.3) return { q, r, type: 'Praderas', color: '#88aa55', elevation, moisture, temperature };
+      if (moisture < 0.7) return { q, r, type: 'Bosques', color: '#2d6930', elevation, moisture, temperature };
+      return { q, r, type: 'Pantano', color: '#3a4d2d', elevation, moisture, temperature };
     }
 
 
     if (elevation > 0.7) {
-      return { q, r, type: 'mountain', color: '#8b8680', elevation, moisture, temperature };
+      return { q, r, type: 'Montañas', color: '#8b8680', elevation, moisture, temperature };
     }
-    if (moisture < 0.4) return { q, r, type: 'tundra', color: '#a0b0a0', elevation, moisture, temperature };
-    return { q, r, type: 'snow', color: '#e8f4f8', elevation, moisture, temperature };
+    if (moisture < 0.4) return { q, r, type: 'Tundra', color: '#a0b0a0', elevation, moisture, temperature };
+    return { q, r, type: 'Nieve', color: '#e8f4f8', elevation, moisture, temperature };
   }
 }

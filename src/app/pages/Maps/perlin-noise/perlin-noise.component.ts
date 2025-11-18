@@ -50,7 +50,7 @@ export class PerlinNoiseComponent implements OnInit, AfterViewInit {
     { name: "Bosques", color: "#2d6930" },
     { name: "Jungla", color: "#2d5016" },
     { name: "Montañas", color: "#8b8680" },
-    { name: "Nieve", color: "#e8f4f8" },
+    { name: "Tundra o Nieve", color: "#e8f4f8" },
   ];
 
   constructor(
@@ -66,11 +66,8 @@ export class PerlinNoiseComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.renderMap(), 0);
   }
 
-  toggleSettings(): void {
-    this.showSettings = !this.showSettings;
-  }
-
   generateNewMap(): void {
+    this.seed = this.setRandom();
     const radius = Math.floor(this.mapSize / 2);
     this.terrainGen
       .generateMap(this.seed, radius, this.scale)
