@@ -1,79 +1,187 @@
-<div class="modal-overlay show" (click)="close()">
-  <div class="modal-dialog show" (click)="$event.stopPropagation()">
+<!-- Modal para crear/editar personajes -->
+<div class="modal-overlay book-modal-overlay" [class.show]="showModal" (click)="onCloseModal()">
+  <div class="modal-dialog book-modal-dialog" (click)="$event.stopPropagation()" [class.show]="showModal">
     <div class="modal-content book-modal-content">
-
       <div class="modal-header book-modal-header">
-        <h3 class="book-modal-title">
-          {{ personaje ? 'Editar Personaje' : 'Crear Personaje con IA' }}
-        </h3>
-
-        <button class="book-close-btn" (click)="close()">
-          <i class="fas fa-times"></i>
+        <div class="book-title-section">
+          <h3 class="book-modal-title">{{editingPersonaje ? 'Editar Personaje' : 'Crear Personaje con IA'}}</h3>
+        </div>
+        <button type="button" class="book-close-btn" (click)="onCloseModal()">
         </button>
       </div>
-
-      <form (ngSubmit)="save()" class="book-form">
-
+      <form (ngSubmit)="onSubmit()" #personajeForm="ngForm" class="book-form">
         <div class="modal-body book-modal-body">
-
-          <!-- NOMBRE -->
-          <div class="book-form-group">
-            <label class="book-label">Nombre *</label>
-            <input class="book-input" type="text"
-                   [(ngModel)]="current.nombre"
-                   name="nombre"
-                   required maxlength="50">
+          <!-- Mensajes -->
+          <div *ngIf="errorPersonajes" class="alert alert-danger">
+            {{errorPersonajes}}
+          </div>
+          <div *ngIf="successMessage" class="alert alert-success">
+            {{successMessage}}
           </div>
 
-          <!-- APELLIDO -->
+          <!-- Nombre del Personaje -->
           <div class="book-form-group">
-            <label class="book-label">Apellido *</label>
-            <input class="book-input" type="text"
-                   [(ngModel)]="current.apellido"
-                   name="apellido"
-                   required maxlength="50">
+            <label for="nombrePersonaje" class="book-label">
+              Nombre del Personaje <span class="required-mark">*</span>
+            </label>
+            <input 
+              type="text" 
+              class="book-input" 
+              id="nombrePersonaje"
+              [(ngModel)]="currentPersonaje.nombre" 
+              name="nombrePersonaje"
+              required
+              maxlength="50"
+              placeholder="Ej: Elena">
           </div>
 
-          <!-- ENTIDAD -->
+          <!-- Apellido del Personaje -->
           <div class="book-form-group">
-            <label class="book-label">Entidad o Grupo</label>
-            <input class="book-input" type="text"
-                   [(ngModel)]="current.entidadOGrupo"
-                   name="entidadOGrupo"
-                   maxlength="255">
+            <label for="apellidoPersonaje" class="book-label">
+              Apellido <span class="required-mark">*</span>
+            </label>
+            <input 
+              type="text" 
+              class="book-input" 
+              id="apellidoPersonaje"
+              [(ngModel)]="currentPersonaje.apellido" 
+              name="apellidoPersonaje"
+              required
+              maxlength="50"
+              placeholder="Ej: Blackwood">
           </div>
 
-          <!-- ORIGEN -->
+          <!-- Entidad o Grupo -->
           <div class="book-form-group">
-            <label class="book-label">País o Lugar de Origen</label>
-            <input class="book-input" type="text"
-                   [(ngModel)]="current.paisOLugarOrigen"
-                   name="paisOLugarOrigen"
-                   maxlength="255">
+            <label for="entidadPersonaje" class="book-label">
+              Entidad o Grupo
+            </label>
+            <input 
+              type="text" 
+              class="book-input" 
+              id="entidadPersonaje"
+              [(ngModel)]="currentPersonaje.entidadOGrupo" 
+              name="entidadPersonaje"
+              maxlength="255"
+              placeholder="Ej: Reino Élfico, Consejo de Magos, Hermandad de Ladrones">
           </div>
 
-          <!-- DESCRIPCIÓN -->
+          <!-- País o Lugar de Origen -->
           <div class="book-form-group">
-            <label class="book-label">Descripción para IA *</label>
-            <textarea class="book-textarea"
-                      [(ngModel)]="current.descripcion"
-                      name="descripcion"
-                      rows="5"
-                      maxlength="200"
-                      required>
-            </textarea>
+            <label for="lugarPersonaje" class="book-label">
+              País o Lugar de Origen
+            </label>
+            <input 
+              type="text" 
+              class="book-input" 
+              id="lugarPersonaje"
+              [(ngModel)]="currentPersonaje.paisOLugarOrigen" 
+              name="lugarPersonaje"
+              maxlength="255"
+              placeholder="Ej: Bosque de Lothlórien, Reino de Gondor, Ciudad de Waterdeep">
+          </div>
 
-            <div class="character-counter">
-              {{ (current.descripcion || '').length }}/200
+          <!-- Padre -->
+          <div class="book-form-group">
+            <label for="padrePersonaje" class="book-label">Padre</label>
+            <select class="book-input" id="padrePersonaje" [(ngModel)]="currentPersonaje.padreId" name="padrePersonaje">
+              <option [ngValue]="undefined">Sin padre</option>
+              <option *ngFor="let p of personajes" [ngValue]="p.id">{{p.nombre}} {{p.apellido}}</option>
+            </select>
+          </div>
+
+          <!-- Madre -->
+          <div class="book-form-group">
+            <label for="madrePersonaje" class="book-label">Madre</label>
+            <select class="book-input" id="madrePersonaje" [(ngModel)]="currentPersonaje.madreId" name="madrePersonaje">
+              <option [ngValue]="undefined">Sin madre</option>
+              <option *ngFor="let p of personajes" [ngValue]="p.id">{{p.nombre}} {{p.apellido}}</option>
+            </select>
+          </div>
+          
+          <!-- Relacion -->
+          <div class="book-form-group">
+            <label for="RelacionPersonaje" class="book-label">Relacion</label>
+            <select class="book-input" id="RelacionPersonaje" [(ngModel)]="currentPersonaje.relacionId" name="relacionPersonaje">
+              <option [ngValue]="undefined">Sin Relación</option>
+              <option *ngFor="let p of personajes" [ngValue]="p.id">{{p.nombre}} {{p.apellido}}</option>
+            </select>
+          </div>
+
+          <!-- Enemigos -->
+          <div class="book-form-group">
+            <label class="book-label">
+              <i class="fas fa-sword" style="color: #dc3545;"></i>
+              Enemigos
+            </label>
+            <div class="enemigos-selector">
+              <div class="enemigo-item" *ngFor="let p of personajes">
+                <label class="enemigo-checkbox">
+                  <input 
+                    type="checkbox" 
+                    [checked]="isEnemigo(p.id!)"
+                    (change)="toggleEnemigo(p.id!, $event)"
+                    [disabled]="p.id === currentPersonaje.id">
+                  <span class="checkbox-custom"></span>
+                  <span class="enemigo-name">{{p.nombre}} {{p.apellido}}</span>
+                </label>
+              </div>
             </div>
           </div>
 
-          <!-- ESTADO -->
+          <!-- Amistades -->
           <div class="book-form-group">
-            <label class="book-label">Estado</label>
-            <select class="book-input"
-                    [(ngModel)]="current.estado"
-                    name="estado">
+            <label class="book-label">
+              <i class="fas fa-handshake" style="color: #28a745;"></i>
+              Amistades
+            </label>
+            <div class="amistades-selector">
+              <div class="amistad-item" *ngFor="let p of personajes">
+                <label class="amistad-checkbox">
+                  <input 
+                    type="checkbox" 
+                    [checked]="isAmistad(p.id!)"
+                    (change)="toggleAmistad(p.id!, $event)"
+                    [disabled]="p.id === currentPersonaje.id">
+                  <span class="checkbox-custom-amistad"></span>
+                  <span class="amistad-name">{{p.nombre}} {{p.apellido}}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Descripción del Personaje -->
+          <div class="book-form-group">
+            <label for="descripcionPersonaje" class="book-label">
+              Descripción para IA <span class="required-mark">*</span>
+            </label>
+            <textarea 
+              class="book-textarea" 
+              id="descripcionPersonaje"
+              rows="6"
+              [(ngModel)]="currentPersonaje.descripcion" 
+              name="descripcionPersonaje"
+              required
+              maxlength="200"
+              placeholder="Describe el personaje detalladamente para generar una imagen real con IA (Stable Diffusion). Ej: Mujer élfica de cabello plateado largo, ojos verdes brillantes, vestida con túnica azul mágica ornamentada, en un bosque encantado, arte fantástico, alta calidad"></textarea>
+            <div class="character-counter">
+              {{(currentPersonaje.descripcion || '').length}}/200 caracteres
+              <span *ngIf="(currentPersonaje.descripcion || '').length > 200" class="counter-warning">
+                - Excede el límite por {{(currentPersonaje.descripcion || '').length - 200}} caracteres
+              </span>
+            </div>
+          </div>
+
+          <!-- Estado del Personaje -->
+          <div class="book-form-group">
+            <label for="estadoPersonaje" class="book-label">
+              Estado del Personaje
+            </label>
+            <select 
+              class="book-input" 
+              id="estadoPersonaje"
+              [(ngModel)]="currentPersonaje.estado" 
+              name="estadoPersonaje">
               <option value="activo">Activo</option>
               <option value="inactivo">Inactivo</option>
               <option value="principal">Principal</option>
@@ -82,68 +190,86 @@
             </select>
           </div>
 
-          <!-- UPLOAD -->
+          <!-- Subir imagen propia -->
           <div class="book-form-group">
-            <label class="book-label">Subir Imagen</label>
-
-            <input type="file"
-                   class="book-input"
-                   accept="image/*"
-                   (change)="onFileSelected($event)">
+            <label class="book-label">
+              Subir Imagen Propia
+            </label>
+            <input 
+              type="file" 
+              class="book-input" 
+              id="uploadImage"
+              accept="image/*"
+              (change)="onFileSelected($event)"
+              #fileInput>
+            <button 
+              type="button" 
+              class="book-btn book-btn-info" 
+              (click)="uploadImage()" 
+              [disabled]="!selectedFile || uploadingImage"
+              *ngIf="selectedFile">
+              {{uploadingImage ? 'Subiendo...' : 'Subir Imagen'}}
+            </button>
           </div>
 
-          <!-- PREVIEW -->
-          <div class="image-preview-container" *ngIf="current.imagenUrl">
-            <img [src]="current.imagenUrl" class="image-preview">
-
-            <div class="image-actions">
-              <button type="button"
-                      class="regenerate-image-btn"
-                      (click)="generateImage()"
-                      [disabled]="generatingImage">
-                {{ generatingImage ? 'Generando...' : 'Regenerar con IA' }}
-              </button>
-
-              <button type="button"
-                      class="upload-new-btn"
-                      (click)="null">
-                Cambiar Imagen
-              </button>
+          <!-- Vista previa de imagen -->
+          <div class="book-form-group" *ngIf="currentPersonaje.imagenUrl">
+            <label class="book-label">
+              Imagen del Personaje
+            </label>
+            <div class="image-preview-container">
+              <img [src]="currentPersonaje.imagenUrl" 
+                   [alt]="currentPersonaje.nombre" 
+                   class="image-preview"
+                   (error)="onImageError($event)">
+              <div class="image-actions">
+                <button type="button" 
+                        class="regenerate-image-btn" 
+                        (click)="generatePersonajeImage()" 
+                        [disabled]="generatingImage">
+                  {{generatingImage ? 'Regenerando...' : 'Regenerar con IA'}}
+                </button>
+                <button type="button" 
+                        class="upload-new-btn" 
+                        (click)="fileInput.click()" 
+                        [disabled]="uploadingImage">
+                  Cambiar Imagen
+                </button>
+              </div>
             </div>
           </div>
 
-          <div class="alert alert-info" *ngIf="!current.imagenUrl">
-            <i class="fas fa-info-circle"></i>
-            La generación de imágenes tarda 2–3 min.
+          <!-- Advertencia sobre tiempo de generación -->
+          <div *ngIf="!currentPersonaje.imagenUrl" class="book-form-group">
+            <div class="alert alert-info d-flex align-items-center">
+              <i class="fas fa-info-circle me-2"></i>
+              <small>
+                <strong>💡 Importante:</strong> La generación de imágenes con IA toma <strong>2-3 minutos</strong>. 
+                Una vez generada, se guarda automáticamente en tu carpeta local y se carga al instante en futuras sesiones.
+              </small>
+            </div>
           </div>
-
-          <!-- MENSAJES -->
-          <p *ngIf="error" class="error-message">{{ error }}</p>
-          <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
-
         </div>
-
         <div class="modal-footer book-modal-footer">
-          <button class="book-btn book-btn-secondary" type="button" (click)="close()">
+          <button type="button" class="book-btn book-btn-secondary" (click)="onCloseModal()">
             Cancelar
           </button>
-
-          <button class="book-btn book-btn-accent"
-                  type="button"
-                  (click)="generateImage()"
-                  [disabled]="generatingImage || !current.descripcion">
-            <i class="fas fa-magic"></i>
-            Generar con IA
+          <button 
+            type="button" 
+            class="book-btn book-btn-accent" 
+            (click)="generatePersonajeImage()" 
+            [disabled]="!currentPersonaje.descripcion || generatingImage">
+            <i class="fas" [class.fa-magic]="!generatingImage" [class.fa-spinner]="generatingImage" [class.fa-spin]="generatingImage"></i>
+            {{generatingImage ? 'Generando con IA...' : 'Generar con IA'}}
           </button>
-
-          <button class="book-btn book-btn-primary"
-                  type="submit"
-                  [disabled]="creatingPersonaje">
-            <i class="fas fa-save"></i>
-            {{ creatingPersonaje ? 'Guardando...' : 'Guardar' }}
+          <button 
+            type="submit" 
+            class="book-btn book-btn-primary" 
+            [disabled]="!personajeForm.form.valid || creatingPersonaje || generatingImage || (currentPersonaje.descripcion && currentPersonaje.descripcion.length > 200)">
+            <i class="fas" [class.fa-save]="!creatingPersonaje" [class.fa-spinner]="creatingPersonaje" [class.fa-spin]="creatingPersonaje"></i>
+            {{creatingPersonaje ? 'Guardando...' : (editingPersonaje ? 'Actualizar Personaje' : 'Guardar Personaje')}}
           </button>
         </div>
-
       </form>
     </div>
   </div>

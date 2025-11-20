@@ -1,6 +1,6 @@
 .map-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    background: #4D3333;
     padding: 2rem;
     font-family: system-ui, -apple-system, sans-serif;
 }
@@ -45,28 +45,12 @@
     color: white;
 }
 
-.btn-blue {
-    background: #2563eb;
+.btn-orange {
+    background: #d48656;
 }
 
-.btn-blue:hover {
-    background: #1d4ed8;
-}
-
-.btn-green {
-    background: #16a34a;
-}
-
-.btn-green:hover {
-    background: #15803d;
-}
-
-.btn-purple {
-    background: #9333ea;
-}
-
-.btn-purple:hover {
-    background: #7e22ce;
+.btn-orange:hover {
+    background: #31190b;
 }
 
 .icon {
@@ -76,7 +60,7 @@
 .settings-panel {
     max-width: 1400px;
     margin: 0 auto 1.5rem;
-    background: #1e293b;
+    background: #4D3333;
     border-radius: 0.75rem;
     padding: 1.5rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -121,7 +105,7 @@
 }
 
 .canvas-section {
-    background: #1e293b;
+    background: #a15c3e;
     border-radius: 0.75rem;
     padding: 1rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -141,7 +125,7 @@ canvas {
 }
 
 .panel {
-    background: #1e293b;
+    background: #4D3333;
     border-radius: 0.75rem;
     padding: 1.25rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
