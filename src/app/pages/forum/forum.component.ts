@@ -1,11 +1,20 @@
-import { Component, effect, signal, ViewChild, TemplateRef } from '@angular/core';
+import {
+  Component,
+  effect,
+  signal,
+  ViewChild,
+  TemplateRef
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { ModalService } from '../../services/modal.service';
 import { ForumService } from '../../services/forum.service';
 import { HistoriaService } from '../../services/history.service';
 import { GenresService } from '../../services/genres.service';
+
 import { IForumPost, IGenre } from '../../interfaces';
+
 import { ModalComponent } from '../../components/modal/modal.component';
 import { LoaderComponent } from '../../components/loader/loader.component';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
@@ -23,20 +32,29 @@ import { ForumListComponent } from '../../components/forum/forum-list/forum-list
     ModalComponent,
     LoaderComponent,
     PaginationComponent,
-    ForumListComponent,      
-    ForumPostFormComponent   
+    ForumListComponent,
+    ForumPostFormComponent
   ],
   templateUrl: './forum.component.html',
   styleUrls: ['./forum.component.scss']
 })
 export class ForumComponent {
   @ViewChild('addForumPostModal') addForumPostModal!: TemplateRef<any>;
+  @ViewChild('postDetailsModal') postDetailsModal!: TemplateRef<any>;
+  @ViewChild('deleteForumPostModal') deleteForumPostModal!: TemplateRef<any>;
+
+  filterGenre: string = '';
+  filterAuthor: string = '';
 
   selectedPost: IForumPost | null = null;
+  postToDelete: IForumPost | null = null;
+
   genres: IGenre[] = [];
   genreNames: string[] = [];
   stories: any[] = [];
   currentUserName: string = '';
+
+  loading = signal(false);
 
   forumPostForm = this.fb.group({
     id: [null as number | null],
@@ -45,8 +63,6 @@ export class ForumComponent {
     genre: ['', Validators.required],
     isPublic: [true, Validators.required]
   });
-
-  loading = signal(false);
 
   constructor(
     private fb: FormBuilder,
@@ -59,25 +75,25 @@ export class ForumComponent {
       const genres = this.genreService.genres$();
       if (genres && genres.length > 0) {
         this.genres = genres;
-        this.genreNames = genres.map(g => g.name);
+        this.genreNames = genres.map((g) => g.name);
       }
     });
-    
+
     const user = JSON.parse(localStorage.getItem('auth_user') || '{}');
     this.currentUserName = `${user.name || ''} ${user.lastname || ''}`.trim();
-    
+
     this.initData();
   }
 
   initData() {
     this.loading.set(true);
-    
+
     this.historiaService.getAll().subscribe({
       next: (response) => {
         this.stories = response.data;
         this.loading.set(false);
       },
-      error: err => {
+      error: (err) => {
         console.error('Error al cargar historias:', err);
         this.loading.set(false);
       }
@@ -87,23 +103,30 @@ export class ForumComponent {
     this.forumService.getAll();
   }
 
+
   openModal() {
     this.forumPostForm.reset({
+      id: null,
+      storyId: null,
+      synopsis: '',
+      genre: '',
       isPublic: true
     });
+
     setTimeout(() => {
       this.modalService.displayModal('md', this.addForumPostModal);
     }, 0);
   }
 
-  callEdition(post: IForumPost) {
+  updatePost(post: IForumPost) {
     this.forumPostForm.patchValue({
-      id: post.id,
+      id: post.id ?? null,
       storyId: post.storyId,
       synopsis: post.synopsis,
       genre: post.genre,
       isPublic: post.isPublic
     });
+
     setTimeout(() => {
       this.modalService.displayModal('md', this.addForumPostModal);
     }, 0);
@@ -115,38 +138,72 @@ export class ForumComponent {
 
   savePost() {
     if (this.forumPostForm.invalid) {
+      this.forumPostForm.markAllAsTouched();
       return;
     }
 
     const formValue = this.forumPostForm.value;
-    
-    const payload: any = {
+
+    let payload: IForumPost = {
       storyId: Number(formValue.storyId),
-      synopsis: formValue.synopsis,
-      genre: formValue.genre,
-      isPublic: formValue.isPublic
+      synopsis: formValue.synopsis ?? '',
+      genre: formValue.genre ?? '',
+      isPublic: formValue.isPublic ?? true
     };
 
-    if (formValue.id) {
-      payload.id = formValue.id;
-      this.forumService.update(payload as unknown as IForumPost);
-      this.closeModal();
+    if (formValue.id != null) {
+      payload = { ...payload, id: formValue.id };
+      this.forumService.update(payload);
     } else {
-      this.forumService.create(payload as unknown as IForumPost);
-      this.closeModal();
+      this.forumService.create(payload);
     }
+
+    this.closeModal();
   }
+
 
   openPostDetails(post: IForumPost) {
     this.selectedPost = post;
+
+    setTimeout(() => {
+      this.modalService.displayModal('lg', this.postDetailsModal);
+    }, 0);
   }
 
-  updatePost(post: IForumPost) {
-    this.callEdition(post);
+  closeDetails() {
+    this.selectedPost = null;
+    this.modalService.closeAll();
   }
 
   deletePost(post: IForumPost) {
-    if (!post.id) return;
-    this.forumService.delete(post);
+    this.postToDelete = post;
+
+    setTimeout(() => {
+      this.modalService.displayModal('sm', this.deleteForumPostModal);
+    }, 0);
+  }
+
+  confirmDelete() {
+    if (!this.postToDelete || !this.postToDelete.id) return;
+
+    this.forumService.delete(this.postToDelete);
+    this.postToDelete = null;
+    this.closeModal();
+  }
+
+  get filteredPosts(): IForumPost[] {
+    const posts = this.forumService.forumPosts$() || [];
+    const genre = (this.filterGenre || '').toLowerCase();
+    const author = (this.filterAuthor || '').toLowerCase();
+
+    return posts.filter((p) => {
+      const matchesGenre =
+        !genre || (p.genre || '').toLowerCase().includes(genre);
+
+      const matchesAuthor =
+        !author || (p.authorName || '').toLowerCase().includes(author);
+
+      return matchesGenre && matchesAuthor;
+    });
   }
 }

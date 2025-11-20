@@ -1,61 +1,142 @@
 @defer {
-<div class="histories-container">
-  <div class="histories-header">
-    <h2>Historias Creadas</h2>
-    <button (click)="modalService.displayModal('md', addHistoryModal)" type="button" class="btn-add-history">
-      <i class="fas fa-plus"></i>
-      <span>Nueva Historia</span>
-    </button>
-  </div>
+  <div class="histories-container">
+    <!-- Header -->
+    <header class="histories-header">
+      <div class="header-text">
+        <span class="pill pill-soft">
+          <i class="fas fa-feather"></i>
+          Biblioteca
+        </span>
+        <h2>Historias creadas</h2>
+        <p class="subtitle">
+          Gestiona y continúa las historias de tu mundo Mahou.
+        </p>
+      </div>
 
-  <div class="histories-grid">
-    <div *ngFor="let history of histories" class="history-card">
-      <div class="history-card-inner">
-        <div class="history-icon">
-          <i class="fas fa-book"></i>
+      <button
+        type="button"
+        class="btn-add-history"
+        (click)="modalService.displayModal('md', addHistoryModal)"
+      >
+        <i class="fas fa-plus"></i>
+        <span>Nueva historia</span>
+      </button>
+    </header>
+
+    <!-- Grid de historias -->
+    <section class="histories-grid">
+      <article
+        *ngFor="let history of histories; let i = index"
+        class="history-card"
+      >
+        <div class="history-card-inner">
+          <!-- Icono -->
+          <div class="history-icon">
+            <div class="icon-circle">
+              <i class="fas fa-book-open"></i>
+            </div>
+          </div>
+
+          <!-- Contenido -->
+          <div class="history-content">
+            <h3 class="history-title">
+              {{ history.titulo }}
+            </h3>
+
+            <div class="history-meta">
+              <!-- Género: sólo si existe -->
+              <span class="badge-genre" *ngIf="history.genero">
+                <i class="fas fa-tag"></i>
+                {{ history.genero }}
+              </span>
+
+              <!-- Contiene juego: sólo si es true -->
+              <span class="badge-game on" *ngIf="history.contieneJuego">
+                <i class="fas fa-gamepad"></i>
+                Con juego
+              </span>
+            </div>
+          </div>
+
+          <!-- Acciones -->
+          <div class="history-actions">
+            <button
+              type="button"
+              class="btn-icon btn-edit"
+              title="Editar"
+              (click)="editHistory(history.id)"
+            >
+              <i class="fas fa-pen"></i>
+            </button>
+
+            <button
+              type="button"
+              class="btn-icon btn-delete"
+              title="Eliminar"
+              (click)="deleteHistory(history.id)"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
         </div>
-        <div class="history-name">{{ history.titulo }}</div>
-        <div class="history-actions">
-          <button (click)="editHistory(history.id)" class="btn-icon btn-edit" type="button" title="Editar">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button (click)="deleteHistory(history.id)" class="btn-icon btn-delete" type="button" title="Eliminar">
-            <i class="fas fa-trash"></i>
+      </article>
+
+      <!-- Estado vacío -->
+      <div *ngIf="histories.length === 0" class="no-histories">
+        <div class="no-histories-card">
+          <i class="fas fa-magic"></i>
+          <h3>Aún no hay historias</h3>
+          <p>
+            Comienza creando tu primera historia para darle vida a tu universo.
+          </p>
+          <button
+            type="button"
+            class="btn-add-history ghost"
+            (click)="modalService.displayModal('md', addHistoryModal)"
+          >
+            <i class="fas fa-plus"></i>
+            <span>Crear historia</span>
           </button>
         </div>
       </div>
-    </div>
-
-    <div *ngIf="histories.length === 0" class="no-histories">
-      <p>No se encontraron historias</p>
-    </div>
+    </section>
   </div>
-</div>
-} @loading (minimum 1.5s) {
-<app-loader />
+}
+@loading (minimum 1.5s) {
+  <app-loader />
 }
 
+<!-- MODAL: Crear historia -->
 <ng-template #addHistoryModal>
   <app-modal [hideFooter]="true">
     <div>
-      <app-crear-historia [historyForm]="historyForm" (callUpdateMethod)="updateHistoriesList()" />
+      <app-crear-historia
+        [historyForm]="historyForm"
+        (callUpdateMethod)="updateHistoriesList()"
+      ></app-crear-historia>
     </div>
   </app-modal>
 </ng-template>
 
+<!-- MODAL: Redactar / editar historia -->
 <ng-template #editHistoryModal>
   <app-modal [hideFooter]="true">
     <div>
-      <app-redactar-historia [historyForm]="historyForm" />
+      <app-redactar-historia
+        [historyForm]="historyForm"
+      ></app-redactar-historia>
     </div>
   </app-modal>
 </ng-template>
 
-
+<!-- MODAL: Eliminar historia -->
 <ng-template #deleteHistoryModal>
   <app-modal [hideFooter]="true">
     <div>
-      <app-delete-form [deleteHistoryForm]="historyForm" (callUpdateMethod)="updateHistoriesList()"/>
+      <app-delete-form
+        [deleteHistoryForm]="historyForm"
+        (callUpdateMethod)="updateHistoriesList()"
+      ></app-delete-form>
     </div>
   </app-modal>
 </ng-template>

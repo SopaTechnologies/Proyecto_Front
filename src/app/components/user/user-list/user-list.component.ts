@@ -22,6 +22,7 @@ export class UserListComponent {
   @Input() users: IUser[] = [];
   @Output() callModalAction: EventEmitter<IUser> = new EventEmitter<IUser>();
   @Output() callDeleteAction: EventEmitter<IUser> = new EventEmitter<IUser>();
+  @Output() editUser: EventEmitter<IUser> = new EventEmitter<IUser>();
 
   userService = inject(UserService);
   totalItems: number[] = [];
@@ -35,5 +36,9 @@ export class UserListComponent {
       this.userService.search.page = page;
       this.userService.getAll();
     }
+  }
+
+  onEditUser(user: IUser) {
+    this.editUser.emit(user);
   }
 }

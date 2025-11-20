@@ -10,14 +10,18 @@ import { ReactiveFormsModule, FormGroup } from '@angular/forms';
   styleUrls: ['./forum-post-form.component.scss']
 })
 export class ForumPostFormComponent {
-  @Input() forumForm!: FormGroup; // Form recibido del padre
-  @Input() genres: string[] = []; // Lista de géneros
-  @Input() availableStories: any[] = []; // Lista de historias
-  @Output() save = new EventEmitter<void>(); // Evento para guardar
-  @Output() cancel = new EventEmitter<void>(); // Evento para cerrar modal
+  @Input() forumForm!: FormGroup;          // Form recibido del padre
+  @Input() genres: string[] = [];          // Lista de géneros
+  @Input() availableStories: any[] = [];   // Lista de historias
+  @Output() save = new EventEmitter<void>();
+  @Output() cancel = new EventEmitter<void>();
 
   onSubmit() {
-    if (this.forumForm.valid) this.save.emit();
+    if (this.forumForm.valid) {
+      this.save.emit();
+    } else {
+      this.forumForm.markAllAsTouched();
+    }
   }
 
   onCancel() {

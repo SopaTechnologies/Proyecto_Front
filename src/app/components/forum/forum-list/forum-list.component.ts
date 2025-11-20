@@ -9,7 +9,7 @@ import { ModalService } from '../../../services/modal.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './forum-list.component.html',
-  styleUrl: './forum-list.component.scss'
+  styleUrls: ['./forum-list.component.scss'] 
 })
 export class ForumListComponent {
   @Input() forumPosts: IForumPost[] = [];
@@ -28,17 +28,7 @@ export class ForumListComponent {
   }
 
   onDelete(post: IForumPost): void {
-    const confirmed = window.confirm('¿Deseas eliminar esta publicación? Esta acción no se puede deshacer.');
-    if (confirmed) {
-      this.callDeleteMethod.emit(post);
-      this.alertService.displayAlert(
-        'success',
-        'Publicación eliminada correctamente',
-        'center',
-        'top',
-        ['success-snackbar']
-      );
-    }
+    this.callDeleteMethod.emit(post);
   }
 
   openDetails(post: IForumPost): void {

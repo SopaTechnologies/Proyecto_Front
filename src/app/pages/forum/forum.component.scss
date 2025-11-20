@@ -1,43 +1,936 @@
-.forum-container {
-  padding: 30px;
-  background-color: #2b1d1d;
-  min-height: 100vh;
+// ===== Paleta café global =====
+$color-bg: #2b1c1c;
+$color-bg-soft: #3a2828;
+$color-bg-soft2: #4a2f2f;
+$color-accent: #c8b2a9;
+$color-accent-strong: #d4a574;
+$color-text-main: #f7f1ec;
+$color-text-muted: #e0d1c8;
+$color-border-soft: rgba(255, 255, 255, 0.08);
+$color-danger: #d94747;
+
+// ===== CONTENEDOR GENERAL FORO =====
+.forum-page {
+  width: 100%;
+  height: 100%;
+  padding: 1.6rem 1.9rem 1.9rem;
+  box-sizing: border-box;
+  color: $color-text-main;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
 }
 
+// ===== HEADER =====
 .forum-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
 
-  h2 {
-    color: #fff;
-    font-size: 32px;
-    font-weight: bold;
+.forum-header__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  h1 {
     margin: 0;
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 }
 
-.btn-add-post {
-  display: flex;
+.forum-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: $color-text-muted;
+  max-width: 520px;
+}
+
+// Pills genéricas (reutilizables)
+.pill {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  background-color: #d48656 !important;
-  color: #1b0f0f !important;
-  padding: 12px 24px;
-  border-radius: 8px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  gap: 0.35rem;
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 
   i {
-    font-size: 18px;
+    font-size: 0.9rem;
+  }
+
+  &.small {
+    font-size: 0.68rem;
+    padding: 0.16rem 0.6rem;
+  }
+}
+
+.pill-soft {
+  background: rgba(0, 0, 0, 0.55);
+  color: $color-text-muted;
+
+  i {
+    color: $color-accent-strong;
+  }
+}
+
+// Botón principal
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.35rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: radial-gradient(
+    circle at 30% 0,
+    $color-accent-strong 45%,
+    #a06f3c 100%
+  );
+  color: #2b1b1b;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(0, 0, 0, 0.7);
+  transition:
+    transform 0.16s ease-out,
+    box-shadow 0.16s ease-out,
+    filter 0.16s ease-out;
+
+  i {
+    font-size: 0.95rem;
   }
 
   &:hover {
-    background-color: #e29a6f !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+    box-shadow:
+      0 18px 36px rgba(0, 0, 0, 0.98),
+      0 0 0 1px rgba(0, 0, 0, 0.85);
+    filter: brightness(1.03);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
+  }
+}
+
+// Botón fantasma
+.btn-ghost {
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease-out,
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    color 0.15s ease-out;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.45);
+    color: $color-text-main;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  }
+}
+
+// ===== BODY: LISTA + DETALLE (layout principal) =====
+.forum-body {
+  display: grid;
+  grid-template-columns: minmax(0, 2.1fr) minmax(280px, 1fr);
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+
+.forum-main {
+  position: relative;
+  min-height: 200px;
+}
+
+// Loader centrado sobre la lista
+.forum-loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 180px;
+}
+
+// contenido principal (wrap de app-forum-list)
+.forum-content {
+  border-radius: 1.3rem;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.4rem;
+}
+
+// ===== DETALLE EN COLUMNA DERECHA (si lo usas aún) =====
+.post-details {
+  min-height: 0;
+}
+
+.post-details__card {
+  border-radius: 1.4rem;
+  padding: 1rem 1.1rem 1.1rem;
+  background: radial-gradient(
+    circle at top,
+    $color-bg-soft2 0,
+    #221313 55%,
+    #140a0a 100%
+  );
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.post-details__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.post-details__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+.post-details__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: $color-text-muted;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.16rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    i {
+      font-size: 0.8rem;
+      color: $color-accent-strong;
+    }
+  }
+}
+
+.post-details__synopsis {
+  margin: 0.2rem 0 0;
+  font-size: 0.9rem;
+  color: $color-text-main;
+  opacity: 0.95;
+}
+
+.post-details__content {
+  margin-top: 0.3rem;
+
+  h3 {
+    margin: 0 0 0.2rem;
+    font-size: 0.96rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $color-text-muted;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: $color-text-main;
+  }
+}
+
+// ===== RESPONSIVE GENERAL FORO =====
+@media (max-width: 992px) {
+  .forum-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .post-details {
+    order: -1; // detalle arriba en pantallas pequeñas
+  }
+}
+
+@media (max-width: 768px) {
+  .forum-page {
+    padding: 1.3rem 1.1rem 1.4rem;
+  }
+
+  .forum-header {
+    align-items: flex-start;
+  }
+}
+
+// ===========================
+//  CONTENEDOR DENTRO DEL MODAL (lector)
+//  usando useCustomBackGround para <app-modal>
+// ===========================
+
+/* Centrar el contenido del modal con fondo custom */
+.custom-bg .modal-body {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Tarjeta principal del lector (si usas <div class="post-modal"> dentro de app-modal) */
+.post-modal {
+  max-width: 900px;
+  width: 100%;
+  margin: 1.4rem;
+  padding: 1.4rem 1.6rem 1.6rem;
+  border-radius: 1.6rem;
+  background: radial-gradient(
+    circle at top left,
+    $color-bg-soft2 0,
+    $color-bg-soft 40%,
+    #211212 100%
+  );
+  box-shadow:
+    0 24px 40px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  color: $color-text-main;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  box-sizing: border-box;
+}
+
+// Header dentro de .post-modal
+.post-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.8rem;
+}
+
+.post-modal__header .title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .subtitle {
+    margin: 0;
+    font-size: 0.86rem;
+    color: $color-text-muted;
+  }
+}
+
+/* Pill “Detalle” dentro del modal */
+.pill.small {
+  font-size: 0.7rem;
+  padding: 0.18rem 0.7rem;
+}
+
+/* Botón de cerrar dentro del .post-modal */
+.post-modal .btn-close-modal {
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 999px;
+  transition:
+    background-color 0.15s ease-out,
+    transform 0.12s ease-out;
+
+  i {
+    font-size: 1.1rem;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.45);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Meta en el modal lector
+.post-modal__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  color: $color-text-muted;
+  margin-top: 0.3rem;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+
+    i {
+      font-size: 0.8rem;
+      color: $color-accent-strong;
+    }
+  }
+}
+
+// Tag de visibilidad
+.visibility-tag {
+  padding: 0.16rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.visibility-tag--private {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+// Contenido scrollable del lector
+.post-modal__content {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 0.4rem;
+}
+
+.post-modal__content::-webkit-scrollbar {
+  width: 6px;
+}
+.post-modal__content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.post-modal__content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+}
+.post-modal__content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.post-modal__content h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: $color-text-muted;
+}
+
+// Capa que recibe el innerHTML
+.post-body {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: $color-text-main;
+
+  p {
+    margin: 0 0 0.7rem;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 1rem 0 0.4rem;
+    font-size: 1rem;
+    text-transform: none;
+  }
+
+  ul,
+  ol {
+    margin: 0 0 0.7rem 1.2rem;
+    padding-left: 1rem;
+  }
+
+  strong,
+  b {
+    color: lighten($color-text-main, 5%);
+  }
+
+  em,
+  i {
+    color: $color-accent;
+  }
+}
+
+@media (max-width: 768px) {
+  .post-modal {
+    margin: 1rem;
+    padding: 1.2rem 1.1rem 1.3rem;
+    border-radius: 1.4rem;
+  }
+
+  .post-modal__header {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .post-modal__content {
+    max-height: 65vh;
+  }
+}
+
+// ===== Modal detalle de historia (otra variante basada en modal-form-container) =====
+// (Si usas esta en lugar de .post-modal, puedes eliminar el bloque anterior de .post-modal)
+
+.modal-form-container.story-detail-modal {
+  max-width: 900px;
+  width: 100%;
+  margin: 1.5rem auto;
+  border-radius: 1.6rem;
+  padding: 1.5rem 1.7rem 1.7rem;
+  background: radial-gradient(
+    circle at top left,
+    $color-bg-soft2 0,
+    $color-bg-soft 40%,
+    #211212 100%
+  );
+  box-shadow:
+    0 24px 40px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  color: $color-text-main;
+  box-sizing: border-box;
+  animation: storyDetailFadeUp 0.3s ease-out;
+}
+
+.modal-form-container.story-detail-modal .modal-header-custom {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-form-container.story-detail-modal .title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .subtitle {
+    margin: 0;
+    font-size: 0.86rem;
+    color: $color-text-muted;
+  }
+}
+
+.modal-form-container.story-detail-modal .pill.small {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.6rem;
+}
+
+.modal-form-container.story-detail-modal .btn-close-modal {
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 999px;
+  transition:
+    background-color 0.15s ease-out,
+    transform 0.12s ease-out;
+
+  i {
+    font-size: 1.1rem;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.4);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.story-detail-meta {
+  margin: 0.3rem 0 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  color: $color-text-muted;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid $color-border-soft;
+
+    i {
+      font-size: 0.85rem;
+      color: $color-accent-strong;
+    }
+  }
+}
+
+.story-detail-synopsis {
+  margin: 0.5rem 0 0.9rem;
+  font-size: 0.9rem;
+  color: $color-text-main;
+}
+
+.story-detail-content {
+  margin-top: 0.2rem;
+  padding: 0.9rem 1rem;
+  border-radius: 1rem;
+  background: radial-gradient(circle at top, #221415 0, #1a0f10 40%, #110808 100%);
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  max-height: 420px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  line-height: 1.55;
+
+  h3 {
+    margin: 0 0 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $color-accent-strong;
+  }
+
+  .story-html {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: $color-text-main;
+
+    p {
+      margin: 0 0 0.6rem;
+    }
+
+    strong,
+    b {
+      color: $color-accent-strong;
+    }
+
+    em,
+    i {
+      color: lighten($color-text-muted, 5%);
+    }
+
+    ul,
+    ol {
+      padding-left: 1.2rem;
+      margin: 0 0 0.6rem;
+    }
+
+    a {
+      color: $color-accent-strong;
+      text-decoration: underline;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(212, 165, 116, 0.75);
+    border-radius: 999px;
+  }
+}
+
+@keyframes storyDetailFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-form-container.story-detail-modal {
+    margin: 1.2rem auto;
+    padding: 1.2rem 1.1rem 1.4rem;
+    border-radius: 1.4rem;
+  }
+
+  .story-detail-content {
+    max-height: 360px;
+  }
+}
+
+// ===== Modal de confirmación: eliminar historia =====
+
+.modal-form-container.delete-modal {
+  max-width: 480px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 1.3rem 1.4rem 1.4rem;
+  border-radius: 1.4rem;
+  background: radial-gradient(
+    circle at top left,
+    $color-bg-soft2 0,
+    $color-bg-soft 40%,
+    #201111 100%
+  );
+  box-shadow:
+    0 24px 40px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  color: $color-text-main;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-sizing: border-box;
+  animation: deleteModalFadeUp 0.28s ease-out;
+}
+
+.modal-form-container.delete-modal .modal-header-custom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+  h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+.modal-form-container.delete-modal .btn-close-modal {
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 999px;
+  transition:
+    background-color 0.15s ease-out,
+    transform 0.12s ease-out;
+
+  i {
+    font-size: 1rem;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.45);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.modal-form-container.delete-modal .confirmation-message {
+  margin: 0.2rem 0 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.modal-form-container.delete-modal .form-actions {
+  margin-top: 0.4rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.modal-form-container.delete-modal .btn-cancel,
+.modal-form-container.delete-modal .btn-submit {
+  border-radius: 999px;
+  padding: 0.55rem 1.3rem;
+  font-size: 0.84rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    background-color 0.15s ease-out,
+    color 0.15s ease-out;
+}
+
+.modal-form-container.delete-modal .btn-cancel {
+  background: transparent;
+  color: $color-text-muted;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.4);
+    color: $color-text-main;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.75);
+  }
+}
+
+.modal-form-container.delete-modal .btn-submit {
+  background: radial-gradient(circle at 30% 0, $color-danger 35%, #e05252 100%);
+  color: #2b1b1b;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(0, 0, 0, 0.65);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow:
+      0 18px 36px rgba(0, 0, 0, 0.98),
+      0 0 0 1px rgba(0, 0, 0, 0.85);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+    box-shadow: none;
+  }
+
+  i {
+    margin-right: 0.35rem;
+    font-size: 0.9rem;
+  }
+}
+
+@keyframes deleteModalFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-form-container.delete-modal {
+    margin: 1.3rem auto;
+    padding: 1.1rem 1rem 1.3rem;
+    border-radius: 1.25rem;
+  }
+
+  .modal-form-container.delete-modal .form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+
+    .btn-cancel,
+    .btn-submit {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
+.forum-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+
+  label {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: $color-text-muted;
+  }
+
+  select,
+  input {
+    border-radius: 0.8rem;
+    border: 1px solid $color-border-soft;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.86rem;
+    background: rgba(0, 0, 0, 0.55);
+    color: $color-text-main;
+    outline: none;
+
+    &:focus {
+      border-color: $color-accent-strong;
+      box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.6);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .forum-filters {
+    flex-direction: column;
   }
 }

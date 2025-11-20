@@ -113,7 +113,7 @@ export class UserAdminComponent {
       });
       return;
     }
-    if (this.user.password != null){
+    if (this.user.password && this.user.password.trim() !== ""){
       const c = this.user.password.length;
       if (c < 8  || c > 16){
             Swal.fire({
@@ -122,7 +122,7 @@ export class UserAdminComponent {
               icon: "warning",
             });
             return;
-          } 
+          }
     }
     this.ne();
     this.resetForm();
@@ -172,6 +172,17 @@ export class UserAdminComponent {
     if (page >= 1 && page <= (this.userService.search?.totalPages ?? 1)) {
       this.userService.search.page = page;
       this.userService.getAll();
+    }
+  }
+
+  onEditUser(user: any) {
+    this.user = { ...user };
+    this.roleName = user.role?.name || "";
+    // Clear photo preview when editing
+    this.previewUrl = null;
+    this.selectedFile = null;
+    if (this.photoInput) {
+      this.photoInput.nativeElement.value = null;
     }
   }
 }

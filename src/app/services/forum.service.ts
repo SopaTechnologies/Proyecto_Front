@@ -1,32 +1,35 @@
-import { Injectable, signal } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { IForumPost } from '../interfaces';
-import { environment } from '../../environments/environment';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class ForumService {
-  private readonly apiUrl = `${environment.apiUrl}/forum`; 
+  private http = inject(HttpClient);
+
+  private apiUrl = 'http://localhost:8080/forum'; // ajusta si usas otra URL
+
+  // estado reactivo
   forumPosts$ = signal<IForumPost[]>([]);
   loading$ = signal(false);
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   getAll(): void {
     this.loading$.set(true);
     this.http.get<any>(`${this.apiUrl}/public`).subscribe({
-      next: response => {
-        const posts = response.data || [];
+      next: (response) => {
+        const posts = response?.data || [];
         const mappedPosts: IForumPost[] = posts.map((p: any) => ({
           id: p.id,
-          storyId: p.story.id,
-          storyTitle: p.story.titulo,
-          content: p.story.content,
+          storyId: p.story?.id,
+          storyTitle: p.story?.titulo ?? p.story?.title ?? '',
+          content: p.story?.content,
           genre: p.genre,
           isPublic: p.isPublic,
           publishedAt: p.publishedAt,
-          authorName: `${p.author.name} ${p.author.lastname}`,
-          readCount: p.views,
-          commentCount: p.comments,
+          authorName: `${p.author?.name ?? ''} ${p.author?.lastname ?? ''}`.trim(),
           views: p.views,
           comments: p.comments,
           synopsis: p.synopsis
@@ -34,46 +37,77 @@ export class ForumService {
         this.forumPosts$.set(mappedPosts);
         this.loading$.set(false);
       },
-      error: err => {
+      error: (err) => {
         console.error('Error al cargar publicaciones:', err);
         this.loading$.set(false);
       }
     });
   }
 
-  create(post: IForumPost): void {
+  create(payload: IForumPost): void {
     this.loading$.set(true);
-    
-    this.http.post<any>(`${this.apiUrl}`, post).subscribe({
-      next: response => {
-        console.log('Respuesta exitosa:', response);
-        alert('¡Historia publicada exitosamente!');
-        this.getAll();
+    this.http.post<any>(this.apiUrl, payload).subscribe({
+      next: (response) => {
+        const created = response?.data;
+        if (created) {
+          const current = this.forumPosts$();
+          this.forumPosts$.set([
+            {
+              id: created.id,
+              storyId: created.story?.id,
+              storyTitle: created.story?.titulo ?? '',
+              content: created.story?.content,
+              genre: created.genre,
+              isPublic: created.isPublic,
+              publishedAt: created.publishedAt,
+              authorName: `${created.author?.name ?? ''} ${created.author?.lastname ?? ''}`.trim(),
+              views: created.views,
+              comments: created.comments,
+              synopsis: created.synopsis
+            },
+            ...current
+          ]);
+        }
         this.loading$.set(false);
       },
-      error: (error: HttpErrorResponse) => {
-        console.error('Error HTTP completo:', error);
+      error: (err) => {
+        console.error('Error al crear publicación:', err);
         this.loading$.set(false);
-        
-        if (error.status === 409) {
-          alert('Esta historia ya está publicada en el foro');
-        } else if (error.status === 403) {
-          alert('No tienes permisos para publicar esta historia');
-        } else {
-          alert(`Error al crear publicación: ${error.status}`);
-        }
       }
     });
   }
 
-  update(post: IForumPost): void {
+  update(payload: IForumPost): void {
+    if (!payload.id) return;
+
     this.loading$.set(true);
-    this.http.put<any>(`${this.apiUrl}/${post.id}`, post).subscribe({
-      next: response => {
-        this.getAll();
+    this.http.put<any>(`${this.apiUrl}/${payload.id}`, payload).subscribe({
+      next: (response) => {
+        const updated = response?.data;
+        if (updated) {
+          const current = this.forumPosts$();
+          const mapped = current.map((p) =>
+            p.id === updated.id
+              ? {
+                  id: updated.id,
+                  storyId: updated.story?.id,
+                  storyTitle: updated.story?.titulo ?? '',
+                  content: updated.story?.content,
+                  genre: updated.genre,
+                  isPublic: updated.isPublic,
+                  publishedAt: updated.publishedAt,
+                  authorName: `${updated.author?.name ?? ''} ${updated.author?.lastname ?? ''}`.trim(),
+                  views: updated.views,
+                  comments: updated.comments,
+                  synopsis: updated.synopsis
+                }
+              : p
+          );
+          this.forumPosts$.set(mapped);
+        }
         this.loading$.set(false);
       },
-      error: err => {
+      error: (err) => {
         console.error('Error al actualizar publicación:', err);
         this.loading$.set(false);
       }
@@ -81,13 +115,16 @@ export class ForumService {
   }
 
   delete(post: IForumPost): void {
+    if (!post.id) return;
+
     this.loading$.set(true);
     this.http.delete<any>(`${this.apiUrl}/${post.id}`).subscribe({
       next: () => {
-        this.getAll();
+        const current = this.forumPosts$();
+        this.forumPosts$.set(current.filter((p) => p.id !== post.id));
         this.loading$.set(false);
       },
-      error: err => {
+      error: (err) => {
         console.error('Error al eliminar publicación:', err);
         this.loading$.set(false);
       }

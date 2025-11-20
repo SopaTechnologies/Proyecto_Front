@@ -1,29 +1,43 @@
-<div class="modal-form-container">
-    <div class="modal-header-custom">
-        <h2>Borrar Historia</h2>
-        <button type="button" class="btn-close-modal" (click)="cancel()">
-            <i class="fas fa-times"></i>
-        </button>
+<div class="modal-form-container delete-modal">
+  <!-- Header -->
+  <header class="modal-header-custom">
+    <div class="title-block">
+      <span class="pill pill-danger">
+        <i class="fas fa-exclamation-triangle"></i>
+        Eliminar
+      </span>
+      <h2>¿Borrar historia?</h2>
+      <p class="subtitle">
+        Esta acción no se puede deshacer. Si borras la historia, perderás su contenido.
+      </p>
     </div>
 
+   
+  </header>
+
+  <!-- Cuerpo -->
+  <main class="delete-main">
     <p class="confirmation-message">
-        ¿Estás seguro de que deseas borrar esta historia?
+      ¿Estás seguro de que deseas borrar esta historia?
     </p>
 
-
     <div class="form-actions">
-        <button type="button" (click)="cancel()" class="btn-cancel">
-            Cancelar
-        </button>
+      <button type="button" (click)="cancel()" class="btn-cancel">
+        Cancelar
+      </button>
 
-        <button (click)="deleteHistory(deleteHistoryForm.value.id)" class="btn-submit" [disabled]="loading()">
-            <span *ngIf="!loading()">
-                Aceptar
-            </span>
-            <span *ngIf="loading()">
-                <i class="fas fa-spinner fa-spin"></i> Borrando...
-            </span>
-        </button>
+      <button
+        type="button"
+        class="btn-submit"
+        (click)="deleteHistory(deleteHistoryForm.value.id)"
+        [disabled]="loading()"
+      >
+        <span *ngIf="!loading()">Aceptar</span>
+        <span *ngIf="loading()">
+          <i class="fas fa-spinner fa-spin"></i>
+          Borrando...
+        </span>
+      </button>
     </div>
-
+  </main>
 </div>

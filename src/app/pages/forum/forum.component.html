@@ -1,51 +1,171 @@
-<div class="forum-container">
-  <!-- Header del foro -->
-  <div class="forum-header">
-    <h2>Foro de Historias</h2>
-    <button type="button" (click)="openModal()" class="btn-add-post">
+<div class="forum-page">
+  <!-- HEADER -->
+  <header class="forum-header">
+    <div class="forum-header__text">
+      <span class="pill pill-soft">
+        <i class="fas fa-comments"></i>
+        Foro
+      </span>
+
+      <h1>Foro de historias</h1>
+
+      <p class="forum-subtitle">
+        Publica tus historias terminadas o en progreso para que otros usuarios puedan leer y comentar.
+      </p>
+    </div>
+
+    <button class="btn-primary" (click)="openModal()">
       <i class="fas fa-plus"></i>
-      <span>Nueva Historia</span>
+      <span>Publicar historia</span>
     </button>
+  </header>
+
+  <!-- CUERPO -->
+  <div class="forum-body">
+    <!-- Columna izquierda: listado -->
+    <section class="forum-main">
+      <!-- Loader general -->
+      <div class="forum-loader-wrapper" *ngIf="loading() || forumService.loading$()">
+        <app-loader></app-loader>
+      </div>
+
+      <!-- 🔍 Barra de filtros -->
+      <div class="forum-filters" *ngIf="!loading()">
+        <div class="filter-group">
+          <label for="filterGenre">Género</label>
+          <select id="filterGenre" [(ngModel)]="filterGenre">
+            <option value="">Todos</option>
+            <option *ngFor="let g of genreNames" [value]="g">
+              {{ g }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterAuthor">Autor</label>
+          <input
+            id="filterAuthor"
+            type="text"
+            [(ngModel)]="filterAuthor"
+            placeholder="Buscar por nombre de autor..."
+          />
+        </div>
+      </div>
+
+      <!-- Lista de publicaciones -->
+      <section class="forum-content" *ngIf="!loading()">
+        <app-forum-list
+          [forumPosts]="filteredPosts"
+          [currentUserName]="currentUserName"
+          (callEditMethod)="updatePost($event)"
+          (callDeleteMethod)="deletePost($event)"
+          (callOpenDetails)="openPostDetails($event)">
+        </app-forum-list>
+      </section>
+    </section>
   </div>
 
-  <!-- Lista de publicaciones -->
-  <app-forum-list
-    [forumPosts]="forumService.forumPosts$()"
-    [currentUserName]="currentUserName"
-    (callEditMethod)="callEdition($event)"
-    (callDeleteMethod)="deletePost($event)"
-    (callOpenDetails)="openPostDetails($event)"
-  ></app-forum-list>
-
-  <!-- Loader -->
-  <ng-container *ngIf="forumService.loading$()">
-    <app-loader></app-loader>
-  </ng-container>
-
-  <!-- Modal para crear/editar publicación -->
+  <!-- MODAL: crear / editar publicación -->
   <ng-template #addForumPostModal>
-    <app-modal [hideFooter]="true">
+    <app-modal [hideFooter]="true" [useCustomBackGround]="true">
       <app-forum-post-form
         [forumForm]="forumPostForm"
         [genres]="genreNames"
         [availableStories]="stories"
         (save)="savePost()"
-        (cancel)="closeModal()"
-      ></app-forum-post-form>
+        (cancel)="closeModal()">
+      </app-forum-post-form>
     </app-modal>
   </ng-template>
 
-  <!-- Modal de detalles de publicación -->
-  <ng-template #forumDetailsModal>
-    <app-modal [hideFooter]="true">
-      <div class="forum-details">
-        <h3>{{ selectedPost?.storyTitle }}</h3>
-        <p><strong>Autor:</strong> {{ selectedPost?.authorName }}</p>
-        <p><strong>Género:</strong> {{ selectedPost?.genre }}</p>
-        <p><strong>Publicado:</strong> {{ selectedPost?.publishedAt | date:'short' }}</p>
-        <p><strong>Sinopsis:</strong> {{ selectedPost?.synopsis }}</p>
-        <hr/>
-        <div [innerHTML]="selectedPost?.content"></div>
+  <!-- MODAL: detalle de historia -->
+  <ng-template #postDetailsModal>
+    <app-modal [hideFooter]="true" [useCustomBackGround]="true">
+      <div class="modal-form-container story-detail-modal" *ngIf="selectedPost">
+        <header class="modal-header-custom">
+          <div class="title-block">
+            <span class="pill small">
+              <i class="fas fa-book-open"></i>
+              Detalle de historia
+            </span>
+            <h2>{{ selectedPost.storyTitle || 'Historia sin título' }}</h2>
+            <p class="subtitle">
+              Vista de lectura de la historia publicada en el foro.
+            </p>
+          </div>
+
+          <button type="button" class="btn-close-modal" (click)="closeDetails()">
+            <i class="fas fa-times"></i>
+          </button>
+        </header>
+
+        <!-- Meta -->
+        <div class="story-detail-meta">
+          <span>
+            <i class="fas fa-user"></i>
+            {{ selectedPost.authorName || 'Autor desconocido' }}
+          </span>
+
+          <span *ngIf="selectedPost.publishedAt">
+            <i class="fas fa-clock"></i>
+            {{ selectedPost.publishedAt | date: 'short' }}
+          </span>
+
+          <span *ngIf="selectedPost.genre">
+            <i class="fas fa-tag"></i>
+            {{ selectedPost.genre }}
+          </span>
+
+          <span>
+            <i class="fas fa-eye"></i>
+            {{ selectedPost.views || 0 }} vistas
+          </span>
+
+          <span>
+            <i class="fas fa-comments"></i>
+            {{ selectedPost.comments || 0 }} comentarios
+          </span>
+
+          <span class="visibility-tag" [class.visibility-tag--private]="!selectedPost.isPublic">
+            {{ selectedPost.isPublic ? 'Pública' : 'Privada' }}
+          </span>
+        </div>
+
+        <!-- Sinopsis -->
+        <p class="story-detail-synopsis">
+          {{ selectedPost.synopsis }}
+        </p>
+
+        <!-- Contenido -->
+        <div class="story-detail-content" *ngIf="selectedPost.content">
+          <h3>Contenido de la historia</h3>
+          <div class="story-html" [innerHTML]="selectedPost.content"></div>
+        </div>
+      </div>
+    </app-modal>
+  </ng-template>
+
+  <!-- MODAL: confirmar borrado de publicación -->
+  <ng-template #deleteForumPostModal>
+    <app-modal [hideFooter]="true" [useCustomBackGround]="true">
+      <div class="modal-form-container delete-modal">
+        <div class="modal-header-custom">
+          <h2>Eliminar publicación</h2>
+        </div>
+
+        <p class="confirmation-message">
+          ¿Estás seguro de que deseas eliminar esta publicación del foro?
+          Esta acción no se puede deshacer.
+        </p>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="closeModal()">
+            Cancelar
+          </button>
+          <button type="button" class="btn-submit" (click)="confirmDelete()">
+            <span>Eliminar</span>
+          </button>
+        </div>
       </div>
     </app-modal>
   </ng-template>

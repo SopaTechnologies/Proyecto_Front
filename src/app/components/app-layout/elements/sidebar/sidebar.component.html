@@ -1,38 +1,100 @@
-<nav class="sidebar-main" [class.collapsed]="isCollapsed">
-  <!-- Encabezado -->
-  <div class="sidebar-header">
-    <a routerLink="/" class="sidebar-logo">
-      <img src="../../../../../assets/icons/logo@2x.png" alt="Logo" width="50" />
-    </a>
-
-    <button class="btn-toggle" (click)="toggleSidebar()">
-      <i class="fa-solid" [ngClass]="isCollapsed ? 'fa-arrow-right' : 'fa-arrow-left'"></i>
-    </button>
-  </div>
-
-  <!-- Contenido -->
-  <ul class="sidebar-menu">
-    <li class="sidebar-title" *ngIf="!isCollapsed">General</li>
-
- @for (route of permittedRoutes; track $index) {
-  <li class="sidebar-item">
-    <a
-      routerLink="/app/{{ route.path }}"
-      routerLinkActive="active"
-      class="sidebar-link"
+<nav class="floating-nav">
+  <div class="floating-nav-inner">
+    <!-- Submenú flotante encima del pill -->
+    <div
+      class="nav-submenu-container"
+      [class.open]="activeSection !== null"
     >
-      <span class="menu-text">{{ route.data?.['name'] || route.path }}</span>
-    </a>
-  </li>
-}
+      <!-- Historias -->
+      <div class="nav-submenu" *ngIf="activeSection === 'historias'">
+        <span class="nav-submenu-title">Historias</span>
 
-  </ul>
+        <a
+          *ngFor="let r of historiasRoutes"
+          class="submenu-link"
+          [routerLink]="['/app', r.path]"
+          routerLinkActive="active"
+          (click)="activeSection = null"
+        >
+          {{ r.data?.['name'] || r.path }}
+        </a>
+      </div>
 
-  <!-- Pie / Logout -->
-  <div class="sidebar-footer">
-    <button class="btn-logout" (click)="logout()">
-  <i class="fa-solid fa-right-from-bracket"></i>
-  <span *ngIf="!isCollapsed">Cerrar sesión</span>
-</button>
+      <!-- Menú / Opciones -->
+      <div class="nav-submenu" *ngIf="activeSection === 'menu'">
+        <span class="nav-submenu-title">Menú</span>
+
+        <a
+          *ngFor="let r of menuRoutes"
+          class="submenu-link"
+          [routerLink]="['/app', r.path]"
+          routerLinkActive="active"
+          (click)="activeSection = null"
+        >
+          {{ r.data?.['name'] || r.path }}
+        </a>
+
+        <!-- Cerrar sesión dentro del menú -->
+        <button
+          type="button"
+          class="submenu-link danger"
+          (click)="logout()"
+        >
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
+
+      <!-- Juego -->
+      <div class="nav-submenu" *ngIf="activeSection === 'juego'">
+        <span class="nav-submenu-title">Juego</span>
+
+        <a
+          *ngFor="let r of juegoRoutes"
+          class="submenu-link"
+          [routerLink]="['/app', r.path]"
+          routerLinkActive="active"
+          (click)="activeSection = null"
+        >
+          {{ r.data?.['name'] || r.path }}
+        </a>
+      </div>
+    </div>
+
+    <!-- Barra principal tipo pill -->
+    <div class="nav-pill-row">
+      <button
+        *ngIf="historiasRoutes.length"
+        type="button"
+        class="nav-pill"
+        [class.active]="activeSection === 'historias'"
+        (click)="setActiveSection('historias')"
+      >
+        <i class="fa-solid fa-book-open"></i>
+        <span>Historias</span>
+      </button>
+
+      <button
+        *ngIf="menuRoutes.length"
+        type="button"
+        class="nav-pill"
+        [class.active]="activeSection === 'menu'"
+        (click)="setActiveSection('menu')"
+      >
+        <i class="fa-solid fa-bars"></i>
+        <span>Menú</span>
+      </button>
+
+      <button
+        *ngIf="juegoRoutes.length"
+        type="button"
+        class="nav-pill"
+        [class.active]="activeSection === 'juego'"
+        (click)="setActiveSection('juego')"
+      >
+        <i class="fa-solid fa-gamepad"></i>
+        <span>Juego</span>
+      </button>
+    </div>
   </div>
 </nav>

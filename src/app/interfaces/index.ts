@@ -87,19 +87,41 @@ export interface IGenre {
 }
 
 export interface IForumPost {
-  id: number;
-  storyId: number;           // id de la historia
-  storyTitle: string;        // título de la historia
+  id?: number;
+  storyId?: number;
+  storyTitle?: string;     
   synopsis: string;
   genre: string;
   isPublic: boolean;
-  publishedAt: string;       // ISO string desde backend
-  views: number;
-  comments: number;
-  authorName: string;        // nombre del autor
-  content: string;           // contenido de la historia
+  publishedAt?: string;    
+  views?: number;          
+  comments?: number;      
+  authorName?: string;    
+  content?: string;      
 }
 
+export interface HexTile {
+  q: number;
+  r: number;
+  type: string;
+  color: string;
+  elevation: number;
+  moisture: number;
+  temperature: number;
+}
 
+export interface AxialCoord {
+  q: number;
+  r: number;
+}
 
+export interface CubeCoord {
+  x: number;
+  y: number;
+  z: number;
+}
 
+export interface Point {
+  x: number;
+  y: number;
+}

@@ -1,32 +1,137 @@
-<div class="forum-modal-form">
-  <form [formGroup]="forumForm" (ngSubmit)="onSubmit()">
-    <label>Historia:</label>
-    <select formControlName="storyId" required>
-      <option value="" disabled selected>Selecciona una historia</option>
-      <option *ngFor="let story of availableStories" [value]="story.id">
-        {{ story.titulo }}
-      </option>
-    </select>
+<div class="forum-form-container">
+  <!-- Header -->
+  <header class="forum-form-header">
+    <div class="header-text">
+      <span class="pill pill-soft">
+        <i class="fas fa-comments"></i>
+        Foro
+      </span>
 
-    <label>Género:</label>
-    <select formControlName="genre" required>
-      <option value="" disabled selected>Selecciona un género</option>
-      <option *ngFor="let g of genres" [value]="g">
-        {{ g }}
-      </option>
-    </select>
+      <h2 class="form-title">
+        {{ forumForm.get('id')?.value ? 'Editar publicación' : 'Nueva publicación en el foro' }}
+      </h2>
 
-    <label>Sinopsis:</label>
-    <textarea formControlName="synopsis" placeholder="Escribe una sinopsis..." required></textarea>
+      <p class="subtitle">
+        Elige una historia, define su género y comparte una breve sinopsis con la comunidad.
+      </p>
+    </div>
+  </header>
 
-    <label>
-      <input type="checkbox" formControlName="isPublic" />
-      Público
-    </label>
+  <!-- Formulario -->
+  <form [formGroup]="forumForm" (ngSubmit)="onSubmit()" class="forum-form">
+    <div class="form-layout">
+      <!-- Columna izquierda -->
+      <section class="form-column main-fields">
+        <!-- Historia -->
+        <div class="form-field">
+          <label for="storyId">Historia a publicar</label>
+          <select
+            id="storyId"
+            formControlName="storyId"
+            [ngClass]="{
+              'is-invalid':
+                forumForm.get('storyId')?.touched &&
+                forumForm.get('storyId')?.invalid
+            }"
+          >
+            <option [ngValue]="null">Seleccione una historia...</option>
+            <option *ngFor="let story of availableStories" [ngValue]="story.id">
+              {{ story.titulo || story.title || ('Historia #' + story.id) }}
+            </option>
+          </select>
+          <div class="error-msg"
+               *ngIf="forumForm.get('storyId')?.touched && forumForm.get('storyId')?.invalid">
+            Debes seleccionar una historia.
+          </div>
+        </div>
 
-    <div class="modal-buttons">
-      <button type="submit" [disabled]="forumForm.invalid">Guardar</button>
-      <button type="button" (click)="onCancel()">Cerrar</button>
+        <!-- Género -->
+        <div class="form-field">
+          <label for="genre">Género</label>
+          <select
+            id="genre"
+            formControlName="genre"
+            [ngClass]="{
+              'is-invalid':
+                forumForm.get('genre')?.touched &&
+                forumForm.get('genre')?.invalid
+            }"
+          >
+            <option value="">Seleccione un género...</option>
+            <option *ngFor="let g of genres" [value]="g">
+              {{ g }}
+            </option>
+          </select>
+          <div class="error-msg"
+               *ngIf="forumForm.get('genre')?.touched && forumForm.get('genre')?.invalid">
+            Debes seleccionar un género.
+          </div>
+        </div>
+
+        <!-- Sinopsis -->
+        <div class="form-field">
+          <label for="synopsis">Sinopsis / descripción breve</label>
+          <textarea
+            id="synopsis"
+            formControlName="synopsis"
+            rows="4"
+            placeholder="Escribe aquí una breve sinopsis de tu historia..."
+            [ngClass]="{
+              'is-invalid':
+                forumForm.get('synopsis')?.touched &&
+                forumForm.get('synopsis')?.invalid
+            }"
+          ></textarea>
+          <div class="error-msg"
+               *ngIf="forumForm.get('synopsis')?.touched && forumForm.get('synopsis')?.invalid">
+            La sinopsis es obligatoria y debe tener al menos 10 caracteres.
+          </div>
+        </div>
+      </section>
+
+      <!-- Columna derecha: visibilidad -->
+      <aside class="form-column side-panel">
+        <div class="visibility-card">
+          <div class="visibility-header">
+            <span class="pill pill-soft small">
+              <i class="fas fa-eye"></i>
+              Visibilidad
+            </span>
+            <h3>{{ forumForm.get('isPublic')?.value ? 'Publicación pública' : 'Publicación privada' }}</h3>
+            <p>
+              Si la historia es pública, aparecerá en el foro general para todos los usuarios.
+            </p>
+          </div>
+
+          <div class="toggle-row">
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="isPublic"
+                formControlName="isPublic"
+              />
+              <span class="slider round"></span>
+            </label>
+
+            <span class="toggle-label">
+              {{ forumForm.get('isPublic')?.value ? 'Pública' : 'Privada' }}
+            </span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Botones -->
+    <div class="form-actions">
+      <button type="button" class="btn btn-ghost" (click)="onCancel()">
+        <i class="fas fa-times"></i>
+        Cancelar
+      </button>
+
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-paper-plane"></i>
+        {{ forumForm.get('id')?.value ? 'Guardar cambios' : 'Publicar historia' }}
+      </button>
     </div>
   </form>
 </div>
