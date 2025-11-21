@@ -3,6 +3,8 @@ import { BaseService } from './base-service';
 import { ISearch, IUser, IResponse, IUser2 } from '../interfaces';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { AlertService } from './alert.service';
+import Swal from 'sweetalert2';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +19,7 @@ export class UserService extends BaseService<IUser> {
     page: 1,
     size: 5
   }
-  public totalItems: any = [];
+  public totalItems: number [] = [];
   private alertService: AlertService = inject(AlertService);
 
   getAll() {
@@ -27,9 +29,6 @@ export class UserService extends BaseService<IUser> {
         this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages: 0}, (_, i) => i+1);
         this.userListSignal.set(response.data);
       },
-      error: (err: any) => {
-        console.error('error', err);
-      }
     });
   }
 
@@ -42,7 +41,6 @@ export class UserService extends BaseService<IUser> {
       },
       error: (err: any) => {
         this.alertService.displayAlert('error', 'An error occurred adding the user','center', 'top', ['error-snackbar']);
-        console.error('error', err);
       }
     });
   }
@@ -55,7 +53,6 @@ export class UserService extends BaseService<IUser> {
       },
       error: (err: any) => {
         this.alertService.displayAlert('error', 'An error occurred updating the user','center', 'top', ['error-snackbar']);
-        console.error('error', err);
       }
     });
   }
@@ -74,18 +71,5 @@ export class UserService extends BaseService<IUser> {
       }
     };
     return this.http.put<IResponse<IUser2>>(`${this.source}/update`, payload);
-  }
-
-  delete(user: IUser) {
-    this.delCustomSource(`${user.id}`).subscribe({
-      next: (response: any) => {
-        this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
-        this.getAll();
-      },
-      error: (err: any) => {
-        this.alertService.displayAlert('error', 'An error occurred deleting the user','center', 'top', ['error-snackbar']);
-        console.error('error', err);
-      }
-    });
   }
 }

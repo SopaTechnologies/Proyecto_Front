@@ -113,16 +113,16 @@ export class UserAdminComponent {
       });
       return;
     }
-    if (this.user.password && this.user.password.trim() !== ""){
+    if (this.user.password && this.user.password.trim() !== "") {
       const c = this.user.password.length;
-      if (c < 8  || c > 16){
-            Swal.fire({
-              title: "Error",
-              text: "La contraseña debe ser mayor o igual 8 caracteres y menor o igual a 16",
-              icon: "warning",
-            });
-            return;
-          }
+      if (c < 8 || c > 16) {
+        Swal.fire({
+          title: "Error",
+          text: "La contraseña debe ser mayor o igual 8 caracteres y menor o igual a 16",
+          icon: "warning",
+        });
+        return;
+      }
     }
     this.ne();
     this.resetForm();
@@ -149,16 +149,19 @@ export class UserAdminComponent {
             response.message || "Usuario guardado/actualizado correctamente!!",
           text: "Operación completada exitosamente!!",
           icon: "success",
-          confirmButtonText: "ok"
+          confirmButtonText: "ok",
         });
         this.ngOnInit();
         this.resetForm();
       },
       error: (err: any) => {
-        this.signUpError = err.error?.description || err.message;
+        const errorMessage =
+          err.error?.message ||
+          err.error?.description ||
+          "El usuario indicado no esta registrado";
         Swal.fire({
           title: "Error",
-          text: this.signUpError,
+          text: errorMessage,
           icon: "error",
         });
       },
@@ -178,7 +181,6 @@ export class UserAdminComponent {
   onEditUser(user: any) {
     this.user = { ...user };
     this.roleName = user.role?.name || "";
-    // Clear photo preview when editing
     this.previewUrl = null;
     this.selectedFile = null;
     if (this.photoInput) {

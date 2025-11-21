@@ -9,7 +9,6 @@
     <div class="col-12">
       <app-user-list
         (callModalAction)="callEdition($event)"
-        (callDeleteAction)="userService.delete($event)"
         [users]="userService.users$()"
       />
       @if(userService.users$().length) {

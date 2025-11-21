@@ -46,7 +46,6 @@ export class LoginComponent implements AfterViewInit {
       });
       return;
     } else{
-    // if (this.emailModel.valid && this.passwordModel.valid) {
       this.authService.login(this.loginForm).subscribe({
         next: (response: any) => {
           this.router.navigateByUrl("/app/dashboard");
