@@ -1,201 +1,197 @@
-/* === SIDEBAR PRINCIPAL === */
-.sidebar-main {
-  background-color: #2a1a1a; /* fondo oscuro tipo café */
-  border-right: 2px solid #a15c3e;
-  width: 260px;
-  min-height: 100vh;
+// Paleta café
+$color-bg: #3a2828;
+$color-bg-soft: #4a3333;
+$color-accent: #c8b2a9;
+$color-accent-soft: rgba(200, 178, 169, 0.18);
+$color-text-main: #f7f1ec;
+$color-text-muted: #e0d1c8;
+$color-border-soft: rgba(255, 255, 255, 0.1);
+
+:host {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 1.75rem;
+  display: flex;
+  justify-content: center;
+  z-index: 60;
+  pointer-events: none; // no bloquea clicks fuera del nav
+}
+
+.floating-nav {
+  pointer-events: auto;
+  position: relative;
+  max-width: 480px;
+  width: 100%;
+  padding-inline: 1rem;
+}
+
+.floating-nav-inner {
+  position: relative;
+}
+
+// ------------ Submenú flotante (la tarjeta de arriba) ------------
+.nav-submenu-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3.7rem; // justo encima del pill
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
+  transform-origin: bottom center;
+  pointer-events: none;
+  transition:
+    opacity 0.22s ease-out,
+    transform 0.22s ease-out;
+
+  &.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+}
+
+.nav-submenu {
+  min-width: 260px;
+  max-width: 360px;
+  padding: 0.75rem 0.8rem 0.65rem;
+  border-radius: 1.4rem;
+  background-color: rgba(73, 54, 54, 0.96);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px);
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  transition: width 0.4s ease, background-color 0.3s ease;
-  overflow: hidden;
-
-  &.collapsed {
-    width: 80px;
-
-    .menu-text,
-    .sidebar-title,
-    .btn-logout span {
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .sidebar-logo img {
-      width: 40px;
-    }
-
-    .btn-toggle {
-      transform: rotate(180deg);
-    }
-  }
+  gap: 0.25rem;
+  color: $color-text-main;
 }
 
-/* === ENCABEZADO === */
-.sidebar-header {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 2px solid #a15c3e;
-
-  .sidebar-logo img {
-    width: 48px;
-    transition: width 0.3s ease;
-  }
+.nav-submenu-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: $color-text-muted;
+  margin-bottom: 0.2rem;
+  padding-inline: 0.45rem;
 }
 
-/* === BOTÓN DE COLAPSO === */
-.btn-toggle {
+.submenu-link {
+  border: none;
   background: transparent;
-  border: 2px solid #a15c3e;
-  color: #a38d77;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  text-decoration: none;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-left: auto;
+  gap: 0.5rem;
+  padding: 0.4rem 0.55rem;
+  border-radius: 0.9rem;
+  font-size: 0.82rem;
+  color: $color-text-main;
   cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: #3a2828;
-    color: #e29a6f;
-    border-color: #d48656;
-  }
+  transition:
+    background-color 0.16s ease-out,
+    color 0.16s ease-out,
+    transform 0.16s ease-out;
 
   i {
-    font-size: 16px;
-    transition: transform 0.3s ease;
+    font-size: 0.9rem;
+    opacity: 0.9;
   }
-}
 
-/* === MENÚ === */
-.sidebar-menu {
-  flex: 1;
-  padding: 20px 0;
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-
-  &::-webkit-scrollbar {
-    display: none;
+  &.active,
+  &:hover {
+    background: $color-accent-soft;
+    color: $color-text-main;
+    transform: translateY(-1px);
   }
-}
 
-.sidebar-title {
-  color: #d9a77a;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: bold;
-  padding: 0 24px 10px;
-  border-bottom: 1px solid #3a2828;
-}
-
-/* === ITEMS DEL MENÚ === */
-.sidebar-item {
-  list-style: none;
-
-  .sidebar-link {
-    display: flex;
-    align-items: center;
-    padding: 14px 24px;
-    color: #a38d77;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: 0.5px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    i {
-      margin-right: 12px;
-      font-size: 16px;
-      color: #d48656;
-      transition: color 0.3s ease, transform 0.3s ease;
-    }
+  &.danger {
+    margin-top: 0.25rem;
+    color: #ffdddd;
 
     &:hover {
-      background-color: #3a2828;
-      color: #e29a6f;
-
-      i {
-        color: #e29a6f;
-        transform: scale(1.1);
-      }
-    }
-
-    &.active,
-    &.router-link-active {
-      background-color: #3a2828;
-      border-left: 4px solid #a15c3e;
-      color: #d48656;
-      font-weight: bold;
-
-      i {
-        color: #e29a6f;
-      }
+      background: rgba(190, 72, 72, 0.28);
+      color: #ffecec;
     }
   }
 }
 
-/* === PIE DEL SIDEBAR === */
-.sidebar-footer {
-  border-top: 2px solid #a15c3e;
-  padding: 15px;
+// ------------ Barra inferior tipo pill ------------
+.nav-pill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  background-color: rgba(23, 14, 14, 0.98);
+  backdrop-filter: blur(18px);
+}
+
+.nav-pill {
+  flex: 1;
+  border: none;
+  background: transparent;
+  border-radius: 999px;
+  padding: 0.45rem 0.7rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  color: $color-text-muted;
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-align: center;
+  transition:
+    background-color 0.18s ease-out,
+    color 0.18s ease-out,
+    transform 0.18s ease-out,
+    box-shadow 0.18s ease-out;
 
-  .btn-logout {
-    background: transparent;
-    border: none;
-    color: #a38d77;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
+  i {
+    font-size: 0.9rem;
+  }
 
-    &:hover {
-      color: #e29a6f;
-    }
+  span {
+    white-space: nowrap;
+  }
 
-    i {
-      font-size: 16px;
-      transition: transform 0.3s ease;
-    }
+  &:hover {
+    background: rgba(0, 0, 0, 0.3);
+    color: $color-text-main;
+    transform: translateY(-1px);
+  }
 
-    &:hover i {
-      transform: translateX(3px);
-    }
+  &.active {
+    background: radial-gradient(circle at 30% 0, #fdf4ec 0, $color-accent 45%, #8c6a5e 100%);
+    color: #2b1b1b;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8);
   }
 }
 
-/* === RESPONSIVIDAD === */
-@media (max-width: 992px) {
-  .sidebar-main {
-    position: fixed;
-    left: -260px;
-    transition: left 0.4s ease;
-    z-index: 200;
+// ------------ Responsive ------------
+@media (max-width: 480px) {
+  :host {
+    bottom: 1.2rem;
+  }
 
-    &.open {
-      left: 0;
+  .floating-nav {
+    padding-inline: 0.6rem;
+  }
+
+  .nav-submenu {
+    max-width: 100%;
+  }
+
+  .nav-pill {
+    font-size: 0.8rem;
+
+    span {
+      display: none; // solo iconos en pantallas muy pequeñas
     }
   }
-}
-
-/* === ELIMINA ELEMENTOS SOBRANTES === */
-.left-arrow,
-.right-arrow,
-.simplebar-scrollbar::before {
-  display: none !important;
 }

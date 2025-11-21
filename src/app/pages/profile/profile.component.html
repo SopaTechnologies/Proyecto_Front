@@ -1,134 +1,199 @@
-<div class="px-4 py-4">
-  <div class="text-center mb-3">
-    <img
-      [src]="profileService.user$().photo || 'assets/img/default-avatar.png'"
-      alt="Profile Photo"
-      class="rounded-circle"
-      style="width: 300; height: 300; object-fit: cover"
-    />
-  </div>
-  <div class="rounded px-4 py-4">
-    <h1>Actualiza tus datos personales</h1>
-    <form (ngSubmit)="updateUser()" #userUpdateForm="ngForm">
-      <div class="row">
-        <div class="col-md-4 mb-3">
-          <label for="email" class="form-label">Correo</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            name="email"
-            [(ngModel)]="userForm.email"
-            required
-            readonly
-          />
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="name" class="form-label">Nombre</label>
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            name="name"
-            [(ngModel)]="userForm.name"
-            required
-          />
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="lastname" class="form-label">Apellido</label>
-          <input
-            type="text"
-            class="form-control"
-            id="lastname" 
-            name="lastname"
-            [(ngModel)]="userForm.lastname"
-            required
-          />
-        </div>
-        
+<div class="profile-page">
+  <!-- ENCABEZADO -->
+  <header class="profile-header">
+    <div class="avatar-block">
+      <div class="avatar-ring">
+        <img
+          [src]="profileService.user$().photo || 'assets/img/default-avatar.png'"
+          alt="Foto de perfil"
+          class="avatar-img"
+        />
       </div>
 
-      <div class="d-flex align-items-center mb-3">
-        <div class="form-group px-1">
-          <label for="photo" class="form-label mb-2">Foto de perfil</label>
-          <input
-            #photoInput
-            type="file"
-            class="form-control"
-            id="photo"
-            (change)="onPhotoSelected($event)"
-          />
+      <div class="avatar-info">
+        <span class="pill pill-soft">
+          <i class="fas fa-user-circle"></i>
+          Perfil
+        </span>
 
-          <img
-            *ngIf="previewUrl"
-            [src]="previewUrl"
-            class="img-thumbnail mt-2"
-            width="150"
-          />
+        <h2>
+          {{ userForm.name }} {{ userForm.lastname }}
+        </h2>
 
-          <div *ngIf="isUploadingPhoto" class="upload-spinner mt-2">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Subiendo foto...</span>
-            </div>
+        <p class="email">
+          {{ userForm.email }}
+        </p>
+
+        <p class="username" *ngIf="userForm.username">
+          &#64;{{ userForm.username }}
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mensaje de estado -->
+  <div class="status-message" *ngIf="statusMessage">
+    {{ statusMessage }}
+  </div>
+
+  <!-- CUERPO: DOS TARJETAS -->
+  <main class="profile-grid">
+    <!-- TARJETA: DATOS PERSONALES -->
+    <section class="profile-card">
+      <div class="card-header">
+        <h3>Actualiza tus datos personales</h3>
+        <p class="card-subtitle">
+          Modifica tu nombre, apellidos y foto de perfil.
+        </p>
+      </div>
+
+      <form
+        (ngSubmit)="updateUser()"
+        #userUpdateForm="ngForm"
+        class="profile-form"
+      >
+        <div class="fields-grid">
+          <div class="field-group">
+            <label for="email">Correo</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              [(ngModel)]="userForm.email"
+              required
+              readonly
+            />
           </div>
 
+          <div class="field-group">
+            <label for="name">Nombre</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              [(ngModel)]="userForm.name"
+              required
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="lastname">Apellido</label>
+            <input
+              type="text"
+              id="lastname"
+              name="lastname"
+              [(ngModel)]="userForm.lastname"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="field-group photo-group">
+          <label for="photo">Foto de perfil</label>
+
+          <div class="photo-row">
+            <div class="file-block">
+              <input
+                #photoInput
+                type="file"
+                id="photo"
+                accept="image/*"
+                (change)="onPhotoSelected($event)"
+              />
+              <small class="helper-text">
+                Formatos recomendados: JPG o PNG. Tamaño máximo ~2MB.
+              </small>
+            </div>
+
+            <div class="preview-block" *ngIf="previewUrl || isUploadingPhoto">
+              <img
+                *ngIf="previewUrl"
+                [src]="previewUrl"
+                class="photo-preview"
+                alt="Vista previa"
+              />
+
+              <div *ngIf="isUploadingPhoto" class="upload-spinner">
+                <div class="spinner"></div>
+                <span>Subiendo foto...</span>
+              </div>
+
+              <button
+                type="button"
+                class="btn-primary small"
+                *ngIf="previewUrl && !isUploadingPhoto"
+                (click)="confirmPhotoUpload()"
+              >
+                Confirmar foto
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
           <button
-            *ngIf="previewUrl && !userForm.photo && !isUploadingPhoto"
-            class="btn btn-primary btn-block w-100 dark-submit-btn"
-            (click)="confirmPhotoUpload()"
+            type="submit"
+            class="btn-primary"
+            [disabled]="!userUpdateForm.form.valid"
           >
-            Confirmar Foto
+            Actualizar datos personales
           </button>
         </div>
+      </form>
+    </section>
+
+    <!-- TARJETA: CAMBIO DE CONTRASEÑA -->
+    <section class="profile-card">
+      <div class="card-header">
+        <h3>Cambiar la contraseña</h3>
+        <p class="card-subtitle">
+          Define una nueva contraseña segura para tu cuenta.
+        </p>
       </div>
-      <button
-        type="submit"
-        class="btn btn-primary btn-block dark-submit-btn"
-        [disabled]="!userUpdateForm.form.valid"
+
+      <form
+        (ngSubmit)="updatePassword()"
+        #passwordUpdateForm="ngForm"
+        class="profile-form"
       >
-        Actualizar datos personales
-      </button>
-    </form>
-  </div>
-  <!-- ------------------------------------------------------------------------------------------------------ -->
-  <div class="px-4 py-4">
-    <h1>Cambiar la Contraseña</h1>
-    <form (ngSubmit)="updatePassword()" #passwordUpdateForm="ngForm">
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="passwordEmail" class="form-label">Correo</label>
-          <input
-            type="email"
-            class="form-control mb-4"
-            id="passwordEmail"
-            name="email"
-            [(ngModel)]="passwordForm.email"
-            required
-            readonly
-          />
+        <div class="fields-grid single-column">
+          <div class="field-group">
+            <label for="passwordEmail">Correo</label>
+            <input
+              type="email"
+              id="passwordEmail"
+              name="email"
+              [(ngModel)]="passwordForm.email"
+              required
+              readonly
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="newPassword">Nueva contraseña</label>
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              [(ngModel)]="passwordForm.newPassword"
+              required
+            />
+            <small class="helper-text">
+              Debe tener entre 8 y 16 caracteres.
+            </small>
+          </div>
         </div>
-        <div class="col-md-6 mb-3">
-          <label for="newPassword" class="form-label"
-            >Indique la nueva contraseña</label
+
+        <div class="form-actions">
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="!passwordUpdateForm.form.valid"
           >
-          <input
-            type="password"
-            class="form-control"
-            id="newPassword"
-            name="newPassword"
-            [(ngModel)]="passwordForm.newPassword"
-            required
-          />
+            Actualizar contraseña
+          </button>
         </div>
-      </div>
-      <button
-        type="submit"
-        class="mb-4 btn btn-primary btn-block dark-submit-btn"
-        [disabled]="!passwordUpdateForm.form.valid"
-      >
-        Actualiza la contraseña
-      </button>
-    </form>
-  </div>
-  
+      </form>
+    </section>
+  </main>
 </div>

@@ -1,200 +1,224 @@
-<div class="login-container">
-  <div class="d-flex align-items-center justify-content-center h-100">
-    <div class="login-card">
-      <div class="w-100">
-        <div class="text-center">
-          <a class="logo text-center" routerLink="/">
-            <img
-              width="400"
-              class="img-fluid mb-4"
-              src="../../../../assets/icons/logo@2x.png"
-              alt="Logo"
-            />
-          </a>
-        </div>
-        <div class="login-main">
-          <form
-            (ngSubmit)="handleSignup($event)"
-            autocomplete="off"
-            #frm="ngForm"
-          >
-            <div class="mb-3">
-              <h4 class="login-main text-center logo-text">Registro</h4>
-              <small style="color: #4f4f4f" class="text-primary">
-                Ingresa tus datos para poder iniciar
-              </small>
-            </div>
-            <div class="d-flex align-items-center mb-3">
-              <div class="form-group px-1">
-                <label for="name" class="form-label mb-2"> Nombre </label>
-                <input
-                  #name="ngModel"
-                  type="text"
-                  class="form-control"
-                  id="name"
-                  name="name"
-                  placeholder="Nombre"
-                  [(ngModel)]="user.name"
-                  [ngClass]="{
-                    'is-invalid': name.invalid && name.touched,
-                    'is-valid': name.valid && name.touched
-                  }"
-                  required
-                />
-                <div *ngIf="name.invalid" class="invalid-feedback">
-                  Ingresa un nombre valido
-                </div>
-              </div>
-              <div class="form-group px-1">
-                <label for="lastname" class="form-label mb-2">
-                  Ingresa un apellido valido
-                </label>
-                <input
-                  #lastname="ngModel"
-                  type="text"
-                  class="form-control"
-                  id="lastname"
-                  name="lastname"
-                  placeholder="Apellido"
-                  [(ngModel)]="user.lastname"
-                  [ngClass]="{
-                    'is-invalid': lastname.invalid && lastname.touched,
-                    'is-valid': lastname.valid && lastname.touched
-                  }"
-                  required
-                />
-                <div *ngIf="lastname.invalid" class="invalid-feedback">
-                  Please add a valid lastname
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group mb-3">
-              <label for="email" class="form-label mb-2">
-                Dirección de correo
-              </label>
-              <input
-                #email="ngModel"
-                type="email"
-                class="form-control"
-                id="email"
-                name="email"
-                placeholder="Correo@gmail.com"
-                [(ngModel)]="user.email"
-                (ngModelChange)="user.username = $event"
-                [ngClass]="{
-                  'is-invalid': email.invalid && email.touched,
-                  'is-valid': email.valid && email.touched
-                }"
-                required
-              />
-              <div *ngIf="email.invalid" class="invalid-feedback">
-                Por favor ingrese una direccion de correo valida
-              </div>
-            </div>
-
-            <div class="form-group mb-5">
-              <label for="password" class="form-label mb-2">Password</label>
-              <div class="form-input position-relative">
-                <input
-                  #password="ngModel"
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  name="password"
-                  placeholder="Contraseña"
-                  [(ngModel)]="user.password"
-                  [ngClass]="{
-                    'is-invalid': password.invalid && password.touched,
-                    'is-valid': password.valid && password.touched
-                  }"
-                  required
-                />
-                <div *ngIf="password.invalid" class="invalid-feedback">
-                  Por favor ingrese una contraseña
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group mb-5">
-              <label for="passworConfirModel" class="form-label mb-2">Confirmar contraseña</label>
-              <div class="form-input position-relative">
-                <input
-                  #password="ngModel"
-                  type="password"
-                  class="form-control"
-                  id="passworConfirModel"
-                  name="passworConfirModel"
-                  placeholder="Contraseña"
-                  [(ngModel)]="f.passwordConf"
-                  [ngClass]="{
-                    'is-invalid': password.invalid && password.touched,
-                    'is-valid': password.valid && password.touched
-                  }"
-                  required
-                />
-                <div *ngIf="password.invalid" class="invalid-feedback">
-                  Por favor ingrese una contraseña
-                </div>
-              </div>
-            </div>
-            
-            <div class="d-flex align-items-center mb-3">
-              <div class="form-group px-1">
-                <label for="photo" class="form-label mb-2"
-                  >Foto de perfil</label
-                >
-                <input
-                  #photoInput
-                  type="file"
-                  class="form-control"
-                  id="photo"
-                  (change)="onPhotoSelected($event)"
-                />
-
-                <img
-                  *ngIf="previewUrl"
-                  [src]="previewUrl"
-                  class="img-thumbnail mt-2"
-                  width="150"
-                />
-
-                <div *ngIf="isUploadingPhoto" class="upload-spinner mt-2">
-                  <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Subiendo foto...</span>
-                  </div>
-                </div>
-
-                <button
-                  *ngIf="previewUrl && !user.photo && !isUploadingPhoto"
-                  class="btn btn-primary btn-block w-100 dark-submit-btn"
-                  (click)="confirmPhotoUpload()"
-                >
-                  Confirmar Foto
-                </button>
-              </div>
-            </div>
-
-            <div class="form-group mb-4">
-              <button
-                class="btn btn-primary btn-block w-100 dark-submit-btn"
-                type="submit"
-              >
-                Registrarse
-              </button>
-              @if(signUpError) {
-              <p class="text-danger">{{ signUpError }}</p>
-              } @else if (validSignup){
-              <p class="text-success">
-                Usuario Registrado correctamente, por favor dirijase a la
-                pantalla de inicio de sesión
-              </p>
-              }
-            </div>
-            <a href="/login" class="text-primary">Ir a Iniciar Sesion</a>
-          </form>
+<div class="login-page">
+  <div class="login-card">
+    <!-- Header: logo pequeño + enlace a login -->
+    <header class="login-header">
+      <div class="brand">
+        <img
+          src="../../../../assets/icons/sopa_logo.png"
+          alt="Logo Sopa"
+          class="brand-logo"
+        />
+        <div class="brand-text">
+          <span class="brand-sub">by</span>
+          <span class="brand-main">SOPA TECHNOLOGIES</span>
         </div>
       </div>
-    </div>
+
+      <div class="nav-buttons">
+        <a routerLink="/login" class="btn-ghost">
+          Ir a iniciar sesión
+        </a>
+      </div>
+    </header>
+
+    <div class="divider"></div>
+
+    <!-- Cuerpo principal -->
+    <section class="login-main">
+      <div class="login-intro">
+        <h1>Crear cuenta</h1>
+        <p>Ingresa tus datos para comenzar tu aventura en Mahou Site.</p>
+        <img
+          src="../../../../assets/icons/logo@2x.png"
+          alt="Logo Mahou"
+          class="intro-logo"
+        />
+      </div>
+
+      <form
+        (ngSubmit)="handleSignup($event)"
+        autocomplete="off"
+        #frm="ngForm"
+        class="login-form"
+      >
+        <!-- Nombre + Apellido -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name" class="form-label">Nombre</label>
+            <input
+              #name="ngModel"
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Nombre"
+              class="form-control"
+              [(ngModel)]="user.name"
+              [ngClass]="{
+                'is-invalid': name.invalid && name.touched,
+                'is-valid': name.valid && name.touched
+              }"
+              required
+            />
+            <div *ngIf="name.invalid && name.touched" class="invalid-feedback">
+              Ingresa un nombre válido.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastname" class="form-label">Apellido</label>
+            <input
+              #lastname="ngModel"
+              type="text"
+              id="lastname"
+              name="lastname"
+              placeholder="Apellido"
+              class="form-control"
+              [(ngModel)]="user.lastname"
+              [ngClass]="{
+                'is-invalid': lastname.invalid && lastname.touched,
+                'is-valid': lastname.valid && lastname.touched
+              }"
+              required
+            />
+            <div
+              *ngIf="lastname.invalid && lastname.touched"
+              class="invalid-feedback"
+            >
+              Ingresa un apellido válido.
+            </div>
+          </div>
+        </div>
+
+        <!-- Correo -->
+        <div class="form-group">
+          <label for="email" class="form-label">Dirección de correo</label>
+          <input
+            #email="ngModel"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="correo@gmail.com"
+            class="form-control"
+            [(ngModel)]="user.email"
+            (ngModelChange)="user.username = $event"
+            [ngClass]="{
+              'is-invalid': email.invalid && email.touched,
+              'is-valid': email.valid && email.touched
+            }"
+            required
+          />
+          <div *ngIf="email.invalid && email.touched" class="invalid-feedback">
+            Ingresa una dirección de correo válida.
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-group">
+          <label for="password" class="form-label">Contraseña</label>
+          <div class="password-wrapper">
+            <input
+              #password="ngModel"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Contraseña (8-16 caracteres)"
+              class="form-control"
+              [(ngModel)]="user.password"
+              [ngClass]="{
+                'is-invalid': password.invalid && password.touched,
+                'is-valid': password.valid && password.touched
+              }"
+              required
+            />
+          </div>
+          <div
+            *ngIf="password.invalid && password.touched"
+            class="invalid-feedback"
+          >
+            Por favor ingresa una contraseña.
+          </div>
+        </div>
+
+        <!-- Confirmar contraseña -->
+        <div class="form-group">
+          <label for="passwordConf" class="form-label">
+            Confirmar contraseña
+          </label>
+          <div class="password-wrapper">
+            <input
+              #passwordConf="ngModel"
+              type="password"
+              id="passwordConf"
+              name="passwordConf"
+              placeholder="Repite la contraseña"
+              class="form-control"
+              [(ngModel)]="f.passwordConf"
+              [ngClass]="{
+                'is-invalid': passwordConf.invalid && passwordConf.touched,
+                'is-valid': passwordConf.valid && passwordConf.touched
+              }"
+              required
+            />
+          </div>
+          <div
+            *ngIf="passwordConf.invalid && passwordConf.touched"
+            class="invalid-feedback"
+          >
+            Por favor confirma la contraseña.
+          </div>
+        </div>
+
+        <!-- Foto de perfil -->
+        <div class="form-group">
+          <label for="photo" class="form-label">Foto de perfil (opcional)</label>
+          <input
+            #photoInput
+            type="file"
+            id="photo"
+            class="form-control"
+            (change)="onPhotoSelected($event)"
+          />
+
+          <img
+            *ngIf="previewUrl"
+            [src]="previewUrl"
+            class="photo-preview"
+            alt="Previsualización foto"
+          />
+
+          <div *ngIf="isUploadingPhoto" class="upload-spinner">
+            Subiendo foto...
+          </div>
+
+          <button
+            *ngIf="previewUrl && !user.photo && !isUploadingPhoto"
+            type="button"
+            class="btn-secondary"
+            (click)="confirmPhotoUpload()"
+          >
+            Confirmar foto
+          </button>
+        </div>
+
+        <!-- Botón + errores -->
+        <div class="form-group">
+          <button
+            class="btn-primary-submit"
+            type="submit"
+          >
+            Registrarse
+          </button>
+
+          @if (signUpError) {
+          <p class="error-text">{{ signUpError }}</p>
+          }
+        </div>
+
+        <div class="form-footer-link">
+          <span>¿Ya tienes cuenta?</span>
+          <a routerLink="/login">Inicia sesión aquí</a>
+        </div>
+      </form>
+    </section>
   </div>
 </div>

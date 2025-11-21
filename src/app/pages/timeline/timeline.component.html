@@ -1,42 +1,54 @@
-<!-- Botón crear mensaje en la línea de tiempo -->
-<div class="timeline-header">
-  <button class="create-timeline-btn" (click)="onCreateMessage()">
-    <i class="fas fa-plus"></i>
-    Crear mensaje
-  </button>
+<div class="timeline-page">
+  <!-- HEADER SUPERIOR -->
+  <header class="timeline-page-header">
+    <div class="header-text">
+      <span class="pill pill-soft">
+        <i class="fas fa-stream"></i>
+        Línea de tiempo
+      </span>
+      <h1>Gestión de línea de tiempo</h1>
+      <p class="header-subtitle">
+        Crea y organiza los eventos clave de tu historia. Puedes agregar, editar o eliminar momentos cuando lo necesites.
+      </p>
+    </div>
+
+    <button
+      class="btn-primary"
+      type="button"
+      (click)="onCreateMessage()"
+    >
+      <i class="fas fa-plus"></i>
+      <span>Crear mensaje</span>
+    </button>
+  </header>
+
+  
+
+  <!-- SECCIÓN PRINCIPAL -->
+  <main class="timeline-main">
+    <!-- Loader centrado -->
+    <div *ngIf="loading" class="loading-section">
+      <div class="spinner"></div>
+      <p>Cargando mensajes de la línea de tiempo...</p>
+    </div>
+
+    <!-- Lista cuando no está cargando -->
+    <app-timeline-list
+      *ngIf="!loading"
+      [messages]="messages"
+      (createMessage)="onCreateMessage()"
+      (editMessage)="onEditMessage($event)"
+      (deleteMessage)="onDeleteMessage($event)"
+    >
+    </app-timeline-list>
+  </main>
+
+  <!-- MODAL (formulario de crear/editar) -->
+  <app-timeline-form
+    *ngIf="showModal"
+    [message]="currentMessage"
+    (save)="onSaveMessage($event)"
+    (close)="onCloseModal()"
+  >
+  </app-timeline-form>
 </div>
-
-<!-- Loading spinner -->
-<div *ngIf="loading" class="loading-section">
-  <div class="spinner"></div>
-  <p>Cargando mensajes...</p>
-</div>
-
-<!-- Error message -->
-<div *ngIf="error" class="error-message">
-  <i class="fas fa-exclamation-triangle"></i>
-  {{error}}
-</div>
-
-<!-- Success message -->
-<div *ngIf="successMessage" class="success-message">
-  <i class="fas fa-check-circle"></i>
-  {{successMessage}}
-</div>
-
-<!-- Timeline List Component -->
-<app-timeline-list 
-  *ngIf="!loading"
-  [messages]="messages"
-  (createMessage)="onCreateMessage()"
-  (editMessage)="onEditMessage($event)"
-  (deleteMessage)="onDeleteMessage($event)">
-</app-timeline-list>
-
-<!-- Timeline Form Component (Modal) -->
-<app-timeline-form
-  *ngIf="showModal"
-  [message]="currentMessage"
-  (save)="onSaveMessage($event)"
-  (close)="onCloseModal()">
-</app-timeline-form>

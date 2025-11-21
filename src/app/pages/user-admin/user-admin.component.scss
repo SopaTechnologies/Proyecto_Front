@@ -1,145 +1,265 @@
-.logo-text {
-  color: white;
-  font-weight: 600;
-  font-size: 18px;
-  padding: 10px;
-  
-}
+// ===== Paleta café =====
+$color-bg: #2b1c1c;
+$color-bg-soft: #3a2828;
+$color-bg-soft2: #4a2f2f;
+$color-accent: #c8b2a9;
+$color-accent-strong: #d4a574;
+$color-text-main: #f7f1ec;
+$color-text-muted: #e0d1c8;
+$color-border-soft: rgba(255, 255, 255, 0.12);
+$color-danger: #d94747;
 
-.nav-buttons .btn-link {
-  color: white;
-  text-decoration: none;
-}
-
-.nav-buttons .btn-secondary {
-  background-color: #d4a574;
-  color: white;
-  border: none;
-  padding: 8px 24px;
-  border-radius: 4px;
-}
-
+// ===== CONTENEDOR PRINCIPAL =====
 .up-main {
-  padding: 20px 40px;
-  background-color: #2b1d1d;
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1.6rem 1.9rem 1.9rem;
+  border-radius: 1.6rem;
+  background: radial-gradient(
+    circle at top left,
+    $color-bg-soft2 0,
+    $color-bg-soft 40%,
+    #211212 100%
+  );
+  box-shadow:
+    0 22px 40px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  color: $color-text-main;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
-.up-main h1 {
-  color: white;
-  font-weight: 600;
-  margin-bottom: 8px;
+// Título principal
+.logo-text {
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-text-main;
 }
 
+// ===== FORMULARIO =====
+form {
+  margin-top: 0.5rem;
+}
+
+// Labels
 .form-label {
-  color: #fff;
-  font-size: 14px;
+  font-size: 0.86rem;
   font-weight: 500;
+  color: $color-text-muted;
 }
 
-.dark-input {
-  background-color: transparent;
-  border: 1px solid #555;
-  border-radius: 6px;
-  color: white;
-  padding: 12px;
+// Inputs / selects básicos
+.form-control {
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 0.75rem;
+  border: 1px solid $color-border-soft;
+  color: $color-text-main;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  transition:
+    border-color 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    background-color 0.15s ease-out;
+
+  &:focus {
+    outline: none;
+    border-color: rgba(212, 165, 116, 0.85);
+    box-shadow:
+      0 0 0 1px rgba(212, 165, 116, 0.6),
+      0 0 0 4px rgba(212, 165, 116, 0.15);
+    background: rgba(0, 0, 0, 0.75);
+  }
+
+  &::placeholder {
+    color: rgba(224, 209, 200, 0.6);
+  }
 }
 
-input[type="text"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #2b1d1d;
-  border: 2px solid #d4a574;
-  color: #d4a574;
+// Validaciones Bootstrap-like
+.is-invalid {
+  border-color: rgba($color-danger, 0.7) !important;
 }
 
-input[type="password"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #2b1d1d;
-  border: 2px solid #d4a574;
-  color: #d4a574;
+.is-valid {
+  border-color: rgba(56, 185, 129, 0.7) !important;
 }
 
-input[type="email"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #2b1d1d;
-  border: 2px solid #d4a574;
-  color: #d4a574;
+.invalid-feedback {
+  display: block;
+  font-size: 0.78rem;
+  color: #ffb3b3;
 }
 
-
-.dark-input::placeholder {
-  color: #33271a;
+// Checkbox “Usuario activo”
+#status {
+  accent-color: $color-accent-strong;
 }
 
-.dark-submit-btn {
-  background-color: #d4a574;
-  border: none;
-  padding: 12px;
-  border-radius: 6px;
-  font-weight: 600;
-  transition: background-color 0.3s;
+// ===== SELECT Rol =====
+select.form-control {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, $color-accent-strong 50%),
+    linear-gradient(135deg, $color-accent-strong 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 9px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
 }
 
-.dark-submit-btn:hover {
-  background-color: #c99563;
-}
-
-.divider-text {
-  color: #c99563;
-  font-size: 14px;
+// ===== INPUT DE PASSWORD =====
+.form-input {
   position: relative;
 }
 
+// ===== BOTONES =====
+.dark-submit-btn,
+.btn.btn-primary {
+  border-radius: 999px;
+  padding: 0.55rem 1.35rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  background: radial-gradient(
+    circle at 30% 0,
+    $color-accent-strong 45%,
+    #a06f3c 100%
+  );
+  color: #2b1b1b;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(0, 0, 0, 0.7);
+  transition:
+    transform 0.16s ease-out,
+    box-shadow 0.16s ease-out,
+    filter 0.16s ease-out,
+    background-color 0.16s ease-out;
 
-.divider-text::before,
-.divider-text::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 140px;
-  height: 1px;
-  background-color: #c99563;
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow:
+      0 18px 36px rgba(0, 0, 0, 0.98),
+      0 0 0 1px rgba(0, 0, 0, 0.85);
+    filter: brightness(1.03);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+    box-shadow: none;
+  }
 }
 
-.divider-text::before {
-  right: 100%;
-  margin-right: 15px;
+// ===== INPUT FILE (nativo pero bonito) =====
+.up-main input[type="file"].form-control {
+  padding: 0.35rem 0.75rem;
+  background: rgba(0, 0, 0, 0.65);
+  color: $color-text-muted;
+  cursor: pointer;
+
+  // Estilo botón interno (Chrome/Edge/Opera)
+  &::file-selector-button {
+    margin-right: 0.8rem;
+    border: none;
+    border-radius: 999px;
+    padding: 0.4rem 0.95rem;
+    background: radial-gradient(
+      circle at 30% 0,
+      $color-accent-strong 45%,
+      #a06f3c 100%
+    );
+    color: #2b1b1b;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow:
+      0 8px 18px rgba(0, 0, 0, 0.85),
+      0 0 0 1px rgba(0, 0, 0, 0.7);
+    transition:
+      transform 0.16s ease-out,
+      box-shadow 0.16s ease-out,
+      filter 0.16s ease-out;
+  }
+
+  &:hover::file-selector-button {
+    transform: translateY(-1px);
+    box-shadow:
+      0 12px 26px rgba(0, 0, 0, 0.95),
+      0 0 0 1px rgba(0, 0, 0, 0.85);
+    filter: brightness(1.03);
+  }
+
+  &:active::file-selector-button {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.9);
+  }
 }
 
-.divider-text::after {
-  left: 100%;
-  margin-left: 15px;
+// ===== PREVIEW FOTO =====
+.img-thumbnail {
+  border-radius: 1rem;
+  border: 1px solid $color-border-soft;
+  background: rgba(0, 0, 0, 0.5);
 }
 
-
-.text-primary {
-  color: #d4a574 !important;
-}
-
-.btn-link
-{
-  margin-top: 20px;
-}
-
+// ===== SPINNER SUBIDA FOTO =====
 .upload-spinner {
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 0.5rem;
+  color: $color-text-muted;
+  font-size: 0.85rem;
 }
 
-.ag-column-drop-title {
-    font-family: 'Brush Script MT';
-    font-size: 1.5em;
-    color: white;
+// ===== MENSAJES DE ESTADO TEXTO =====
+.text-danger {
+  font-size: 0.86rem;
+}
+
+.text-success {
+  font-size: 0.86rem;
+}
+
+// ===== PAGINACIÓN =====
+.pagination .page-item {
+  margin: 0 0.15rem;
+
+  &.active button {
+    filter: brightness(1.05);
+    box-shadow:
+      0 12px 26px rgba(0, 0, 0, 0.95),
+      0 0 0 1px rgba(0, 0, 0, 0.9);
+  }
+}
+
+// ===== RESPONSIVE =====
+@media (max-width: 768px) {
+  .up-main {
+    margin: 1.3rem auto;
+    padding: 1.3rem 1.2rem 1.5rem;
+    border-radius: 1.4rem;
+  }
+
+  .d-flex.align-items-center.mb-3 {
+    flex-direction: column;
+    align-items: stretch;
+
+    .form-group {
+      width: 100% !important;
+    }
+  }
 }

@@ -7,13 +7,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularEditorModule, AngularEditorConfig } from '@wfpena/angular-wysiwyg';
 import { ActivatedRoute } from '@angular/router';
 import { ModalService } from '../../../services/modal.service';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule, AngularEditorModule],
   standalone: true,
   selector: 'app-redactar-historia',
-  imports: [FormsModule, HttpClientModule, AngularEditorModule], 
   templateUrl: './redactar-historia.component.html',
-  styleUrl: './redactar-historia.component.less'
+  styleUrls: ['./redactar-historia.component.less']
 })
 export class RedactarHistoriaComponent {
   historia: HistoriaModel = {

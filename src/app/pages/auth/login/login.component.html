@@ -1,144 +1,128 @@
-<div class="login-container">
-  <div class="d-flex align-items-center justify-content-center h-100">
-    <div class="login-card">
-      <div class="w-100">
-        <div
-          class="d-flex justify-content-between align-items-center mb-4 px-3 pt-3"
-        >
-          <div class="d-flex align-items-center">
-            <img
-              width="80"
-              class="img-fluid mb-2"
-              src="../../../../assets/icons/sopa_logo.png"
-              alt="Logo"
-            />
-            <span class="logo-text">by SOPA TECHNOLOGIES</span>
-          </div>
-
-          <div class="nav-buttons">
-            <a
-              href="/signup"
-              class="btn btn-primary btn-block w-100 dark-submit-btn"
-              >Registrarse en Mahou Site</a
-            >
-            <div class="text-center mb-3"></div>
-          </div>
-        </div>
-
-        <div class="text-center mb-3">
-          <span class="divider-text"></span>
-        </div>
-
-        <div class="login-main">
-          <form
-            (ngSubmit)="handleLogin($event)"
-            autocomplete="off"
-            #frm="ngForm"
-          >
-            <div class="mb-4 text-center">
-              <h1>Iniciar Sesión</h1>
-              <img
-                width="300"
-                class="img-fluid mb-2"
-                src="../../../../assets/icons/logo@2x.png"
-                alt="Logo"
-              />
-              <p style="color: #ffffff">
-                Nos alegra verte otra vez. Inicia sesión para seguir donde
-                quedaste.
-              </p>
-            </div>
-
-            <div class="form-group mb-3">
-              <label for="email" class="form-label mb-2"> Correo electrónico </label>
-              <input
-                #email="ngModel"
-                type="text"
-                class="form-control"
-                id="email"
-                name="email"
-                placeholder="Correo"
-                [(ngModel)]="loginForm.email"
-                [ngClass]="{
-                  'is-invalid': email.invalid && email.touched,
-                  'is-valid': email.valid && email.touched
-                }"
-                required
-              />
-              <div *ngIf="email.invalid" class="invalid-feedback">
-                Por favor ingresa un correo electrónico válido
-              </div>
-            </div>
-
-            <div class="form-group mb-4">
-              <label for="password" class="form-label mb-2">Contraseña</label>
-              <div class="form-input position-relative">
-                <input
-                  #password="ngModel"
-                  type="password"
-                  class="form-control mb-3"
-                  id="password"
-                  name="password"
-                  placeholder="Contraseña"
-                  [(ngModel)]="loginForm.password"
-                  [ngClass]="{
-                    'is-invalid': password.invalid && password.touched,
-                    'is-valid': password.valid && password.touched
-                  }"
-                  required
-                />
-                <div *ngIf="password.invalid" class="invalid-feedback">
-                  Por favor ingresa tu contraseña
-                </div>
-
-                <div class="text-center mb-1">
-                  <a href="/password" class="text-primary"
-                    >¿Olvidó su contraseña? Recuperela
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group mb-3">
-              <button
-                class="btn btn-primary btn-block w-100 dark-submit-btn"
-                type="submit"
-              >
-                Iniciar
-              </button>
-              @if(loginError) {
-              <p class="text-danger">{{ loginError }}</p>
-              }
-            </div>
-
-            <div class="mb-4 text-center">
-              <div class="text-center mb-3">
-                <span class="divider-text">0</span>
-              </div>
-
-              <div class="text-center">
-                <p style="color: #ffffff">Registrate con tu cuenta de Google</p>
-              </div>
-            </div>
-
-            <div class="form-group mb-3 text-center">
-              <button
-                type="button"
-                class="btn btn-primary btn-block w-100 dark-submit-btn"
-                id="google-signin-button"
-              >
-                <img
-                  src="https://www.google.com/favicon.ico"
-                  width="20"
-                  class="me-2"
-                  alt="Google"
-                />
-                Registrarse
-              </button>
-            </div>
-          </form>
+<div class="login-page">
+  <div class="login-card">
+    <!-- Header: logo + botón de registro -->
+    <header class="login-header">
+      <div class="brand">
+        <img
+          src="../../../../assets/icons/sopa_logo.png"
+          alt="Logo Sopa"
+          class="brand-logo"
+        />
+        <div class="brand-text">
+          <span class="brand-sub">by</span>
+          <span class="brand-main">SOPA TECHNOLOGIES</span>
         </div>
       </div>
+
+      <div class="nav-buttons">
+        <a
+          routerLink="/signup"
+          class="btn-ghost"
+        >
+          Registrarse en Mahou Site
+        </a>
+      </div>
+    </header>
+
+    <div class="divider"></div>
+
+    <!-- Cuerpo principal -->
+    <section class="login-main">
+      <div class="login-intro">
+        <h1>Iniciar sesión</h1>
+        <p>
+          Nos alegra verte otra vez. Inicia sesión para seguir donde quedaste.
+        </p>
+        <img
+          src="../../../../assets/icons/logo@2x.png"
+          alt="Logo Mahou"
+          class="intro-logo"
+        />
+      </div>
+
+      <form
+        (ngSubmit)="handleLogin($event)"
+        autocomplete="off"
+        #frm="ngForm"
+        class="login-form"
+      >
+        <!-- Correo -->
+        <div class="form-group">
+          <label for="email" class="form-label">Correo electrónico</label>
+          <input
+            #email="ngModel"
+            type="text"
+            id="email"
+            name="email"
+            placeholder="Ingresa tu correo"
+            class="form-control"
+            [(ngModel)]="loginForm.email"
+            [ngClass]="{
+              'is-invalid': email.invalid && email.touched,
+              'is-valid': email.valid && email.touched
+            }"
+            required
+          />
+          <div *ngIf="email.invalid && email.touched" class="invalid-feedback">
+            Por favor ingresa un correo electrónico válido
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-group">
+          <label for="password" class="form-label">Contraseña</label>
+          <div class="password-wrapper">
+            <input
+              #password="ngModel"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Ingresa tu contraseña"
+              class="form-control"
+              [(ngModel)]="loginForm.password"
+              [ngClass]="{
+                'is-invalid': password.invalid && password.touched,
+                'is-valid': password.valid && password.touched
+              }"
+              required
+            />
+          </div>
+          <div
+            *ngIf="password.invalid && password.touched"
+            class="invalid-feedback"
+          >
+            Por favor ingresa tu contraseña
+          </div>
+
+          <div class="forgot-link">
+            <a routerLink="/password">¿Olvidó su contraseña? Recupérala aquí</a>
+          </div>
+        </div>
+
+        <!-- Botón principal -->
+        <div class="form-group">
+          <button
+            class="btn-primary-submit"
+            type="submit"
+          >
+            Iniciar sesión
+          </button>
+          @if (loginError) {
+          <p class="error-text">{{ loginError }}</p>
+          }
+        </div>
+      </form>
+    </section>
+
+    <!-- Separador -->
+    <div class="login-separator">
+      <span>o continúa con</span>
     </div>
+
+    <!-- Google -->
+    <section class="login-google">
+      <p>Regístrate / inicia sesión con tu cuenta de Google</p>
+      <div id="google-signin-button" class="google-btn-wrapper"></div>
+    </section>
   </div>
 </div>

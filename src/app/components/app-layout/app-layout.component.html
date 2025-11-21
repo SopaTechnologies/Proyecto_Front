@@ -2,45 +2,54 @@
   <app-sidebar></app-sidebar>
 
   <div class="page-body">
-    <main class="container-fluid">
+    <main class="page-content">
       <router-outlet></router-outlet>
     </main>
-
-    <footer class="footer">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12 text-center">
-            <p class="mb-0">
-              Copyright 2024 &copy; gbs. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
   </div>
 </div>
 
 <!-- Botón flotante de chat IA -->
-<button class="floating-chat-btn" (click)="toggleChat()" title="Abrir chat IA">
+<button
+  class="floating-chat-btn"
+  (click)="toggleChat()"
+  [class.open]="showChat"
+  aria-label="Abrir chat IA"
+>
   IA
 </button>
 
 <!-- Panel de chat flotante -->
-<div class="floating-chat-panel" [class.open]="showChat" *ngIf="showChat">
+<div class="floating-chat-panel" [class.open]="showChat">
   <div class="panel-header">
     <h5>Chat IA</h5>
     <button class="btn-close" aria-label="Cerrar" (click)="toggleChat()">×</button>
   </div>
+
   <div class="panel-body">
     <div class="messages" *ngIf="messages.length; else emptyMsg">
-      <div *ngFor="let m of messages" [ngClass]="m.from === 'user' ? 'msg user' : 'msg ai'">{{ m.text }}</div>
+      <div
+        *ngFor="let m of messages"
+        class="msg"
+        [ngClass]="m.from === 'user' ? 'user' : 'ai'"
+      >
+        {{ m.text }}
+      </div>
     </div>
     <ng-template #emptyMsg>
-      <div class="empty">Bienvenido al chat IA. Escribe tu pregunta abajo.</div>
+      <div class="empty">
+        Bienvenido al chat IA.<br />
+        Escribe tu pregunta abajo.
+      </div>
     </ng-template>
   </div>
+
   <div class="panel-footer">
-    <input type="text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Escribe tu pregunta..." />
+    <input
+      type="text"
+      [(ngModel)]="newMessage"
+      (keyup.enter)="sendMessage()"
+      placeholder="Escribe tu pregunta..."
+    />
     <button class="send-btn" (click)="sendMessage()">Enviar</button>
   </div>
 </div>

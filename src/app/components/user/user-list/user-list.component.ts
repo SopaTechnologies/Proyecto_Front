@@ -1,44 +1,71 @@
-import { Component, effect, EventEmitter, inject, Input, Output } from '@angular/core';
-import { UserService } from '../../../services/user.service';
-import { IUser } from '../../../interfaces';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ModalComponent } from '../../modal/modal.component';
-import { UserFormComponent } from '../user-from/user-form.component';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-
+import { IUser2 } from '../../../interfaces'; // ajusta la ruta si hace falta
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.scss'
+  styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent {
-  @Input() title: string  = '';
-  @Input() users: IUser[] = [];
-  @Output() callModalAction: EventEmitter<IUser> = new EventEmitter<IUser>();
-  @Output() callDeleteAction: EventEmitter<IUser> = new EventEmitter<IUser>();
-  @Output() editUser: EventEmitter<IUser> = new EventEmitter<IUser>();
+  @Input() title: string = 'Lista de usuarios';
+  @Input() users: IUser2[] = [];
 
-  userService = inject(UserService);
-  totalItems: number[] = [];
+  // Para UserAdminComponent (bien tipado)
+  @Output() editUser = new EventEmitter<IUser2>();
 
-  ngOnInit() {
-    this.totalItems = this.userService.totalItems;
-  }
+  // Para UsersComponent (dejamos any para evitar choque IUser / IUser2)
+  @Output() callModalAction = new EventEmitter<any>();
+  @Output() callDeleteAction = new EventEmitter<any>();
 
-  changePage(page: number) {
-    if (page >= 1 && page <= (this.userService.search?.totalPages ?? 1)) {
-      this.userService.search.page = page;
-      this.userService.getAll();
+  // ---- Helpers de presentación ----
+  getRoleLabel(roleName?: string | null): string {
+    switch (roleName) {
+      case 'SUPER_ADMIN':
+        return 'Administrador';
+      case 'ADMIN':
+        return 'Moderador';
+      case 'USER':
+        return 'Usuario';
+      default:
+        return 'Usuario';
     }
   }
 
-  onEditUser(user: IUser) {
+  getRoleClass(roleName?: string | null): string {
+    switch (roleName) {
+      case 'SUPER_ADMIN':
+        return 'chip--role-super';
+      case 'ADMIN':
+        return 'chip--role-admin';
+      case 'USER':
+        return 'chip--role-user';
+      default:
+        return 'chip--role-user';
+    }
+  }
+
+  getInitials(u: IUser2): string {
+    const name = (u.name || '').trim();
+    const last = (u.lastname || '').trim();
+    const n1 = name ? name[0].toUpperCase() : '';
+    const n2 = last ? last[0].toUpperCase() : '';
+    const initials = (n1 + n2) || (u.username?.[0]?.toUpperCase() ?? '?');
+    return initials;
+  }
+
+  // ---- Acciones ----
+  onEdit(user: IUser2) {
+    // Admin
     this.editUser.emit(user);
+    // Pantalla vieja (UsersComponent)
+    this.callModalAction.emit(user);
+  }
+
+  onDelete(user: IUser2) {
+    // Pantalla vieja (UsersComponent)
+    this.callDeleteAction.emit(user);
   }
 }

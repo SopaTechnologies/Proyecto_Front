@@ -1,65 +1,321 @@
-.ag-column-drop-title {
-    font-family: 'Brush Script MT';
-    font-size: 1.5em;
+// Paleta café (misma que UserAdmin)
+$color-bg: #2b1c1c;
+$color-bg-soft: #3a2828;
+$color-bg-soft2: #4a2f2f;
+$color-accent: #c8b2a9;
+$color-accent-strong: #d4a574;
+$color-text-main: #f7f1ec;
+$color-text-muted: #e0d1c8;
+$color-border-soft: rgba(255, 255, 255, 0.12);
+$color-success: #38b981;
+$color-danger: #d94747;
+
+// ===== CONTENEDOR =====
+.user-list {
+  margin-top: 1rem;
+  border-radius: 1.4rem;
+  padding: 1.1rem 1.3rem 1.3rem;
+  background: radial-gradient(
+    circle at top left,
+    $color-bg-soft2 0,
+    $color-bg-soft 40%,
+    #211212 100%
+  );
+  box-shadow:
+    0 18px 32px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  color: $color-text-main;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
 }
 
-.table-container {
-  background-color: #2b1d1d;
-  padding: 20px;
-  border-radius: 8px;
-  color: white;
+// ===== HEADER =====
+.user-list__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.9rem;
+  margin-bottom: 0.8rem;
 }
 
-.table-container h3 {
-  color: #d4a574;
-  font-weight: 600;
+.user-list__header-left {
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .subtitle {
+    margin: 0.2rem 0 0;
+    font-size: 0.86rem;
+    color: $color-text-muted;
+  }
 }
 
-.table {
-  background-color: transparent;
-  color: white;
+.user-list__header-right {
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: rgba(0, 0, 0, 0.55);
+    color: $color-text-muted;
+
+    i {
+      font-size: 0.88rem;
+      color: $color-accent-strong;
+    }
+  }
 }
 
-.table th {
-  background-color: #d4a574;
-  color: #2b1d1d;
-  border: none;
+// ===== TABLA =====
+.user-list__table {
+  margin-top: 0.4rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.table td {
-  border-color: #555;
-  color: white;
+.user-list__row {
+  display: grid;
+  grid-template-columns: 2.2fr 2fr 1.4fr 1.1fr 0.8fr;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.88rem;
+
+  &:nth-child(even):not(.user-list__row--head) {
+    background: rgba(0, 0, 0, 0.25);
+  }
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(212, 165, 116, 0.1);
+.user-list__row--head {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: $color-text-muted;
+  background: rgba(0, 0, 0, 0.6);
 }
 
-.pagination {
-  background-color: #2b1d1d;
-  border-radius: 8px;
-  padding: 10px;
+// Columnas
+.col {
+  &.col-main {
+    display: flex;
+    align-items: center;
+  }
+
+  &.col-email {
+    font-size: 0.86rem;
+    color: $color-text-muted;
+  }
+
+  &.col-role,
+  &.col-status {
+    display: flex;
+    align-items: center;
+  }
+
+  &.col-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 
-.page-link {
-  background-color: #d4a574;
-  color: #2b1d1d;
-  border: none;
-  margin: 0 2px;
+.user-main {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
 }
 
-.page-link:hover {
-  background-color: #c99563;
-  color: #2b1d1d;
+.avatar-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle at 30% 0,
+    $color-accent-strong 0,
+    $color-accent 45%,
+    #8c6a5e 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
+
+  span {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #2b1b1b;
+  }
 }
 
-.page-item.active .page-link {
-  background-color: #2b1d1d;
-  color: #d4a574;
-  border: 1px solid #d4a574;
+.user-main__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+
+  .name {
+    font-weight: 500;
+  }
+
+  .username {
+    font-size: 0.8rem;
+    color: $color-text-muted;
+  }
 }
 
-.page-item.disabled .page-link {
-  background-color: #555;
-  color: #999;
+.email {
+  word-break: break-all;
+}
+
+// ===== CHIPS =====
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.16rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  white-space: nowrap;
+}
+
+// Rol: SUPER_ADMIN
+.chip--role-super {
+  background: rgba(212, 165, 116, 0.16);
+  border-color: rgba(212, 165, 116, 0.75);
+  color: $color-accent-strong;
+}
+
+// Rol: ADMIN
+.chip--role-admin {
+  background: rgba(136, 189, 255, 0.14);
+  border-color: rgba(136, 189, 255, 0.7);
+  color: #a4ccff;
+}
+
+// Rol: USER
+.chip--role-user {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: $color-text-muted;
+}
+
+// Estado
+.chip--status-active {
+  background: rgba($color-success, 0.15);
+  border-color: rgba($color-success, 0.7);
+  color: lighten($color-success, 10%);
+}
+
+.chip--status-inactive {
+  background: rgba($color-danger, 0.12);
+  border-color: rgba($color-danger, 0.6);
+  color: #ffb3b3;
+}
+
+// ===== BOTÓN EDITAR =====
+.btn-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.45);
+  color: $color-text-main;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.86rem;
+  transition:
+    background-color 0.15s ease-out,
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    border-color 0.15s ease-out;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.9);
+    border-color: rgba(212, 165, 116, 0.7);
+    background: rgba(212, 165, 116, 0.16);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.96);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.85);
+  }
+}
+
+// ===== EMPTY STATE =====
+.user-list__empty {
+  margin-top: 1rem;
+  padding: 1.4rem 1.2rem;
+  border-radius: 1.2rem;
+  background: radial-gradient(circle at top, $color-bg-soft2 0, #221313 55%, #140a0a 100%);
+  text-align: center;
+  color: $color-text-main;
+  box-shadow:
+    0 16px 30px rgba(0, 0, 0, 0.92),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+
+  i {
+    font-size: 1.6rem;
+    margin-bottom: 0.35rem;
+    color: $color-accent-strong;
+  }
+
+  h4 {
+    margin: 0 0 0.25rem;
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.86rem;
+    color: $color-text-muted;
+  }
+}
+
+// ===== RESPONSIVE =====
+@media (max-width: 900px) {
+  .user-list__row {
+    grid-template-columns: 2.2fr 2fr 1.6fr 1.2fr 0.7fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .user-list__row {
+    grid-template-columns: 2.6fr 2.2fr 1.6fr;
+    grid-template-areas:
+      "main main main"
+      "email email email"
+      "role status actions";
+    row-gap: 0.35rem;
+
+    .col-main {
+      grid-area: main;
+    }
+    .col-email {
+      grid-area: email;
+    }
+    .col-role {
+      grid-area: role;
+    }
+    .col-status {
+      grid-area: status;
+    }
+    .col-actions {
+      grid-area: actions;
+      justify-content: flex-start;
+      margin-top: 0.2rem;
+    }
+  }
 }

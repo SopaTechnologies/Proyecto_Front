@@ -1,215 +1,306 @@
-/* =========================================================
-   MODAL — LÍNEA DE TIEMPO (versión arcana y elegante)
-   ========================================================= */
+// ===== Paleta café =====
+$color-bg: #2b1c1c;
+$color-bg-soft: #3a2828;
+$color-bg-soft2: #4a2f2f;
+$color-accent: #c8b2a9;
+$color-accent-strong: #d4a574;
+$color-text-main: #f7f1ec;
+$color-text-muted: #e0d1c8;
+$color-border-soft: rgba(255, 255, 255, 0.08);
 
+// ===== OVERLAY =====
 .book-modal-overlay {
   position: fixed;
   inset: 0;
-  background: #2a1a12;
-  backdrop-filter: blur(14px) saturate(140%);
+  background: radial-gradient(circle at top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.95));
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  z-index: 1050;
-  animation: fadeIn 0.5s ease forwards;
-  
+  z-index: 999;
+
+  &.show {
+    animation: bookModalFadeIn 0.25s ease-out;
+  }
 }
 
-/* --- CONTENEDOR PRINCIPAL --- */
+// ===== DIALOG =====
 .book-modal-dialog {
-  background: blur(10px) saturate(150%);
-  border: 2px solid #a15c3e;
-  border-radius: 18px;
-  width: 92%;
   max-width: 720px;
-  max-height: 90vh;
+  width: 100%;
+  margin: 1.5rem;
+  border-radius: 1.6rem;
   overflow: hidden;
-  transform: scale(0.9) translateY(40px);
-  opacity: 0;
-  transition: all 0.45s ease-in-out;
-  box-shadow: 0 0 45px rgba(0, 0, 0, 0.7);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 1),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+
+  &.show {
+    animation: bookDialogUp 0.3s ease-out;
+  }
 }
 
-.book-modal-dialog.show {
-  transform: scale(1) translateY(0);
-  opacity: 1;
-}
-
-/* --- CABECERA --- */
-.book-modal-header {
-  background: linear-gradient(100deg, #2e1d13, #3c2719);
-  color: #e7c080;
-  padding: 1.4rem 2rem;
+// ===== CONTENT =====
+.book-modal-content {
+  background: radial-gradient(circle at top left, $color-bg-soft2 0, $color-bg-soft 35%, #211212 100%);
+  color: $color-text-main;
   display: flex;
+  flex-direction: column;
+}
+
+// ===== HEADER =====
+.book-modal-header {
+  padding: 1.2rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid rgba(197, 144, 65, 0.3);
-  position: relative;
-  text-shadow: 0 0 6px rgba(197, 144, 65, 0.3);
+  gap: 1rem;
 }
 
 .book-title-section {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.85rem;
 }
 
-.book-icon {
-  font-size: 1.6rem;
-  color: #d6aa56;
-  filter: drop-shadow(0 0 6px rgba(197, 144, 65, 0.6));
-}
+.book-icon-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 0, $color-accent-strong 50%, #a06f3c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(0, 0, 0, 0.8);
 
-.book-modal-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: 0.5px;
-}
-
-/* --- BOTÓN CERRAR --- */
-.book-close-btn {
-  background-color: #3a1f1f;
-  border: none;
-  color: #d9a77a;
-  font-size: 1.4rem;
-  cursor: pointer;
-  border-radius: 50%;
-  padding: 0.4rem;
-  transition: all 0.3s ease;
-}
-
-.book-close-btn:hover {
-  background: #4a2f2f;
-  transform: rotate(90deg) scale(1.1);
-}
-
-/* --- CUERPO --- */
-.book-modal-body {
-  padding: 2rem;
-  background: linear-gradient(160deg, #22150e, #301c13);
-  overflow-y: auto;
-  max-height: 60vh;
-  animation: slideUp 0.45s ease;
-  color: #e0cda9;
-
-   scrollbar-width: none;
-  -ms-overflow-style: none;
-  
-  &::-webkit-scrollbar {
-    display: none;
+  .book-icon {
+    color: #2b1b1b;
+    font-size: 1.2rem;
   }
 }
 
-/* --- FORMULARIO --- */
+.book-title-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.book-modal-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.book-modal-subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: $color-text-muted;
+}
+
+.book-close-btn {
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 999px;
+  transition:
+    background-color 0.15s ease-out,
+    transform 0.12s ease-out;
+
+  i {
+    font-size: 1.1rem;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.45);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ===== BODY / FORM =====
+.book-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.book-modal-body {
+  padding: 1.1rem 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .book-form-group {
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .book-label {
-  display: block;
-  color: #dcb875;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .required-mark {
-  color: #b94747;
+  color: #ffb3b3;
+  font-weight: 600;
 }
 
 .book-input,
 .book-textarea {
-  width: 100%;
-  border: 1px solid rgba(197, 144, 65, 0.3);
-  border-radius: 10px;
-  background: rgba(40, 24, 10, 0.6);
-  color: #f5e9d0;
-  padding: 1rem;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  font-family: inherit;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-.book-input:focus,
-.book-textarea:focus {
+  border-radius: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.55);
+  color: $color-text-main;
+  font-size: 0.9rem;
+  padding: 0.55rem 0.8rem;
   outline: none;
-  border-color: #d6aa56;
-  background: rgba(50, 28, 10, 0.85);
-  box-shadow: 0 0 12px rgba(214, 170, 86, 0.3);
+  resize: vertical;
+
+  &:focus {
+    border-color: rgba(212, 165, 116, 0.85);
+    box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.7);
+  }
+
+  &::placeholder {
+    color: rgba(224, 209, 200, 0.7);
+  }
 }
 
 .book-textarea {
-  resize: vertical;
-  min-height: 140px;
+  min-height: 180px;
+  line-height: 1.5;
 }
 
-/* --- PIE DEL MODAL --- */
+.book-helper {
+  font-size: 0.78rem;
+  color: $color-text-muted;
+}
+
+// ===== FOOTER =====
 .book-modal-footer {
-  background: #2b1a12;
-  border-top: 1px solid rgba(197, 144, 65, 0.25);
-  padding: 1.4rem 2rem;
+  padding: 0.9rem 1.5rem 1.2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
+  gap: 0.6rem;
 }
 
-/* --- BOTONES --- */
+// Botones
 .book-btn {
-  padding: 0.75rem 1.6rem;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  border-radius: 999px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.84rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   border: none;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-}
+  gap: 0.4rem;
+  transition:
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    background-color 0.15s ease-out,
+    color 0.15s ease-out;
 
-.book-btn-primary {
-  background: #d48656;
-  color: #1b0f0f;
-  box-shadow: 0 3px 10px rgba(214, 170, 86, 0.3);
-}
+  i {
+    font-size: 0.9rem;
+  }
 
-.book-btn-primary:hover:not(:disabled) {
-  background: #e29a6f;
-  box-shadow: 0 4px 12px rgba(212, 134, 86, 0.3);
-  transform: translateY(-2px);
-}
-
-.book-btn-primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+    box-shadow: none;
+    transform: none;
+  }
 }
 
 .book-btn-secondary {
-  background: #3a1f1f;
-  color: #d9a77a;
-  border: 1px solid rgba(197, 144, 65, 0.25);
+  background: transparent;
+  color: $color-text-muted;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  &:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.45);
+    color: $color-text-main;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    transform: translateY(-1px);
+  }
 }
 
-.book-btn-secondary:hover {
-  background: rgba(197, 144, 65, 0.2);
-  transform: translateY(-2px);
+.book-btn-primary {
+  background: radial-gradient(circle at 30% 0, $color-accent-strong 45%, #a06f3c 100%);
+  color: #2b1b1b;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(0, 0, 0, 0.7);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow:
+      0 18px 36px rgba(0, 0, 0, 1),
+      0 0 0 1px rgba(0, 0, 0, 0.85);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.96);
+  }
 }
 
-/* --- ANIMACIONES --- */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
+// ===== ANIMACIONES =====
+@keyframes bookModalFadeIn {
   from {
-    transform: translateY(15px);
-    opacity: 0.8;
+    opacity: 0;
   }
   to {
-    transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes bookDialogUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// ===== RESPONSIVE =====
+@media (max-width: 640px) {
+  .book-modal-dialog {
+    margin: 1.1rem;
+    border-radius: 1.4rem;
+  }
+
+  .book-modal-header {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .book-modal-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+
+    .book-btn {
+      width: 100%;
+      justify-content: center;
+    }
   }
 }

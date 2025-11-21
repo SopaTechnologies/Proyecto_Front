@@ -1,89 +1,138 @@
 <div class="modal-form-container">
+  <!-- Header -->
+  <header class="modal-header-custom">
+    <div class="title-block">
+      <span class="pill">
+        <i class="fas fa-book-open"></i>
+        Historia
+      </span>
+      <h2>
+        {{ historyForm.value.id ? 'Editar historia' : 'Nueva historia' }}
+      </h2>
+      <p class="subtitle">
+        Define el título, la descripción y el género de tu libro.
+      </p>
+    </div>
 
-  <div class="modal-header-custom">
-    <h2>{{ historyForm.value.id ? 'Editar Historia' : 'Nueva Historia' }}</h2>
     <button type="button" class="btn-close-modal" (click)="cancel()">
       <i class="fas fa-times"></i>
     </button>
-  </div>
+  </header>
 
-  <main class="main">
-    <div class="form-section">
-
-    <form (ngSubmit)="guardar()" #formHistoria="">
-      <div class="form-group">
-        <label for="titulo">Título del libro </label>
-        <input 
-          type="text" 
-          id="titulo" 
-          name="titulo" 
-          maxlength="100" 
-          required pattern="^[a-zA-Z0-9\\sáéíóúÁÉÍÓÚñÑ]+$"
-          placeholder="Escribe un título para el libro" 
-          [(ngModel)]="historia.titulo" />
-          @if (formHistoria['submitted'] && !historia.titulo) {
+  <!-- Cuerpo -->
+  <main class="modal-main">
+    <!-- Columna izquierda: formulario principal -->
+    <section class="form-section">
+      <form (ngSubmit)="guardar()" #formHistoria="ngForm" novalidate>
+        <!-- Título -->
+        <div class="form-group">
+          <label for="titulo">Título del libro</label>
+          <input
+            type="text"
+            id="titulo"
+            name="titulo"
+            maxlength="100"
+            required
+            pattern="^[a-zA-Z0-9\\sáéíóúÁÉÍÓÚñÑ]+$"
+            placeholder="Escribe un título para el libro"
+            [(ngModel)]="historia.titulo"
+          />
+          @if (formHistoria.submitted && !historia.titulo) {
             <div class="error">
               El título es obligatorio.
             </div>
           }
-      </div>
+        </div>
 
         <!-- Descripción -->
         <div class="form-group">
-          <label for="descripcion">Descripción </label>
-          <textarea 
-            id="descripcion" 
-            name="descripcion" 
-            maxlength="1000" 
+          <label for="descripcion">Descripción</label>
+          <textarea
+            id="descripcion"
+            name="descripcion"
+            maxlength="1000"
             required
-            placeholder="Empieza describiendo tu historia aquí..." 
-            [(ngModel)]="historia.description" ></textarea>
-          @if (formHistoria['submitted'] && !historia.description) {
+            placeholder="Empieza describiendo tu historia aquí..."
+            [(ngModel)]="historia.description"
+          ></textarea>
+          @if (formHistoria.submitted && !historia.description) {
             <div class="error">
               La descripción es obligatoria.
             </div>
           }
         </div>
 
-      <div class="form-group">
-        <label for="genero">Género </label>
-        <select id="genero" name="genero" required [(ngModel)]="historia.genero">
-          <option value="">Selecciona el género</option>
-          <option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</option>
-        </select>
-        @if (formHistoria['submitted'] && !historia.genero) {
-          <div class="error">
-            Debe seleccionar un género.
-          </div>
+        <!-- Género -->
+        <div class="form-group">
+          <label for="genero">Género</label>
+          <select
+            id="genero"
+            name="genero"
+            required
+            [(ngModel)]="historia.genero"
+          >
+            <option value="">Selecciona el género</option>
+            <option
+              *ngFor="let genre of genres"
+              [value]="genre.id"
+            >
+              {{ genre.name }}
+            </option>
+          </select>
+          @if (formHistoria.submitted && !historia.genero) {
+            <div class="error">
+              Debes seleccionar un género.
+            </div>
+          }
+        </div>
+
+        <!-- Contiene juego -->
+        <div class="checkbox">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              id="contieneJuego"
+              name="contieneJuego"
+              [(ngModel)]="historia.contieneJuego"
+            />
+            <span class="checkmark"></span>
+            <span>Contiene juego</span>
+          </label>
+        </div>
+      </form>
+    </section>
+
+    <!-- Columna derecha: autor, acciones, mensajes -->
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <div class="form-group">
+          <label for="autor">Autor</label>
+          <input
+            type="text"
+            id="autor"
+            [value]="autor"
+            readonly
+          />
+        </div>
+
+        <div class="buttons">
+          <button type="button" (click)="guardar()" class="btn-save">
+            Guardar historia
+          </button>
+        </div>
+
+        @if (mensaje) {
+          @if (mensajeTipo == 201 || mensajeTipo == 200) {
+            <div class="status-message success-message">
+              {{ mensaje }}
+            </div>
+          } @else {
+            <div class="status-message error-message">
+              {{ mensaje }}
+            </div>
+          }
         }
       </div>
-
-      <div class="checkbox">
-        <input type="checkbox" id="contieneJuego" name="contieneJuego" [(ngModel)]="historia.contieneJuego" />
-        <label for="contieneJuego">Contiene juego</label>
-      </div>
-    </form>
-  </div>
-
-  <div class="sidebar">
-    <div class="form-group">
-      <label for="autor">Autor</label>
-      <input type="text" id="autor" [(ngModel)]="autor" readonly />
-      <div class="buttons">
-        <button type="button" (click)="guardar()">Guardar</button>
-      </div>
-    </div>
-
-    @if (mensaje) {
-      @if (mensajeTipo == 201) {
-        <div class="success-message">
-          {{ mensaje }}
-        </div>
-      } @else {
-        <div class="error-message">
-          {{ mensaje }}
-        </div>
-      }
-    }
-  </div>
-</main>
+    </aside>
+  </main>
+</div>

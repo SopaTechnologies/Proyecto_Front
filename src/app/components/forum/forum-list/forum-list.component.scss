@@ -1,0 +1,266 @@
+// ===== Paleta café (alineada con el resto) =====
+$color-bg: #2b1c1c;
+$color-bg-soft: #3a2828;
+$color-bg-soft2: #4a2f2f;
+$color-accent: #c8b2a9;
+$color-accent-strong: #d4a574;
+$color-text-main: #f7f1ec;
+$color-text-muted: #e0d1c8;
+$color-border-soft: rgba(255, 255, 255, 0.08);
+$color-danger: #d94747;
+
+// ===== Contenedor general =====
+.forum-list {
+  width: 100%;
+  height: 100%;
+  padding: 1.6rem 1.9rem 1.9rem;
+  box-sizing: border-box;
+  color: $color-text-main;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  
+}
+
+.forum-list__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+// ===== Card =====
+.forum-card {
+  border-radius: 1.1rem;
+  padding: 0.9rem 1.1rem 0.95rem;
+  background: radial-gradient(
+    circle at top left,
+    $color-bg-soft2 0,
+    #2b1818 40%,
+    #1a0e0e 100%
+  );
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  transition:
+    transform 0.18s ease-out,
+    box-shadow 0.18s ease-out,
+    border-color 0.18s ease-out;
+  border: 1px solid transparent;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 22px 42px rgba(0, 0, 0, 0.98),
+      0 0 0 1px rgba(212, 165, 116, 0.3);
+    border-color: rgba(212, 165, 116, 0.35);
+  }
+}
+
+.forum-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+// Título + pill
+.forum-card__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.forum-card__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Pill reutilizable
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.18rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+
+  i {
+    font-size: 0.9rem;
+  }
+}
+
+.pill-soft {
+  background: rgba(0, 0, 0, 0.55);
+  color: $color-text-muted;
+
+  i {
+    color: $color-accent-strong;
+  }
+}
+
+// ===== Meta =====
+.forum-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: $color-text-muted;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.16rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  i {
+    font-size: 0.8rem;
+    color: $color-accent-strong;
+  }
+}
+
+// ===== Sinopsis =====
+.forum-card__synopsis {
+  margin: 0.2rem 0 0;
+  font-size: 0.87rem;
+  color: $color-text-main;
+  opacity: 0.9;
+}
+
+// ===== Acciones =====
+.forum-card__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.visibility-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(33, 150, 83, 0.18);
+  color: #9ef7c0;
+  border: 1px solid rgba(54, 183, 120, 0.65);
+
+  i {
+    font-size: 0.85rem;
+  }
+
+  &.visibility-tag--private {
+    background: rgba(217, 71, 71, 0.15);
+    border-color: rgba(217, 71, 71, 0.7);
+    color: #ffd1d1;
+  }
+}
+
+.icon-btn {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.55);
+  color: $color-text-main;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition:
+    background-color 0.16s ease-out,
+    transform 0.16s ease-out,
+    box-shadow 0.16s ease-out,
+    border-color 0.16s ease-out;
+
+  i {
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.96);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.8);
+  }
+}
+
+.icon-btn--danger {
+  border-color: rgba(217, 71, 71, 0.8);
+
+  &:hover {
+    background: rgba(217, 71, 71, 0.22);
+    color: #ffd1d1;
+  }
+}
+
+// ===== Estado vacío =====
+.empty-state {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.empty-state__card {
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  padding: 1.4rem 1.2rem 1.5rem;
+  border-radius: 1.4rem;
+  background-color: #221313;
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+
+  i {
+    font-size: 1.7rem;
+    margin-bottom: 0.4rem;
+    color: $color-accent-strong;
+  }
+
+  h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.05rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.86rem;
+    color: $color-text-muted;
+  }
+}
+
+// ===== Responsive =====
+@media (max-width: 768px) {
+  .forum-list {
+    padding: 1.3rem 1.1rem 1.4rem;
+  }
+
+  .forum-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .forum-card__actions {
+    margin-top: 0.2rem;
+  }
+}

@@ -86,6 +86,20 @@ export interface IGenre {
   fecha_creacion?: string;
 }
 
+export interface IForumPost {
+  id?: number;
+  storyId?: number;
+  storyTitle?: string;     
+  synopsis: string;
+  genre: string;
+  isPublic: boolean;
+  publishedAt?: string;    
+  views?: number;          
+  comments?: number;      
+  authorName?: string;    
+  content?: string;      
+}
+
 export interface HexTile {
   q: number;
   r: number;

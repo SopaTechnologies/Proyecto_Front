@@ -1,67 +1,122 @@
 <!-- Modal para crear/editar mensaje -->
-<div class="modal-overlay book-modal-overlay show" (click)="onOverlayClick($event)">
-  <div class="modal-dialog book-modal-dialog show" (click)="onDialogClick($event)">
-    <div class="modal-content book-modal-content">
+<div
+  class="book-modal-overlay show"
+  (click)="onOverlayClick($event)"
+>
+  <div
+    class="book-modal-dialog show"
+    (click)="onDialogClick($event)"
+  >
+    <div class="book-modal-content">
 
-      <div class="modal-header book-modal-header">
+      <!-- HEADER -->
+      <header class="book-modal-header">
         <div class="book-title-section">
-          <i class="fas fa-feather-alt book-icon"></i>
-          <h3 class="book-modal-title">
-            {{ message ? 'Editar Línea de tiempo' : 'Línea de tiempo' }}
-          </h3>
+          <div class="book-icon-circle">
+            <i class="fas fa-feather-alt book-icon"></i>
+          </div>
+          <div class="book-title-texts">
+            <h3 class="book-modal-title">
+              {{ message ? 'Editar evento de la línea de tiempo' : 'Nuevo evento en la línea de tiempo' }}
+            </h3>
+            <p class="book-modal-subtitle">
+              Añade un momento clave de la historia. Puedes editarlo más tarde.
+            </p>
+          </div>
         </div>
 
         <button type="button" class="book-close-btn" (click)="onClose()">
           <i class="fas fa-times"></i>
         </button>
-      </div>
+      </header>
 
-      <form (ngSubmit)="onSubmit()" #messageForm="ngForm" class="book-form">
-        <div class="modal-body book-modal-body">
+      <!-- FORMULARIO -->
+      <form
+        (ngSubmit)="onSubmit()"
+        #messageForm="ngForm"
+        class="book-form"
+      >
+        <div class="book-modal-body">
 
+          <!-- Año -->
           <div class="book-form-group">
-            <label class="book-label">Año <span class="required-mark">*</span></label>
-            <input type="text" class="book-input"
-                   [(ngModel)]="formData.titulo"
-                   name="titulo"
-                   required maxlength="255"
-                   placeholder="El principio">
+            <label class="book-label">
+              Año <span class="required-mark">*</span>
+            </label>
+            <input
+              type="text"
+              class="book-input"
+              [(ngModel)]="formData.titulo"
+              name="titulo"
+              required
+              maxlength="255"
+              placeholder="Ejemplo: 1998 · El principio"
+            />
+            <small class="book-helper">
+              Usa un año o una referencia temporal (ej. "Capítulo 1", "Infancia").
+            </small>
           </div>
 
+          <!-- Título / subtítulo -->
           <div class="book-form-group">
-            <label class="book-label">Título</label>
-            <input type="text" class="book-input"
-                   [(ngModel)]="formData.subtitulo"
-                   name="subtitulo"
-                   maxlength="500"
-                   placeholder="Subtítulo">
+            <label class="book-label">
+              Título / subtítulo
+            </label>
+            <input
+              type="text"
+              class="book-input"
+              [(ngModel)]="formData.subtitulo"
+              name="subtitulo"
+              maxlength="500"
+              placeholder="Un título corto para este momento (opcional)"
+            />
           </div>
 
+          <!-- Contenido -->
           <div class="book-form-group">
-            <label class="book-label">Contenido <span class="required-mark">*</span></label>
-            <textarea class="book-textarea"
-                      [(ngModel)]="formData.textoGrande"
-                      name="textoGrande"
-                      rows="12"
-                      required
-                      placeholder="Texto"></textarea>
+            <label class="book-label">
+              Contenido <span class="required-mark">*</span>
+            </label>
+            <textarea
+              class="book-textarea"
+              [(ngModel)]="formData.textoGrande"
+              name="textoGrande"
+              rows="10"
+              required
+              placeholder="Describe qué ocurrió en este punto de la historia..."
+            ></textarea>
+            <small class="book-helper">
+              Puedes escribir un resumen, una escena importante o un recuerdo.
+            </small>
           </div>
 
         </div>
 
-        <div class="modal-footer book-modal-footer">
-          <button type="button" class="book-btn book-btn-secondary" (click)="onClose()">
+        <!-- FOOTER -->
+        <footer class="book-modal-footer">
+          <button
+            type="button"
+            class="book-btn book-btn-secondary"
+            (click)="onClose()"
+          >
             Cancelar
           </button>
 
-          <button type="submit" class="book-btn book-btn-primary"
-                  [disabled]="!messageForm.form.valid || creating">
-            {{ creating ? 'Guardando...' : (message ? 'Actualizar Capítulo' : 'Guardar') }}
+          <button
+            type="submit"
+            class="book-btn book-btn-primary"
+            [disabled]="!messageForm.form.valid || creating"
+          >
+            <span *ngIf="creating">
+              <i class="fas fa-spinner fa-spin"></i>
+              Guardando...
+            </span>
+            <span *ngIf="!creating">
+              {{ message ? 'Actualizar evento' : 'Guardar evento' }}
+            </span>
           </button>
-        </div>
-
+        </footer>
       </form>
-
     </div>
   </div>
 </div>
