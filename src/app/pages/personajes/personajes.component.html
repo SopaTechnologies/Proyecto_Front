@@ -1,20 +1,39 @@
-<div class="header-section">
-  <h2 class="header-title">Personajes</h2>
+<!-- Header de personajes con botón crear -->
+<div class="personajes-header">
+  <button class="create-personaje-btn" (click)="openCreatePersonajeModal()">
+    <i class="fas fa-magic"></i>
+    Crear personaje con IA
+  </button>
 </div>
 
+<!-- Loading spinner para personajes -->
+<div *ngIf="loadingPersonajes" class="loading-section">
+  <div class="spinner"></div>
+  <p>Generando personaje...</p>
+</div>
 
+<!-- Error message para personajes -->
+<div *ngIf="errorPersonajes" class="error-message">
+  <i class="fas fa-exclamation-triangle"></i>
+  {{errorPersonajes}}
+</div>
+
+<!-- Lista de personajes -->
 <app-personajes-list
+  *ngIf="!loadingPersonajes"
   [personajes]="personajes"
-  [loading]="loadingPersonajes"
-  [error]="errorPersonajes"
-  (editar)="abrirEditar($event)"
-  (eliminar)="eliminar($event)"
-  (crear)="abrirCrear()">
+  (editPersonaje)="handleEditPersonaje($event)"
+  (deletePersonaje)="handleDeletePersonaje($event)"
+  (createPersonaje)="openCreatePersonajeModal()">
 </app-personajes-list>
 
+<!-- Formulario modal -->
 <app-personajes-form
-  *ngIf="showModal"
-  [personaje]="personajeSeleccionado"
-  (cerrar)="cerrarModal()"
-  (guardado)="refrescar()">
+  *ngIf="showPersonajeModal"
+  [personajes]="personajes"
+  [currentPersonaje]="currentPersonaje"
+  [editingPersonaje]="editingPersonaje"
+  [showModal]="showPersonajeModal"
+  (closeModal)="handleCloseModal()"
+  (savePersonaje)="handleSavePersonaje()">
 </app-personajes-form>

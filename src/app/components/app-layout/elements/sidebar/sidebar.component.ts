@@ -37,8 +37,6 @@ export class SidebarComponent {
   constructor(private router: Router) {
     this.appRoutes = routes.find(route => route.path === 'app');
     this.permittedRoutes = this.authService.getPermittedRoutes(this.appRoutes?.children || []);
-
-    this.buildGroups();
   }
 
   private buildGroups(): void {
