@@ -1,71 +1,151 @@
-<div class="map-container">
-      <div class="header">
-        <div class="title-section">
-          <h1>Generador de Mapas</h1>
-          <p>Vista Administrador</p>
-        </div>
-        <div class="controls">
-          <button (click)="generateNewMap()" class="btn btn-orange">
-            <span class="icon">🔄</span>
-            Generar nuevo Mapa
-          </button>
-          <!-- <button (click)="downloadMap()" class="btn btn-orange">
-            <span class="icon">⬇️</span>
-            Descargar Mapa
-          </button> -->
-        </div>
-      </div>
-      <div class="content-grid">
-        <div class="canvas-section">
-          <canvas
-            #mapCanvas
-            width="900"
-            height="700"
-            (click)="onCanvasClick($event)"
-            (mousedown)="onMouseDown($event)"
-            (mousemove)="onMouseMove($event)"
-            (mouseup)="onMouseUp($event)"
-            (wheel)="onWheel($event)"
-            (mouseleave)="onMouseUp($event)">
-          </canvas>
-        </div>
+<div class="map-page">
+  <!-- HEADER -->
+  <header class="map-header">
+    <div class="map-header-left">
+      <span class="pill pill-soft">
+        <i class="fas fa-map"></i>
+        Generador de mapas
+      </span>
 
-        <div class="sidebar">
-          <div class="panel legend-panel">
-            <h3>Código de colores del Mapa</h3>
-            <div class="terrain-list">
-              <div class="terrain-item" *ngFor="let terrain of terrainTypes">
-                <div class="color-box" [style.background-color]="terrain.color"></div>
-                <span>{{terrain.name}}</span>
-              </div>
-              <div class="setting-item">
-            <label>Semilla utilizada para generar el mapa</label>
-            <input type="number" [(ngModel)]="seed" (change)="generateNewMap()" readonly />
-          </div>
-            </div>
-          </div>
-
-          <div class="panel info-panel" *ngIf="selectedTile">
-            <h3>Hexágono seleccionado</h3>
-            <div class="info-list">
-              <div class="info-item">
-                <strong>Coordenadas:</strong> ({{selectedTile.q}}, {{selectedTile.r}})
-              </div>
-              <div class="info-item">
-                <strong>Bioma:</strong> {{selectedTile.type.replace('_', ' ')}}
-              </div>
-              <div class="info-item">
-                <strong>Altura:</strong> {{(selectedTile.elevation * 100).toFixed(1)}}%
-              </div>
-              <div class="info-item">
-                <strong>Humedad:</strong> {{(selectedTile.moisture * 100).toFixed(1)}}%
-              </div>
-              <div class="info-item">
-                <strong>Temperatura:</strong> {{(selectedTile.temperature * 100).toFixed(1)}}%
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
+      <h1>Generador de Mapas</h1>
+      <p class="subtitle">
+        Vista administrador · Explora biomas, relieve y parámetros del mundo procedural.
+      </p>
     </div>
+
+    <div class="map-header-right">
+      <div class="seed-pill">
+        <span class="seed-label">Semilla</span>
+        <span class="seed-value">#{{ seed }}</span>
+      </div>
+
+      <button
+        type="button"
+        class="btn-primary-map"
+        (click)="generateNewMap()"
+      >
+        <i class="fas fa-sync-alt"></i>
+        <span>Generar nuevo mapa</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CUERPO: MAPA + SIDEBAR -->
+  <div class="map-body">
+    <!-- TARJETA DEL MAPA -->
+    <section class="map-main-card">
+      <div class="map-main-header">
+        <div>
+          <h2>Vista del mapa</h2>
+          <p class="map-hint">
+            Arrastra para mover el mapa · Usa la rueda del ratón para hacer zoom ·
+            Haz clic en un hexágono para ver detalles.
+          </p>
+        </div>
+
+        <div class="map-main-toolbar">
+          <div class="badge">
+            <span>Zoom</span>
+            <span class="value">{{ zoom | number:'1.1-1' }}x</span>
+          </div>
+          <div class="badge">
+            <span>Hexágonos</span>
+            <span class="value">{{ tiles.length }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-canvas-wrapper">
+        <canvas
+          #mapCanvas
+          class="map-canvas"
+          width="900"
+          height="700"
+          (click)="onCanvasClick($event)"
+          (mousedown)="onMouseDown($event)"
+          (mousemove)="onMouseMove($event)"
+          (mouseup)="onMouseUp($event)"
+          (wheel)="onWheel($event)"
+          (mouseleave)="onMouseUp($event)"
+        >
+        </canvas>
+      </div>
+    </section>
+
+    <!-- SIDEBAR -->
+    <aside class="map-sidebar">
+      <!-- LEYENDA -->
+      <section class="map-panel">
+        <h3>Código de colores del mapa</h3>
+
+        <div class="terrain-list">
+          <div class="terrain-item" *ngFor="let terrain of terrainTypes">
+            <div
+              class="color-box"
+              [style.background-color]="terrain.color"
+            ></div>
+            <span>{{ terrain.name }}</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- HEXÁGONO SELECCIONADO -->
+      <section class="map-panel" *ngIf="selectedTile">
+        <h3 class="hex-panel-title">Hexágono seleccionado</h3>
+
+        <div class="hex-info-list">
+          <div class="hex-info-row">
+            <div class="label">
+              <i class="fas fa-crosshairs"></i>
+              <span>Coordenadas</span>
+            </div>
+            <div class="value">
+              ({{ selectedTile.q }}, {{ selectedTile.r }})
+            </div>
+          </div>
+
+          <div class="hex-info-row">
+            <div class="label">
+              <i class="fas fa-leaf"></i>
+              <span>Bioma</span>
+            </div>
+            <div class="value">
+              {{ selectedTile.type.replace('_', ' ') }}
+            </div>
+          </div>
+
+          <div class="hex-info-row">
+            <div class="label">
+              <i class="fas fa-mountain"></i>
+              <span>Altura</span>
+            </div>
+            <div class="value">
+              {{ (selectedTile.elevation * 100).toFixed(1) }}%
+            </div>
+          </div>
+
+          <div class="hex-info-row">
+            <div class="label">
+              <i class="fas fa-tint"></i>
+              <span>Humedad</span>
+            </div>
+            <div class="value">
+              {{ (selectedTile.moisture * 100).toFixed(1) }}%
+            </div>
+          </div>
+
+          <div class="hex-info-row">
+            <div class="label">
+              <i class="fas fa-thermometer-half"></i>
+              <span>Temperatura</span>
+            </div>
+            <div class="value">
+              {{ (selectedTile.temperature * 100).toFixed(1) }}%
+            </div>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>

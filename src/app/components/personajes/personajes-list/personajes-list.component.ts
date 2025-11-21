@@ -1,3 +1,4 @@
+
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Personaje } from '../../../models/personaje.model';
 import { CommonModule, DatePipe } from '@angular/common';
