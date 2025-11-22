@@ -37,9 +37,7 @@ export interface IUser2 {
 }
 
 export interface IRole2 {
-  
   name : string;
-  
 }
 
 export interface IAuthority {

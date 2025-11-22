@@ -57,19 +57,7 @@ export class UserService extends BaseService<IUser> {
     });
   }
 
-  updateOrSave(user: IUser2) {
-    const payload = {
-      email: user.email,
-      username: user.username,
-      lastname: user.lastname,
-      password: user.password,
-      name: user.name,
-      photo: user.photo,
-      status: user.status,
-      role: {
-        name: user.role?.name
-      }
-    };
+  updateOrSave(payload: any) {
     return this.http.put<IResponse<IUser2>>(`${this.source}/update`, payload);
   }
 }
