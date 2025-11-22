@@ -32,6 +32,13 @@
     <button class="btn-close" aria-label="Cerrar" (click)="toggleChat()">×</button>
   </div>
   <div class="panel-body">
+    <div class="history-select">
+      <label for="historiaSelect">Historia:</label>
+      <select id="historiaSelect" [(ngModel)]="selectedHistoriaId">
+        <option [ngValue]="null">-- Seleccionar --</option>
+        <option *ngFor="let h of histories" [ngValue]="h.id">{{ h.titulo }}</option>
+      </select>
+    </div>
     <div class="messages" *ngIf="messages.length; else emptyMsg">
       <div *ngFor="let m of messages" [ngClass]="m.from === 'user' ? 'msg user' : 'msg ai'">{{ m.text }}</div>
     </div>
