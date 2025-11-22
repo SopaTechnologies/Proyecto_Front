@@ -1,286 +1,416 @@
-/* === Variables de color === */
-:root {
-  --color-bg: #3a2020;         /* Fondo general */
-  --color-bg-light: #4a2b2b;   /* Fondo de tarjetas */
-  --color-accent: #a15c3e;     /* Detalles / Bordes / Botones */
-  --color-text: #f8f4ec;       /* Texto principal */
-  --color-muted: #d9a77a;      /* Texto suave / secundario */
-}
+// ===== Paleta café =====
+$color-bg: #2b1c1c;
+$color-bg-soft: #3a2828;
+$color-bg-soft2: #4a2f2f;
+$color-accent: #c8b2a9;
+$color-accent-strong: #d4a574;
+$color-text-main: #f7f1ec;
+$color-text-muted: #e0d1c8;
+$color-border-soft: rgba(255, 255, 255, 0.08);
 
-/* === Reset === */
-* {
-  margin: 0;
-  padding: 0;
+// ===== CONTENEDOR GENERAL =====
+.profile-page {
+  width: 100%;
+  height: 100%;
+  padding: 1.6rem 1.9rem 1.9rem;
   box-sizing: border-box;
-}
-
-html,
-body {
-  height: 100%;
-  width: 100%;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  font-family: "Poppins", "Segoe UI", sans-serif;
-  overflow: hidden;
-}
-
-/* === Layout principal === */
-.app-layout {
-  display: flex;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-}
-
-.sidebar-wrapper {
-  flex-shrink: 0;
-  width: 250px;
-  background-color: var(--color-bg);
-  transition: width 0.3s ease;
-}
-
-.sidebar-wrapper.close_icon {
-  width: 60px;
-}
-
-.page-body {
-  flex: 1;
+  color: $color-text-main;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: var(--color-bg);
+  gap: 1.4rem;
 }
 
-.page-body main.container-fluid {
-  flex: 1;
+// ===== HEADER (avatar y datos básicos) =====
+.profile-header {
   display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  padding: 1.5rem;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.page-body main.container-fluid::-webkit-scrollbar {
-  display: none;
-}
-
-/* === Footer === */
-.footer {
-  background-color: var(--color-bg);
-  color: var(--color-muted);
-  border-top: 2px solid var(--color-accent);
-  padding: 0.75rem 0;
-  text-align: center;
-  flex-shrink: 0;
-  margin: 0;
-}
-
-/* === Tarjetas, formularios y secciones === */
-.card,
-mat-card,
-section,
-form {
-  background-color: var(--color-bg-light) !important;
-  border: 1px solid var(--color-accent);
-  border-radius: 12px;
-  padding: 1.5rem;
-  color: var(--color-text);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-}
-
-/* === Inputs === */
-input,
-textarea,
-select {
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-accent);
-  color: var(--color-text);
-  border-radius: 6px;
-  padding: 0.5rem;
-  width: 100%;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--color-muted);
-}
-
-label {
-  color: var(--color-muted);
-}
-
-/* === Botones === */
-button,
-.mat-raised-button,
-.mat-flat-button {
-  background-color: var(--color-accent);
-  color: var(--color-text);
-  border: none;
-  border-radius: 8px;
-  padding: 0.6rem 1.2rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover,
-.mat-raised-button:hover,
-.mat-flat-button:hover {
-  background-color: #c97b56;
-}
-
-/* === Títulos === */
-h1, h2, h3, h4, h5 {
-  color: var(--color-muted);
-}
-
-/* === Tablas === */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: var(--color-bg-light);
-  color: var(--color-text);
-}
-
-th, td {
-  border: 1px solid var(--color-accent);
-  padding: 0.75rem;
-}
-
-th {
-  background-color: #5c3128;
-}
-
-/* === Enlaces === */
-a {
-  color: var(--color-muted);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--color-accent);
-}
-
-/* === Responsive === */
-@media (max-width: 768px) {
-  .page-body main.container-fluid {
-    padding: 0.75rem;
-  }
-}
-
-
-
-.up-main h1 {
-  color: white;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-p{
-  color: #fff;
-}
-
-.form-label {
-  color: #fff;
-  font-size: 14px;
-  font-weight: 500;
-  background-color: #2b1d1d;
-}
-
-.dark-input {
-  background-color: transparent;
-  border: 1px solid #555;
-  border-radius: 6px;
-  color: white;
-  padding: 12px;
-}
-
-input[type="text"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #2b1d1d;
-  border: 2px solid #d4a574;
-  color: #d4a574;
-}
-
-input[type="number"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #2b1d1d;
-  border: 2px solid #d4a574;
-  color: #d4a574;
-}
-
-input[type="password"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #2b1d1d;
-  border: 2px solid #d4a574;
-  color: #d4a574;
-}
-
-input[type="email"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #2b1d1d;
-  border: 2px solid #d4a574;
-  color: #d4a574;
-}
-
-
-.dark-input::placeholder {
-  color: #33271a;
-}
-
-.dark-submit-btn {
-  background-color: #d4a574;
-  border: none;
-  padding: 12px;
-  border-radius: 6px;
-  font-weight: 600;
-  transition: background-color 0.3s;
-}
-
-.dark-submit-btn:hover {
-  background-color: #c99563;
-}
-
-h1{
-  color: white;
-}
-
-
-.text-primary {
-  color: #d4a574 !important;
-}
-
-.btn-link
-{
-  margin-top: 20px;
-}
-
-.upload-spinner {
-  display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
-.ag-column-drop-title {
-    font-family: 'Brush Script MT';
-    font-size: 1.5em;
-    color: white;
+.avatar-block {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.avatar-ring {
+  width: 96px;
+  height: 96px;
+  border-radius: 999px;
+  padding: 3px;
+  background: radial-gradient(
+    circle at 30% 0,
+    $color-accent-strong 30%,
+    #7b5133 85%,
+    #120808 100%
+  );
+  box-shadow:
+    0 16px 30px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 999px;
+  object-fit: cover;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
+}
+
+.avatar-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .email {
+    margin: 0;
+    font-size: 0.9rem;
+    color: $color-text-muted;
+  }
+
+  .username {
+    margin: 0;
+    font-size: 0.8rem;
+    color: lighten($color-text-muted, 10%);
+  }
+}
+
+// Pill reutilizable
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+
+  i {
+    font-size: 0.9rem;
+  }
+}
+
+.pill-soft {
+  background: rgba(0, 0, 0, 0.55);
+  color: $color-text-muted;
+
+  i {
+    color: $color-accent-strong;
+  }
+}
+
+// ===== GRID DE TARJETAS =====
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1.2fr);
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+
+// Tarjeta base
+.profile-card {
+  border-radius: 1.4rem;
+  padding: 1.2rem 1.3rem 1.4rem;
+  background: radial-gradient(
+    circle at top left,
+    $color-bg-soft2 0,
+    $color-bg-soft 45%,
+    #211212 100%
+  );
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .card-subtitle {
+    margin: 0;
+    font-size: 0.86rem;
+    color: $color-text-muted;
+  }
+}
+
+// ===== FORMULARIOS =====
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+// Grid de campos
+.fields-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem 0.9rem;
+
+  &.single-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Grupo de campo
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: $color-text-muted;
+  }
+
+  input {
+    border-radius: 0.9rem;
+    border: 1px solid $color-border-soft;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.88rem;
+    color: $color-text-main;
+    background: rgba(0, 0, 0, 0.35);
+    outline: none;
+    transition:
+      border-color 0.16s ease-out,
+      box-shadow 0.16s ease-out,
+      background-color 0.16s ease-out,
+      transform 0.12s ease-out;
+
+    &::placeholder {
+      color: rgba(224, 209, 200, 0.7);
+    }
+
+    &:focus {
+      border-color: $color-accent-strong;
+      background: rgba(0, 0, 0, 0.55);
+      box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.7);
+      transform: translateY(-1px);
+    }
+
+    &[readonly] {
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+  }
+
+  .helper-text {
+    font-size: 0.75rem;
+    color: $color-text-muted;
+  }
+}
+
+// ===== FOTO DE PERFIL =====
+.photo-group {
+  margin-top: 0.2rem;
+}
+
+.photo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  align-items: flex-start;
+}
+
+.file-block {
+  min-width: 220px;
+
+  input[type='file'] {
+    width: 100%;
+    border-radius: 999px;
+    border: 1px dashed $color-border-soft;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.82rem;
+    color: $color-text-main;
+    background: rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    transition:
+      border-color 0.16s ease-out,
+      background-color 0.16s ease-out;
+
+    &:hover {
+      border-color: $color-accent-strong;
+      background: rgba(0, 0, 0, 0.55);
+    }
+  }
+}
+
+.preview-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.photo-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 1rem;
+  object-fit: cover;
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.upload-spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: $color-text-muted;
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-top-color: $color-accent-strong;
+    animation: spinner 0.7s linear infinite;
+  }
+}
+
+// ===== BOTONES =====
+.form-actions {
+  margin-top: 0.4rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.55rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: radial-gradient(
+    circle at 30% 0,
+    $color-accent-strong 45%,
+    #a06f3c 100%
+  );
+  color: #2b1b1b;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(0, 0, 0, 0.7);
+  transition:
+    transform 0.16s ease-out,
+    box-shadow 0.16s ease-out,
+    filter 0.16s ease-out;
+
+  &.small {
+    padding: 0.4rem 1rem;
+    font-size: 0.78rem;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow:
+      0 18px 36px rgba(0, 0, 0, 0.98),
+      0 0 0 1px rgba(0, 0, 0, 0.85);
+    filter: brightness(1.03);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+    box-shadow: none;
+  }
+}
+
+// ===== Animaciones =====
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ===== Responsive =====
+@media (max-width: 992px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 1.3rem 1.1rem 1.4rem;
+  }
+
+  .avatar-block {
+    align-items: flex-start;
+  }
+}
+
+// Estilo específico para el input de archivo
+input[type="file"] {
+  // color del texto del nombre del archivo
+  color: $color-text-main;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 0.35rem 0.4rem;
+
+  // Botón "Subir archivo / Seleccionar archivo"
+  &::file-selector-button {
+    background-color: $color-accent-strong; // tu dorado café
+    color: #2b1b1b;
+    border: none;
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    margin-right: 0.6rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition:
+      background-color 0.16s ease-out,
+      transform 0.1s ease-out;
+  }
+
+  &::file-selector-button:hover {
+    background-color: darken($color-accent-strong, 5%);
+    transform: translateY(-1px);
+  }
+
+  &::file-selector-button:active {
+    transform: translateY(0);
+  }
 }

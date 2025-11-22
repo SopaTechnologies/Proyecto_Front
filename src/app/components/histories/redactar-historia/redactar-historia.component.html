@@ -1,29 +1,75 @@
-<div class="modal-form-container">
+<div class="modal-form-container story-editor-modal">
+  <!-- Header -->
+  <header class="modal-header-custom">
+    <div class="title-block">
+      <span class="pill">
+        <i class="fas fa-pen-nib"></i>
+        Redactar
+      </span>
 
-    <div class="modal-header-custom">
-    <h2>{{ historyForm.value.id ? 'Editar Historia' : 'Nueva Historia' }}</h2>
+      <h2>
+        {{ historia.titulo || 'Redactar historia' }}
+      </h2>
+
+      <p class="subtitle">
+        Escribe o continúa el contenido de tu libro. Los cambios se guardan automáticamente.
+      </p>
+    </div>
+
     <button type="button" class="btn-close-modal" (click)="cancel()">
       <i class="fas fa-times"></i>
     </button>
-  </div>
+  </header>
 
-  <angular-editor 
-    [placeholder]="'Escribe tu historia'"
-    [(ngModel)]="historia.content" 
-    [config]="editorConfig"
-  />
+  <!-- Info rápida de la historia -->
+  <section class="story-meta">
+ 
+    <div class="story-meta-item title-preview" *ngIf="historia.titulo">
+      <span class="label">Título</span>
+      <span class="value" [title]="historia.titulo">
+        {{ historia.titulo }}
+      </span>
+    </div>
+  </section>
 
-  <div class="acciones">
-    <button (click)="guardarManual()">Guardar</button>
-  </div>
+  <!-- Editor -->
+  <section class="editor-wrapper">
+    <angular-editor
+      class="story-editor"
+      [placeholder]="'Escribe tu historia...'"
+      [(ngModel)]="historia.content"
+      [config]="editorConfig"
+    ></angular-editor>
+  </section>
+
+  <!-- Acciones + mensajes -->
+  <footer class="editor-footer">
+    <div class="left">
+      <span class="auto-save-text">
+        <i class="fas fa-cloud"></i>
+        Guardado automático activo
+      </span>
+    </div>
+
+    <div class="right">
+      <button type="button" class="btn-secondary" (click)="cancel()">
+        Cerrar
+      </button>
+
+      <button type="button" class="btn-primary" (click)="guardarManual()">
+        <i class="fas fa-save"></i>
+        Guardar ahora
+      </button>
+    </div>
+  </footer>
 
   @if (mensaje) {
-    @if (mensajeTipo == 201) {
-      <div class="success-message">
+    @if (mensajeTipo == 200 || mensajeTipo == 201) {
+      <div class="status-message success-message">
         {{ mensaje }}
       </div>
     } @else {
-      <div class="error-message">
+      <div class="status-message error-message">
         {{ mensaje }}
       </div>
     }

@@ -1,10 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { Component, ViewChild } from "@angular/core";
+import { Component, ViewChild, AfterViewInit } from "@angular/core";
 import { FormsModule, NgModel } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
-import { AfterViewInit, OnInit } from "@angular/core";
-import Swal from "sweetalert2";
 
 @Component({
   selector: "app-login",
@@ -14,7 +12,8 @@ import Swal from "sweetalert2";
   styleUrl: "./login.component.scss",
 })
 export class LoginComponent implements AfterViewInit {
-  public loginError!: string;
+  // Mensaje que se muestra debajo del botón
+  public loginError: string | null = null;
 
   @ViewChild("email") emailModel!: NgModel;
   @ViewChild("password") passwordModel!: NgModel;
@@ -28,49 +27,32 @@ export class LoginComponent implements AfterViewInit {
 
   public handleLogin(event: Event) {
     event.preventDefault();
-    if (!this.emailModel.valid) {
+    this.loginError = null;
+
+    // Validación básica de campos: marcamos como tocados y mostramos mensaje general
+    if (!this.emailModel.valid || !this.passwordModel.valid) {
       this.emailModel.control.markAsTouched();
-      Swal.fire({
-        title: "Error",
-        text: "Por favor indique un Correo",
-        icon: "warning",
-      });
-      return;
-    }
-    if (!this.passwordModel.valid) {
       this.passwordModel.control.markAsTouched();
-      Swal.fire({
-        title: "Error",
-        text: "Por favor indique una contraseña",
-        icon: "warning",
-      });
+      this.loginError = "Por favor completa los campos obligatorios.";
       return;
-    } else{
-      this.authService.login(this.loginForm).subscribe({
-        next: (response: any) => {
-          this.router.navigateByUrl("/app/dashboard");
-          Swal.fire({
-            title: "Sesión iniciada correctamente!!",
-            text: "Éxitos en tu nueva aventura!!!",
-            icon: "success",
-          });
-        },
-        
-        error: (err: any) => {
-          const errorMessage =
-            err.error?.message ||
-            err.error?.description ||
-            "El usuario indicado no esta registrado";
-          this.loginError = errorMessage;
-          Swal.fire({
-            title: "Error",
-            text: errorMessage,
-            icon: "error",
-          });
-          return;
-        },
-      });
     }
+
+    // Llamada al backend
+    this.authService.login(this.loginForm).subscribe({
+      next: () => {
+        this.loginError = null;
+        this.router.navigateByUrl("/app/dashboard");
+      },
+      error: (err: any) => {
+        const errorMessage =
+          err.error?.message ||
+          err.error?.description ||
+          "El usuario indicado no está registrado o la contraseña es incorrecta.";
+
+        // Solo mostramos mensaje bajo el botón, sin ningún popup
+        this.loginError = errorMessage;
+      },
+    });
   }
 
   ngAfterViewInit(): void {
@@ -109,7 +91,7 @@ export class LoginComponent implements AfterViewInit {
   handleGoogleCredential(token: string) {
     const decoded = this.decodeJwtToken(token);
     if (!decoded) {
-      this.loginError = "Error processing Google authentication.";
+      this.loginError = "Error procesando la autenticación con Google.";
       return;
     }
 
@@ -119,19 +101,13 @@ export class LoginComponent implements AfterViewInit {
       email: decoded.email || "",
       photoUrl: decoded.picture || "",
       password: decoded.email,
-      username: decoded.name
+      username: decoded.name,
     };
 
     this.authService.loginWithGoogle(googleUser).subscribe({
-      next: (response: any) => {
+      next: () => {
+        this.loginError = null;
         this.router.navigateByUrl("/app/dashboard");
-        Swal.fire({
-          title: "Usuario registrado correctamente!!",
-          text:
-            "Ahora puede ir al inicio de sesión para ingresar!! " +
-            "Ingrese con su correo y contraseña igual a su correo, recuerde cambiar la contraseña luego.",
-          icon: "success",
-        });
       },
       error: (err: any) => {
         const errorMessage =
@@ -139,11 +115,6 @@ export class LoginComponent implements AfterViewInit {
           err.error?.description ||
           "El usuario indicado no se encuentra registrado";
         this.loginError = errorMessage;
-        Swal.fire({
-          title: "Error",
-          text: errorMessage,
-          icon: "error",
-        });
       },
     });
   }

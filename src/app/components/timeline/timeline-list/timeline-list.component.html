@@ -1,56 +1,94 @@
 <!-- Contenedor con scroll para el timeline -->
 <div class="timeline-scroll-container">
   <div class="timeline-container">
+    <div class="timeline-header">
+ 
+
+    </div>
+
     <div class="timeline-content">
 
-      <!-- Título del timeline -->
-      <h2 class="timeline-title-text">Línea de tiempo</h2>
-
-      <!-- Mensajes como tarjetas de timeline -->
+      <!-- Lista de eventos -->
       <div class="timeline-items" *ngIf="messages.length > 0">
-        <div class="timeline-item" *ngFor="let message of sortedMessages; let i = index">
+        <div
+          class="timeline-item"
+          *ngFor="let message of sortedMessages; let i = index"
+        >
+          <!-- Línea vertical -->
+          <div class="timeline-line"></div>
+
+          <!-- Punto -->
           <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-card-header">
-              <h3 class="timeline-title">{{message.titulo}}</h3>
+
+          <!-- Tarjeta -->
+          <article class="timeline-card">
+            <header class="timeline-card-header">
+              <div class="timeline-year-block">
+                <div class="timeline-year">
+                  {{ message.titulo }}
+                </div>
+                <div
+                  class="timeline-subtitle"
+                  *ngIf="message.subtitulo"
+                >
+                  {{ message.subtitulo }}
+                </div>
+              </div>
+
               <div class="timeline-actions">
-                <button class="action-btn edit-btn" (click)="onEditMessage(message)">
+                <button
+                  class="action-btn edit-btn"
+                  type="button"
+                  title="Editar evento"
+                  (click)="onEditMessage(message)"
+                >
                   <i class="fas fa-edit"></i>
                 </button>
-                <button class="action-btn delete-btn" (click)="onDeleteMessage(message.id!)">
+
+                <button
+                  class="action-btn delete-btn"
+                  type="button"
+                  title="Eliminar evento"
+                  (click)="onDeleteMessage(message.id!)"
+                >
                   <i class="fas fa-trash"></i>
                 </button>
               </div>
-            </div>
-            <div class="timeline-subtitle" *ngIf="message.subtitulo">
-              {{message.subtitulo}}
-            </div>
+            </header>
+
             <div class="timeline-content-text">
-              {{message.textoGrande}}
+              {{ message.textoGrande }}
             </div>
-            <div class="timeline-meta">
-              <span class="timeline-date">
+
+            <footer class="timeline-meta">
+              <span class="timeline-date" *ngIf="message.createdAt">
                 <i class="fas fa-calendar"></i>
-                {{message.createdAt | date:'dd/MM/yyyy'}}
+                {{ message.createdAt | date: 'dd/MM/yyyy' }}
               </span>
-            </div>
-          </div>
+            </footer>
+          </article>
         </div>
       </div>
 
-      <!-- Mensaje cuando no hay datos -->
-      <div *ngIf="messages.length === 0" class="empty-state">
+      <!-- Empty state -->
+      <div
+        *ngIf="messages.length === 0"
+        class="empty-state"
+      >
         <div class="empty-icon">
           <i class="fas fa-book-open"></i>
         </div>
         <h3>Tu línea de tiempo está vacía</h3>
-        <p>Comienza a escribir tu historia agregando el primer capítulo</p>
-        <button class="create-first-btn" (click)="onCreateMessage()">
+        <p>Comienza a escribir tu historia agregando el primer evento.</p>
+        <button
+          class="create-first-btn"
+          type="button"
+          (click)="onCreateMessage()"
+        >
           <i class="fas fa-plus"></i>
-          Crear primer capítulo
+          Crear primer evento
         </button>
       </div>
-
     </div>
   </div>
 </div>

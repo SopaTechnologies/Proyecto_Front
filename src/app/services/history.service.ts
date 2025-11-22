@@ -3,14 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { HistoriaModel, CrearHistoriaModel } from '../models/historia.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HistoriaService {
 
-  private apiUrl = 'historias'; // Cambia por tu endpoint real
-  private genresAPIUrl = 'genres'
+
+private apiUrl = `${environment.apiUrl}/historias`;
+private genresAPIUrl = `${environment.apiUrl}/genres`;
+
 
   constructor(private http: HttpClient) {}
 

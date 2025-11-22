@@ -6,11 +6,9 @@ import {
   IRoleType,
   IUser,
 } from "../interfaces";
-import { Observable, firstValueFrom, of, pipe, tap } from "rxjs";
+import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { throwError, catchError } from "rxjs";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import Swal from 'sweetalert2';
+
 @Injectable({
   providedIn: "root",
 })
@@ -19,7 +17,6 @@ export class AuthService {
   private expiresIn!: number;
   private user: IUser = { email: "", authorities: [] };
   private http: HttpClient = inject(HttpClient);
-  private snackBar: MatSnackBar = inject(MatSnackBar);
 
   constructor() {
     this.load();
@@ -53,35 +50,34 @@ export class AuthService {
   }
 
   public check(): boolean {
-    if (!this.accessToken) {
-      return false;
-    } else {
-      return true;
-    }
+    return !!this.accessToken;
   }
 
+  // LOGIN: sin SweetAlert, solo setea datos y deja que el componente maneje errores
   public login(credentials: {
     email: string;
     password: string;
   }): Observable<ILoginResponse> {
     return this.http.post<ILoginResponse>("auth/login", credentials).pipe(
-      tap((response: any) => {
-        this.accessToken = response.token;
-        this.user.email = credentials.email;
-        this.expiresIn = response.expiresIn;
-        this.user = response.authUser;
-        this.save();
-      }),
-      catchError((error) => {
-        const errorMessage = error.error?.detail || error.error?.description || error.message || 'Error al iniciar sesión';
-        Swal.fire({
-          title: 'Error',
-          text: `Error al iniciar sesión: ${errorMessage}`,
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-        throw error;
-      })
+      // solo éxito
+      (source) =>
+        new Observable<ILoginResponse>((subscriber) => {
+          source.subscribe({
+            next: (response: any) => {
+              this.accessToken = response.token;
+              this.user.email = credentials.email;
+              this.expiresIn = response.expiresIn;
+              this.user = response.authUser;
+              this.save();
+              subscriber.next(response);
+              subscriber.complete();
+            },
+            error: (err) => {
+              // NO Swal aquí
+              subscriber.error(err);
+            },
+          });
+        })
     );
   }
 
@@ -123,48 +119,14 @@ export class AuthService {
     return permittedRoutes;
   }
 
+  // SIGNUP: sin SweetAlert, el componente muestra mensajes
   public signup(user: IUser): Observable<any> {
-    return this.http.post("users/addUser", user).pipe(
-      tap(()=>{
-        Swal.fire({
-          title: 'Se realiza el registro!',
-          text: 'Se registro el usuario correctamente, favor iniciar sesión',
-          icon: 'success'
-        });
-      }),
-       catchError((error) => {
-        Swal.fire({
-          title: 'Error',
-          text: `Error al registrar usuario: ${error.message}`,
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-        throw error;
-      })
-
-    );
+    return this.http.post("users/addUser", user);
   }
 
-  public pass (user: {email: string; password: string}): Observable<any>{
-    return this.http.put(`users/pass/${user.email}`, user).pipe(
-      tap(() => {
-        Swal.fire({
-          title: 'Se cambia la contraseña!',
-          text: 'Se realiza el cambio de contraseña',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        });
-      }),
-      catchError((error) => {
-        Swal.fire({
-          title: 'Error',
-          text: `Error al cambiar la contraseña: ${error.message}`,
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-        throw error;
-      })
-    );
+  // CAMBIO DE CONTRASEÑA: sin SweetAlert, el componente muestra mensajes
+  public pass(user: { email: string; password: string }): Observable<any> {
+    return this.http.put(`users/pass/${user.email}`, user);
   }
 
   public logout() {
