@@ -41,7 +41,7 @@ export class LoginComponent implements AfterViewInit {
     this.authService.login(this.loginForm).subscribe({
       next: () => {
         this.loginError = null;
-        this.router.navigateByUrl("/app/dashboard");
+        this.router.navigateByUrl("/app/profile");
       },
       error: (err: any) => {
         const errorMessage =
@@ -107,7 +107,6 @@ export class LoginComponent implements AfterViewInit {
     this.authService.loginWithGoogle(googleUser).subscribe({
       next: () => {
         this.loginError = null;
-        this.router.navigateByUrl("/app/dashboard");
       },
       error: (err: any) => {
         const errorMessage =
