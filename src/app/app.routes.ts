@@ -17,7 +17,7 @@ import { MensajesComponent } from "./pages/timeline/timeline.component";
 import { PersonajesComponent } from "./pages/personajes/personajes.component";
 import { HistoriesCardComponent } from "./pages/histories/histories.component";
 import { ForumComponent } from "./pages/forum/forum.component";
-
+import { GameComponent } from "./pages/game/game.component";
 import { PerlinNoiseComponent } from "./pages/Maps/perlin-noise/perlin-noise.component";
 
 export const routes: Routes = [
@@ -139,6 +139,16 @@ export const routes: Routes = [
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
           name: "Foro",
+          showInSidebar: true,
+        },
+      },
+      {
+        path: "game",
+        component: GameComponent,
+        canActivate: [AuthGuard],
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: "Game Matchmaking",
           showInSidebar: true,
         },
       },

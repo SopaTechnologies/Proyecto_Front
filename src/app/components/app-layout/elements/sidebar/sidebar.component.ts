@@ -45,7 +45,7 @@ export class SidebarComponent {
     // Ajusta estos nombres a como tengas definidas las rutas en app.routes
     const historiasPaths = ['histories', 'forum', 'Linea de tiempo', 'personajes'];
     const menuPaths = ['dashboard', 'profile', 'Administración de usuarios', 'users'];
-    const juegoPaths = ['perlin-noise'];
+    const juegoPaths = ['perlin-noise', 'game'];
 
     this.historiasRoutes = this.filterRoutes(historiasPaths);
     this.menuRoutes = this.filterRoutes(menuPaths);
