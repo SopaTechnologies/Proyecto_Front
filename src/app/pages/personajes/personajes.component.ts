@@ -40,7 +40,7 @@ export class PersonajesComponent implements OnInit {
         this.personajes = personajes.map(p => ({
           ...p,
           imagenUrl: p.imagen
-            ? `http://localhost:8081/upload/${p.imagen.replace(/^\/?upload\//, '')}`
+            ? `http://localhost:8080/upload/${p.imagen.replace(/^\/?upload\//, '')}`
             : undefined
         }));
         this.loadingPersonajes = false;
