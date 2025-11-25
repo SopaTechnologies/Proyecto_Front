@@ -19,8 +19,15 @@ import { HistoriesCardComponent } from './pages/histories/histories.component';
 import { ForumComponent } from './pages/forum/forum.component';
 
 import { PerlinNoiseComponent } from './pages/Maps/perlin-noise/perlin-noise.component';
+import { LandingPageComponent } from './pages/mahou-landing-page/mahou-landing-page.component';
 
 export const routes: Routes = [
+
+  {
+    path: '',
+    component: LandingPageComponent,
+    pathMatch: 'full',
+  },
   {
     path: 'login',
     component: LoginComponent,
@@ -39,11 +46,6 @@ export const routes: Routes = [
   {
     path: 'access-denied',
     component: AccessDeniedComponent,
-  },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
   },
   {
     path: 'app',
@@ -168,4 +170,6 @@ export const routes: Routes = [
 }
     ],
   },
+    { path: '**', redirectTo: '', pathMatch: 'full' },
+
 ];
