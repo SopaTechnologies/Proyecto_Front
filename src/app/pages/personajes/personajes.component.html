@@ -1,21 +1,24 @@
 <!-- Header de personajes con botón crear -->
 <div class="personajes-header">
-  <button class="create-personaje-btn" (click)="openCreatePersonajeModal()">
+  <button
+    class="create-personaje-btn"
+    (click)="openCreatePersonajeModal()"
+  >
     <i class="fas fa-magic"></i>
     Crear personaje con IA
   </button>
 </div>
 
-<!-- Loading spinner para personajes -->
+<!-- Loading spinner -->
 <div *ngIf="loadingPersonajes" class="loading-section">
   <div class="spinner"></div>
   <p>Generando personaje...</p>
 </div>
 
-<!-- Error message para personajes -->
+<!-- Error message -->
 <div *ngIf="errorPersonajes" class="error-message">
   <i class="fas fa-exclamation-triangle"></i>
-  {{errorPersonajes}}
+  {{ errorPersonajes }}
 </div>
 
 <!-- Lista de personajes -->
@@ -24,7 +27,8 @@
   [personajes]="personajes"
   (editPersonaje)="handleEditPersonaje($event)"
   (deletePersonaje)="handleDeletePersonaje($event)"
-  (createPersonaje)="openCreatePersonajeModal()">
+  (createPersonaje)="openCreatePersonajeModal()"
+>
 </app-personajes-list>
 
 <!-- Formulario modal -->
@@ -35,5 +39,40 @@
   [editingPersonaje]="editingPersonaje"
   [showModal]="showPersonajeModal"
   (closeModal)="handleCloseModal()"
-  (savePersonaje)="handleSavePersonaje()">
+  (savePersonaje)="handleSavePersonaje()"
+>
 </app-personajes-form>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="delete-modal-overlay" *ngIf="showDeleteModal">
+  <div class="delete-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="delete-modal-content">
+      <h3>Eliminar personaje</h3>
+      <p>
+        ¿Seguro que deseas eliminar este personaje?
+        <br />
+        <span class="delete-modal-warning">
+          Esta acción no se puede deshacer.
+        </span>
+      </p>
+
+      <div class="delete-modal-actions">
+        <button
+          type="button"
+          class="delete-btn-secondary"
+          (click)="cancelDeletePersonaje()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="button"
+          class="delete-btn-danger"
+          (click)="confirmDeletePersonaje()"
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -675,4 +675,28 @@ input[type="file"] {
   &::file-selector-button:active {
     transform: translateY(0);
   }
+}// Botón tipo info para subir imagen con mismo estilo de otros botones
+.book-btn-info {
+  background: rgba(127, 180, 255, 0.15);
+  color: $color-text-main;
+  border: 1px solid rgba(127, 180, 255, 0.6);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.8);
+
+  &:hover:not(:disabled) {
+    background: rgba(127, 180, 255, 0.25);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+  }
+}
+
+// Un toque a los iconos de enemigos / amistades
+.icon-enemigo {
+  color: $color-danger;
+}
+
+.icon-amistad {
+  color: $color-success;
 }
