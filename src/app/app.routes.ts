@@ -63,6 +63,7 @@ export const routes: Routes = [
         canActivate: [AdminRoleGuard],
         data: {
           authorities: [
+            IRoleType.user,
             IRoleType.admin,
             IRoleType.superAdmin
           ],

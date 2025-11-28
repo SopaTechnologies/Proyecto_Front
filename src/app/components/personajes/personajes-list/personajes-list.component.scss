@@ -1,4 +1,4 @@
-// ===== Paleta Mahou =====
+/* ===== Paleta café alineada al resto ===== */
 $color-bg: #2b1c1c;
 $color-bg-soft: #3a2828;
 $color-bg-soft2: #4a2f2f;
@@ -6,359 +6,521 @@ $color-accent: #c8b2a9;
 $color-accent-strong: #d4a574;
 $color-text-main: #f7f1ec;
 $color-text-muted: #e0d1c8;
-$color-danger: #e35d6a;
-$color-success: #5ac38b;
+$color-border-soft: rgba(255, 255, 255, 0.08);
+$color-danger: #d94747;
 
-// ===== CONTENEDOR GENERAL =====
-.personajes-scroll-container {
-  width: 100%;
-  height: 100%;
-  padding: 1.6rem 1.9rem 1.9rem;
-  box-sizing: border-box;
-  color: $color-text-main;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  overflow-y: auto;
+/* Alias para que el resto del archivo siga funcionando igual */
+$bg-page: $color-bg;
+$bg-node: $color-bg-soft;
+$bg-node-soft: $color-bg-soft2;
+$border-soft: $color-border-soft;
+$text-main: $color-text-main;
+$text-muted: $color-text-muted;
+$accent: $color-accent-strong;
+$enemy: #ff7676;
+$friend: #5bc0ff;
 
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 999px;
-  }
-}
+/* ===== CONTENEDOR GENERAL ===== */
 
 .personajes-container {
-  max-width: 1120px;
-  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .personajes-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1.4rem;
+  width: 100%;
+  max-width: 1200px;
 }
 
-// ===== TARJETAS DE PERSONAJE =====
+/* ===== BLOQUE PRINCIPAL DEL ÁRBOL ===== */
+.genealogia-container {
+  background: #191010;
+  border-radius: 1.25rem;
+  border: 1px solid $border-soft;
+  padding: 1.5rem 1.25rem;
+}
+
+/* Cada familia raíz */
 .arbol-personaje {
-  padding: 1rem 0 0.2rem;
-}
-
-.personaje-card {
   position: relative;
-  border-radius: 1.2rem;
-  padding: 0.8rem 0.95rem 0.9rem;
-  background: radial-gradient(circle at top left, $color-bg-soft2 0, $color-bg-soft 40%, #201111 100%);
-  box-shadow:
-    0 18px 32px rgba(0, 0, 0, 0.95),
-    0 0 0 1px rgba(255, 255, 255, 0.04);
-  display: flex;
-  gap: 0.7rem;
-  align-items: flex-start;
-  min-height: 140px;
+  padding: 0 0 1.75rem;
+  text-align: center;
 }
 
+/* Eliminamos el efecto de “tarjeta grande” del contenedor del árbol */
+.arbol-personaje > .container-fluid {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* Grid “bootstrap like” (por si no cargas bootstrap) */
+.container-fluid {
+  width: 100%;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-inline: -0.5rem;
+}
+.col-12 {
+  width: 100%;
+  padding-inline: 0.5rem;
+}
+.col-md-6 {
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+}
+
+/* ===== NODO VISUAL DEL PERSONAJE (BURBUJA) ===== */
+.personaje-card {
+  border-radius: 1rem;
+  padding: 0.8rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  position: relative;
+  background: radial-gradient(
+      circle at top left,
+      $color-bg-soft2 0,
+      #2b1818 40%,
+      #1a0e0e 100%
+    );
+  
+  border: 1px solid transparent;
+  transition:
+    transform 0.18s ease-out,
+    box-shadow 0.18s ease-out,
+    border-color 0.18s ease-out;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 22px 42px rgba(0, 0, 0, 0.98),
+      0 0 0 1px rgba(212, 165, 116, 0.3);
+    border-color: rgba(212, 165, 116, 0.35);
+  }
+}
+
+/* Imagen del nodo */
 .personaje-image-container {
-  flex: 0 0 auto;
+  flex: 0 0 70px;
+  max-width: 70px;
+  aspect-ratio: 3 / 4;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.12), transparent 60%);
 }
 
 .personaje-image {
-  width: 100px;
-  height: 140px;
-  border-radius: 0.9rem;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  background: #000;
-  box-shadow:
-    0 14px 26px rgba(0, 0, 0, 0.95),
-    0 0 0 1px rgba(255, 255, 255, 0.16);
 }
 
+/* Texto del nodo */
 .personaje-info {
   flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  min-width: 0;
+  text-align: left;
 }
 
 .personaje-nombre {
-  margin: 0;
-  font-size: 1rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  margin: 0 0 0.15rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $text-main;
 }
 
 .personaje-descripcion {
   margin: 0;
-  font-size: 0.86rem;
-  color: $color-text-muted;
-  max-height: 3.8rem;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: $text-muted;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .personaje-meta {
+  margin-top: 0.3rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-top: 0.25rem;
-  font-size: 0.78rem;
-}
-
-.personaje-fecha,
-.personaje-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.18rem 0.55rem;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.7rem;
+  color: $text-muted;
 
   i {
-    font-size: 0.8rem;
+    margin-right: 0.25rem;
     color: $color-accent-strong;
   }
 }
 
-.personaje-status i {
-  color: $color-success;
+.personaje-fecha {
+  display: inline-flex;
+  align-items: center;
 }
 
-// Acciones (editar / borrar)
+.personaje-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(33, 150, 83, 0.18);
+  color: #9ef7c0;
+  border: 1px solid rgba(54, 183, 120, 0.65);
+  text-transform: capitalize;
+
+  i {
+    font-size: 0.6rem;
+  }
+}
+
+/* Acciones del nodo */
 .personaje-actions {
-  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  margin-left: 0.35rem;
+  gap: 0.3rem;
 }
 
 .btn-edit,
 .btn-delete {
+  width: 1.85rem;
+  height: 1.85rem;
   border-radius: 999px;
-  width: 34px;
-  height: 34px;
-  border: none;
-  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.55);
+  color: $text-main;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.85rem;
   transition:
-    transform 0.12s ease-out,
-    box-shadow 0.12s ease-out,
-    background-color 0.12s ease-out,
-    color 0.12s ease-out;
+    background-color 0.16s ease-out,
+    transform 0.16s ease-out,
+    box-shadow 0.16s ease-out,
+    border-color 0.16s ease-out;
+
+  i {
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.96);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.8);
+  }
 }
 
 .btn-edit {
-  background: rgba(255, 255, 255, 0.08);
-  color: $color-accent-strong;
+  border-color: rgba($color-accent-strong, 0.7);
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.9);
+    background: rgba($color-accent-strong, 0.28);
+    color: $color-text-main;
   }
 }
-
 .btn-delete {
-  background: rgba(0, 0, 0, 0.55);
-  color: $color-danger;
-  border: 1px solid rgba($color-danger, 0.7);
+  border-color: rgba($color-danger, 0.8);
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.95);
+    background: rgba($color-danger, 0.22);
+    color: #ffd1d1;
   }
 }
 
-// ===== RELACIONES (ENEMIGOS / AMISTADES) =====
+/* ===== LAYOUT DE ÁRBOL (RAMAS Y LÍNEAS) ===== */
+
+/* Contenedor de hijos de un nodo (subnivel) */
 .genealogia-hijos-wrapper {
-  margin-top: 0.4rem;
-  padding-left: 1.2rem;
-  border-left: 1px dashed rgba(255, 255, 255, 0.12);
+  position: relative;
+  padding-top: 1.75rem;
 }
 
-.genealogia-hijos-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  margin-top: 0.3rem;
+/* Línea vertical desde el nodo padre hacia la barra horizontal de hijos */
+.genealogia-hijos-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 1.4rem;
+  background: $border-soft;
+  transform: translateX(-50%);
 }
+
+/* Lista de hijos: se colocan en fila como nodos de árbol */
+.genealogia-hijos-list {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 2.5rem;
+  padding-top: 0.6rem;
+}
+
+/* Línea horizontal que conecta a todos los hijos */
+.genealogia-hijos-list::before {
+  content: '';
+  position: absolute;
+  top: 0.1rem;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 90%;
+  height: 2px;
+  background: $border-soft;
+}
+
+/* Cada hijo (nodo) dentro de la fila: con línea vertical hacia la barra horizontal */
+.genealogia-hijos-list > .arbol-personaje {
+  padding-top: 1.5rem;
+  margin-bottom: 0; /* el espaciado lo da el padre */
+}
+
+.genealogia-hijos-list > .arbol-personaje::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 1.5rem;
+  background: $border-soft;
+  transform: translateX(-50%);
+}
+
+/* Para evitar que los árboles se peguen demasiado entre sí */
+.familia-separador {
+  margin: 1.5rem 0 1rem;
+  text-align: center;
+  opacity: 0.6;
+
+  hr {
+    margin: 0.25rem auto 0;
+    border: none;
+    border-top: 1px dashed rgba(255, 255, 255, 0.22);
+    max-width: 70%;
+  }
+}
+
+/* ===== BLOQUES DE ENEMIGOS / AMISTADES BAJO CADA NODO ===== */
 
 .enemigos-wrapper,
 .amistades-wrapper {
   margin-top: 0.7rem;
-  padding: 0.6rem 0.7rem 0.7rem;
-  border-radius: 1rem;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.5rem 0.6rem 0.6rem;
+  border-radius: 0.9rem;
+  display: inline-block;
+  text-align: left;
 }
 
+/* Enemigos: rojo */
+.enemigos-wrapper {
+  background: rgba($enemy, 0.08);
+  border: 1px solid rgba($enemy, 0.5);
+  margin-right: 1rem;
+}
+
+/* Amistades: celeste */
+.amistades-wrapper {
+  background: rgba($friend, 0.08);
+  border: 1px solid rgba($friend, 0.5);
+  margin-left: 1rem;  
+}
+
+/* Header de esos bloques (título + icono) */
 .enemigos-header,
 .amistades-header {
   display: flex;
   align-items: center;
   gap: 0.4rem;
   margin-bottom: 0.4rem;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: $color-text-muted;
+}
+
+.enemigos-icon,
+.amistades-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
 }
 
 .enemigos-icon {
-  font-size: 1rem;
+  background: rgba($enemy, 0.2);
+}
+.amistades-icon {
+  background: rgba($friend, 0.2);
 }
 
 .enemigos-title,
 .amistades-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   font-weight: 600;
+  color: $text-main;
 }
 
+/* Listas compactas tipo “mini nodos” */
 .enemigos-list,
 .amistades-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: 0.4rem;
 }
 
+/* Enemigo / amistad como chip con nombre */
 .enemigo-card,
 .amistad-card {
-  flex: 1 1 260px;
-  border-radius: 1rem;
-  padding: 0.6rem 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
   background: rgba(0, 0, 0, 0.45);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.72rem;
+  color: $text-main;
 }
 
-// ===== ESTADO VACÍO =====
+/* Imagen mini dentro del chip */
+.enemigo-card .personaje-image-container,
+.amistad-card .personaje-image-container {
+  flex: 0 0 22px;
+  max-width: 22px;
+  aspect-ratio: 1 / 1;
+  border-radius: 999px;
+  border: none;
+}
+
+.enemigo-card .personaje-image,
+.amistad-card .personaje-image {
+  object-fit: cover;
+}
+
+/* Ocultamos meta y acciones dentro de estos chips para que se vean simples */
+.enemigo-card .personaje-meta,
+.enemigo-card .personaje-actions,
+.amistad-card .personaje-meta,
+.amistad-card .personaje-actions {
+  display: none;
+}
+
+.enemigo-card .personaje-info,
+.amistad-card .personaje-info {
+  padding: 0;
+}
+
+.enemigo-card .personaje-nombre,
+.amistad-card .personaje-nombre {
+  margin: 0;
+  font-size: 0.72rem;
+}
+
+/* ===== ESTADO VACÍO Y GALERÍA ===== */
 .empty-state {
-  margin-top: 1rem;
-  border-radius: 1.4rem;
-  padding: 1.3rem 1.4rem 1.4rem;
-  background: radial-gradient(circle at top, $color-bg-soft2 0, #211313 55%, #140a0a 100%);
-  box-shadow:
-    0 20px 36px rgba(0, 0, 0, 0.95),
-    0 0 0 1px rgba(255, 255, 255, 0.04);
+  margin-top: 1.5rem;
+  padding: 2rem 1.5rem;
+  border-radius: 1.25rem;
+  border: 1px dashed $border-soft;
   text-align: center;
+  color: $text-main;
+  background-color: #221313;
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
 
   h3 {
-    margin: 0.3rem 0 0.2rem;
+    margin: 0.5rem 0 0.25rem;
     font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
   }
 
   p {
     margin: 0;
-    font-size: 0.88rem;
-    color: $color-text-muted;
+    font-size: 0.86rem;
+    color: $text-muted;
   }
 }
 
 .empty-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
+  width: 3rem;
+  height: 3rem;
   margin: 0 auto;
-  background: rgba(0, 0, 0, 0.6);
+  border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.9);
+  background: rgba($color-accent-strong, 0.2);
+  border: 1px solid rgba($color-accent-strong, 0.7);
 
   i {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: $color-accent-strong;
   }
 }
 
 .create-first-btn {
-  margin-top: 0.7rem;
+  margin-top: 1rem;
+  padding: 0.55rem 1.25rem;
   border-radius: 999px;
-  padding: 0.55rem 1.4rem;
   border: none;
   cursor: pointer;
+  background: linear-gradient(135deg, $color-accent, $color-accent-strong);
+  color: #140f1f;
   font-size: 0.86rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: radial-gradient(circle at 30% 0, $color-accent-strong 45%, #a06f3c 100%);
-  color: #2b1b1b;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.95),
-    0 0 0 1px rgba(0, 0, 0, 0.65);
-
-  i {
-    font-size: 0.95rem;
-  }
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow:
-      0 18px 36px rgba(0, 0, 0, 1),
-      0 0 0 1px rgba(0, 0, 0, 0.85);
-  }
 }
 
-// ===== GALERÍA INDICATOR =====
+/* Indicador de galería */
 .gallery-indicator {
-  margin-top: 0.4rem;
-  padding-top: 0.4rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
+  color: $text-muted;
+  font-size: 0.78rem;
 }
 
 .gallery-circle {
-  width: 8px;
-  height: 8px;
+  width: 0.55rem;
+  height: 0.55rem;
   border-radius: 999px;
-  margin: 0 auto 0.3rem;
   background: $color-accent-strong;
+  margin: 0 auto 0.35rem;
 }
 
 .gallery-text {
   display: block;
-  font-size: 0.8rem;
-  letter-spacing: 0.16em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: $color-text-muted;
 }
 
-.gallery-description {
-  margin: 0.1rem 0 0;
-  font-size: 0.8rem;
-  color: $color-text-muted;
-}
-
-// ===== SEPARADOR ENTRE FAMILIAS =====
-.familia-separador {
-  margin: 0.4rem 0 0.8rem;
-
-  hr {
-    border-color: rgba(255, 255, 255, 0.12);
-  }
-}
-
-// ===== RESPONSIVE =====
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .personajes-scroll-container {
-    padding: 1.3rem 1.1rem 1.4rem;
+  .genealogia-hijos-list {
+    flex-wrap: wrap;
+    gap: 1.5rem;
   }
 
-  .personaje-card {
-    flex-direction: row;
-  }
-
-  .personaje-image {
-    width: 90px;
-    height: 120px;
+  .genealogia-hijos-list::before {
+    max-width: 70%;
   }
 }
