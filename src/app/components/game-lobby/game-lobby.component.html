@@ -1,0 +1,97 @@
+<div class="lobby-container">
+  <div class="lobby-card">
+    <h1>Juego</h1>
+    
+    <!-- Create Game Section -->
+    <div class="section" *ngIf="!gameCode && !joinMode">
+      <h2>Crear una nueva sala</h2>
+      <div class="form-group">
+        <label>Tu nombre</label>
+        <input 
+          type="text" 
+          [(ngModel)]="playerName" 
+          placeholder="Enter your name"
+          class="input-field"
+        />
+      </div>
+      
+      <div class="button-group">
+        <button class="btn-primary" (click)="createGame()" [disabled]="!playerName">
+          <i class="fas fa-plus"></i> Crear Sala
+        </button>
+        <button class="btn-secondary" (click)="joinMode = true">
+          <i class="fas fa-sign-in-alt"></i> Unirse a una Sala existente
+        </button>
+      </div>
+    </div>
+    
+    <!-- Join Game Section -->
+    <div class="section" *ngIf="joinMode && !gameCode">
+      <h2>Únete a la Sala</h2>
+      <div class="form-group">
+        <label>Ingresa un nombre</label>
+        <input 
+          type="text" 
+          [(ngModel)]="playerName" 
+          placeholder="Enter your name"
+          class="input-field"
+        />
+      </div>
+      
+      <div class="form-group">
+        <label>Código de la sala</label>
+        <input 
+          type="text" 
+          [(ngModel)]="joinGameCode" 
+          placeholder="Enter 6-digit code"
+          class="input-field"
+          maxlength="6"
+        />
+      </div>
+      
+      <div class="button-group">
+        <button class="btn-primary" (click)="joinGame()" [disabled]="!playerName || !joinGameCode">
+          <i class="fas fa-sign-in-alt"></i> Unirse al Juego
+        </button>
+        <button class="btn-secondary" (click)="joinMode = false">
+          <i class="fas fa-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+    
+    <!-- Waiting Room -->
+    <div class="section" *ngIf="gameCode && gameStatus === 'WAITING'">
+      <h2>Esperando por tu oponente...</h2>
+      
+      <div class="game-code-display">
+        <div class="code-label">Código de la sala</div>
+        <div class="code-value">{{ gameCode }}</div>
+        <button class="btn-copy" (click)="copyCode()">
+          <i class="fas fa-copy"></i> Copiar
+        </button>
+      </div>
+      
+      <div class="waiting-message">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Comparte el código con tu oponente</p>
+      </div>
+      
+      <div class="player-info">
+        <div class="player-card host">
+          <i class="fas fa-user"></i>
+          <span>{{ playerName }} (Tu])</span>
+        </div>
+        <div class="player-card waiting">
+          <i class="fas fa-user-slash"></i>
+          <span>Esperando por un oponente...</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Error Message -->
+    <div class="error-message" *ngIf="errorMessage">
+      <i class="fas fa-exclamation-circle"></i>
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>

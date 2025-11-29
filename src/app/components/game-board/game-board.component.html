@@ -1,0 +1,162 @@
+<div class="game-board-container" *ngIf="gameState">
+  <!-- Header -->
+  <header class="game-header">
+    <div class="game-info">
+      <span class="game-code">Game: {{ gameState.gameCode }}</span>
+      <span class="turn-info">
+        Turn {{ gameState.turnNumber }} - 
+        <strong [style.color]="getCurrentPlayerColor()">
+          {{ getCurrentPlayerName() }}'s Turn
+        </strong>
+      </span>
+    </div>
+    
+    <div class="game-actions">
+      <button 
+        class="btn-end-turn" 
+        (click)="endTurn()"
+        [disabled]="!isMyTurn() || gameState.status !== 'ACTIVE'"
+      >
+        <i class="fas fa-forward"></i>
+        End Turn
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Area -->
+  <div class="game-main">
+    <!-- Map Canvas -->
+    <section class="map-section">
+      <div class="map-controls">
+        <div class="zoom-info">Zoom: {{ zoom | number:'1.1-1' }}x</div>
+        <div class="unit-count">Units: {{ gameState.units.length }}</div>
+      </div>
+      
+      <div class="map-wrapper">
+        <canvas
+          #gameCanvas
+          class="game-canvas"
+          width="900"
+          height="700"
+          (click)="onCanvasClick($event)"
+          (mousedown)="onMouseDown($event)"
+          (mousemove)="onMouseMove($event)"
+          (mouseup)="onMouseUp($event)"
+          (wheel)="onWheel($event)"
+          (mouseleave)="onMouseUp($event)"
+        >
+        </canvas>
+      </div>
+    </section>
+
+    <!-- Sidebar -->
+    <aside class="game-sidebar">
+      <!-- Players -->
+      <section class="panel players-panel">
+        <h3>Players</h3>
+        <div class="player-list">
+          <div 
+            class="player-item" 
+            [class.active]="gameState.currentTurn === 0"
+            [style.border-color]="gameState.hostPlayer.color"
+          >
+            <div class="player-color" [style.background]="gameState.hostPlayer.color"></div>
+            <div class="player-details">
+              <div class="player-name">{{ gameState.hostPlayer.playerName }}</div>
+              <div class="unit-count-small">
+                {{ getPlayerUnitCount(0) }} units
+              </div>
+            </div>
+          </div>
+          
+          <div 
+            class="player-item" 
+            *ngIf="gameState.guestPlayer"
+            [class.active]="gameState.currentTurn === 1"
+            [style.border-color]="gameState.guestPlayer.color"
+          >
+            <div class="player-color" [style.background]="gameState.guestPlayer.color"></div>
+            <div class="player-details">
+              <div class="player-name">{{ gameState.guestPlayer.playerName }}</div>
+              <div class="unit-count-small">
+                {{ getPlayerUnitCount(1) }} units
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Selected Unit -->
+      <section class="panel unit-panel" *ngIf="selectedUnit">
+        <h3>Selected Unit</h3>
+        <div class="unit-details">
+          <div class="unit-header">
+            <span class="unit-icon">{{ selectedUnit.icon }}</span>
+            <span class="unit-name">{{ selectedUnit.name }}</span>
+          </div>
+          
+          <div class="unit-stats">
+            <div class="stat">
+              <i class="fas fa-heart"></i>
+              <span>{{ selectedUnit.health }} / {{ selectedUnit.maxHealth }}</span>
+            </div>
+            <div class="stat">
+              <i class="fas fa-sword"></i>
+              <span>{{ selectedUnit.attack }}</span>
+            </div>
+            <div class="stat">
+              <i class="fas fa-shield"></i>
+              <span>{{ selectedUnit.defense }}</span>
+            </div>
+            <div class="stat">
+              <i class="fas fa-shoe-prints"></i>
+              <span>{{ selectedUnit.remainingMovement }} / {{ selectedUnit.movement }}</span>
+            </div>
+          </div>
+          
+          <div class="unit-actions">
+            <button 
+              class="btn-unit-action"
+              (click)="deselectUnit()"
+            >
+              <i class="fas fa-times"></i>
+              Deselect
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Combat Log -->
+      <section class="panel log-panel">
+        <h3>Combat Log</h3>
+        <div class="log-messages">
+          <div 
+            *ngFor="let log of combatLog" 
+            class="log-message"
+            [class.system]="log.isSystem"
+          >
+            {{ log.message }}
+          </div>
+          <div *ngIf="combatLog.length === 0" class="log-empty">
+            No combat yet
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div class="modal-overlay" *ngIf="gameState.status === 'FINISHED'">
+    <div class="modal-content">
+      <h2>Game Over!</h2>
+      <div class="winner-announcement">
+        <i class="fas fa-trophy"></i>
+        <p>{{ getWinnerName() }} wins!</p>
+      </div>
+      <button class="btn-primary" (click)="returnToLobby()">
+        <i class="fas fa-home"></i>
+        Return to Lobby
+      </button>
+    </div>
+  </div>
+</div>

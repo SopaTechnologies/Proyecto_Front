@@ -17,8 +17,9 @@ import { MensajesComponent } from "./pages/timeline/timeline.component";
 import { PersonajesComponent } from "./pages/personajes/personajes.component";
 import { HistoriesCardComponent } from "./pages/histories/histories.component";
 import { ForumComponent } from "./pages/forum/forum.component";
-import { GameComponent } from "./pages/game/game.component";
 import { PerlinNoiseComponent } from "./pages/Maps/perlin-noise/perlin-noise.component";
+import { GameBoardComponent} from "./components/game-board/game-board.component";
+import { GameLobbyComponent } from "./components/game-lobby/game-lobby.component";
 
 export const routes: Routes = [
   {
@@ -142,16 +143,27 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
+
       {
-        path: "game",
-        component: GameComponent,
-        canActivate: [AuthGuard],
-        data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: "Game Matchmaking",
-          showInSidebar: true,
-        },
-      },
+  path: "game-lobby",
+  component: GameLobbyComponent,
+  canActivate: [AuthGuard],
+  data: {
+    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+    name: "Lobby de Juego",
+    showInSidebar: true,
+  },
+},
+{
+  path: "game-board",
+  component: GameBoardComponent,
+  canActivate: [AuthGuard],
+  data: {
+    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+    name: "Tablero de Juego",
+    showInSidebar: false,
+  },
+},
     ],
   },
 ];

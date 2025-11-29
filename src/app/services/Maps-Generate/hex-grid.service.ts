@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AxialCoord, CubeCoord, Point } from '../../interfaces/index';
-
+import {  AxialCoord, CubeCoord, Point, HexTile, TERRAIN_CONFIG} from '../../interfaces/index';
 @Injectable({
   providedIn: 'root'
 })
@@ -62,6 +61,134 @@ cubeToAxial(x: number, y: number, z: number): AxialCoord {
     ];
     return directions.map(([dq, dr]) => ({ q: q + dq, r: r + dr }));
   }
+  getReachableTiles(
+    startQ: number, 
+    startR: number, 
+    movement: number, 
+    tiles: HexTile[],
+    occupiedPositions: Set<string>
+  ): AxialCoord[] {
+    const visited = new Map<string, number>();
+    const queue: { q: number; r: number; cost: number }[] = [{ q: startQ, r: startR, cost: 0 }];
+    const reachable: AxialCoord[] = [];
+    
+    visited.set(`${startQ},${startR}`, 0);
+
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      
+      for (const neighbor of this.getNeighbors(current.q, current.r)) {
+        const key = `${neighbor.q},${neighbor.r}`;
+        const tile = tiles.find(t => t.q === neighbor.q && t.r === neighbor.r);
+        
+        if (!tile) continue;
+        
+        const terrainInfo = TERRAIN_CONFIG[tile.type];
+        if (!terrainInfo || !terrainInfo.isPassable) continue;
+        
+        const newCost = current.cost + terrainInfo.movementCost;
+        
+        if (newCost <= movement && (!visited.has(key) || visited.get(key)! > newCost)) {
+          visited.set(key, newCost);
+          queue.push({ q: neighbor.q, r: neighbor.r, cost: newCost });
+          
+          if (!occupiedPositions.has(key)) {
+            reachable.push({ q: neighbor.q, r: neighbor.r });
+          }
+        }
+      }
+    }
+
+    return reachable;
+  }
+
+  getAttackableTiles(
+    unitQ: number,
+    unitR: number,
+    tiles: HexTile[],
+    enemyPositions: Set<string>
+  ): AxialCoord[] {
+    const neighbors = this.getNeighbors(unitQ, unitR);
+    return neighbors.filter(n => {
+      const key = `${n.q},${n.r}`;
+      const tile = tiles.find(t => t.q === n.q && t.r === n.r);
+      return tile && enemyPositions.has(key);
+    });
+  }
+
+  findPath(
+    startQ: number,
+    startR: number,
+    endQ: number,
+    endR: number,
+    tiles: HexTile[],
+    occupiedPositions: Set<string>
+  ): AxialCoord[] | null {
+    const openSet: { q: number; r: number; g: number; f: number; parent?: AxialCoord }[] = [];
+    const closedSet = new Set<string>();
+    
+    openSet.push({
+      q: startQ,
+      r: startR,
+      g: 0,
+      f: this.distance(startQ, startR, endQ, endR)
+    });
+
+    while (openSet.length > 0) {
+
+      openSet.sort((a, b) => a.f - b.f);
+      const current = openSet.shift()!;
+      const currentKey = `${current.q},${current.r}`;
+
+      if (current.q === endQ && current.r === endR) {
+        // Reconstruct path
+        const path: AxialCoord[] = [];
+        let node: typeof current | undefined = current;
+        while (node) {
+          path.unshift({ q: node.q, r: node.r });
+          node = node.parent ? openSet.find(n => n.q === node!.parent!.q && n.r === node!.parent!.r) : undefined;
+        }
+        return path;
+      }
+
+      closedSet.add(currentKey);
+
+      for (const neighbor of this.getNeighbors(current.q, current.r)) {
+        const neighborKey = `${neighbor.q},${neighbor.r}`;
+        
+        if (closedSet.has(neighborKey)) continue;
+        if (occupiedPositions.has(neighborKey) && !(neighbor.q === endQ && neighbor.r === endR)) continue;
+
+        const tile = tiles.find(t => t.q === neighbor.q && t.r === neighbor.r);
+        if (!tile) continue;
+
+        const terrainInfo = TERRAIN_CONFIG[tile.type];
+        if (!terrainInfo || !terrainInfo.isPassable) continue;
+
+        const g = current.g + terrainInfo.movementCost;
+        const h = this.distance(neighbor.q, neighbor.r, endQ, endR);
+        const f = g + h;
+
+        const existingNode = openSet.find(n => n.q === neighbor.q && n.r === neighbor.r);
+        if (!existingNode || existingNode.g > g) {
+          if (existingNode) {
+            existingNode.g = g;
+            existingNode.f = f;
+            existingNode.parent = { q: current.q, r: current.r };
+          } else {
+            openSet.push({
+              q: neighbor.q,
+              r: neighbor.r,
+              g,
+              f,
+              parent: { q: current.q, r: current.r }
+            });
+          }
+        }
+      }
+    }
+
+    return null;
+  }
 }
 
-//
