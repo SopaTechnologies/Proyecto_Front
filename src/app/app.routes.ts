@@ -18,6 +18,7 @@ import { PersonajesComponent } from './pages/personajes/personajes.component';
 import { HistoriesCardComponent } from './pages/histories/histories.component';
 import { ForumComponent } from './pages/forum/forum.component';
 
+
 import { PerlinNoiseComponent } from './pages/Maps/perlin-noise/perlin-noise.component';
 
 export const routes: Routes = [
@@ -94,22 +95,22 @@ export const routes: Routes = [
           showInSidebar: false
         }
       },
-       {
-  path: 'Linea de tiempo',
-  component: MensajesComponent,
-  canActivate: [AuthGuard],
-  data: {
-    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-    showInSidebar: true
-  }
-},
+      {
+        path: 'Linea de tiempo',
+        component: MensajesComponent,
+        canActivate: [AuthGuard],
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          showInSidebar: true
+        }
+      },
       {
         path: "histories",
         component: HistoriesCardComponent,
-        canActivate:[AuthGuard],
-        data: { 
+        canActivate: [AuthGuard],
+        data: {
           authorities: [
-            IRoleType.admin, 
+            IRoleType.admin,
             IRoleType.superAdmin,
             IRoleType.user
           ],
@@ -120,10 +121,10 @@ export const routes: Routes = [
       {
         path: 'genres',
         component: GenresComponent,
-        canActivate:[AdminRoleGuard],
-        data: { 
+        canActivate: [AdminRoleGuard],
+        data: {
           authorities: [
-            IRoleType.admin, 
+            IRoleType.admin,
             IRoleType.superAdmin
           ],
           name: 'Géneros',
@@ -133,39 +134,39 @@ export const routes: Routes = [
       {
         path: 'Administración de usuarios',
         component: UserAdminComponent,
-        canActivate:[AdminRoleGuard],
-        data: { 
+        canActivate: [AdminRoleGuard],
+        data: {
           authorities: [
-            IRoleType.admin, 
+            IRoleType.admin,
             IRoleType.superAdmin
           ],
           name: 'Administración de usuarios',
           showInSidebar: true
         }
       },
-        {
-  path: 'personajes',
-  component: PersonajesComponent,
-  canActivate: [AuthGuard],
-  data: {
-    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-    showInSidebar: true
-  }
-},
-{
-  path: 'forum',
-  component: ForumComponent,
-  canActivate: [AuthGuard],
-  data: { 
-    authorities: [
-      IRoleType.admin, 
-      IRoleType.superAdmin,
-      IRoleType.user
-    ],
-    name: 'Foro',
-    showInSidebar: true
-  }
-}
+      {
+        path: 'personajes',
+        component: PersonajesComponent,
+        canActivate: [AuthGuard],
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          showInSidebar: true
+        }
+      },
+      {
+        path: 'forum',
+        component: ForumComponent,
+        canActivate: [AuthGuard],
+        data: {
+          authorities: [
+            IRoleType.admin,
+            IRoleType.superAdmin,
+            IRoleType.user
+          ],
+          name: 'Foro',
+          showInSidebar: true
+        }
+      }
     ],
   },
 ];

@@ -1,0 +1,124 @@
+<div class="modal-form-container">
+  <!-- Header -->
+  <header class="modal-header-custom">
+    <div class="title-block">
+      <span class="pill">
+        <i class="fas fa-book-open"></i>
+        Historia
+      </span>
+      <h2>
+        Elementos Narrativos de la historia
+      </h2>
+      <p class="subtitle">
+        Define elementos narrativos y sus relaciones
+      </p>
+    </div>
+
+    <button type="button" class="btn-close-modal" (click)="cancel()">
+      <i class="fas fa-times"></i>
+    </button>
+  </header>
+
+  <!-- Cuerpo -->
+  <main class="modal-main">
+
+    <div class="elements-toolbar">
+      <div class="buttons">
+        <button type="button" (click)="showNewElementForm()" class="btn-toolbar">
+          Nuevo Elemento Narrativo
+        </button>
+      </div>
+
+      <div class="buttons">
+        <button type="button" (click)="showNewRelationshipForm()" class="btn-toolbar">
+          Relacionar Elementos
+        </button>
+      </div>
+
+      <div class="buttons">
+        <button type="button" (click)="showNewElementType()" class="btn-toolbar">
+          Nuevo Tipo de Elemento Narrativo
+        </button>
+      </div>
+
+      <div class="buttons">
+        <button type="button" (click)="showNewRelationshipTypes()" class="btn-toolbar">
+          Nuevo Tipo de Relación
+        </button>
+      </div>
+    </div>
+
+    <f-flow fDraggable (fLoaded)="onLoaded()">
+      <f-canvas fZoom="true">
+
+        @for (relation of nodeRelations; track relation.id) {
+        <f-connection [fReassignDisabled]="true" fBehavior="floating" [fOutputId]="relation.out + '-out'"
+          [fInputId]="relation.in + '-in'">
+
+          <span fConnectionContent>{{ relation.type }}</span>
+
+          <svg viewBox="0 0 700 700" fMarker [type]="eMarkerType.START" class="connection-marker" [height]="5"
+            [width]="5" [refX]="2.5" [refY]="2.5" markerUnits="strokeWidth">
+            <circle cx="350" cy="350" r="250" />
+          </svg>
+          <svg viewBox="0 0 6 7" fMarker [type]="eMarkerType.END" class="connection-marker" [height]="7" [width]="6"
+            [refX]="5.5" [refY]="3.5" markerUnits="strokeWidth" orient="auto">
+            <path d="M0.000391006 0L6 3.5L0.000391006 7L0.000391006 0Z" />
+          </svg>
+
+        </f-connection>
+        }
+
+        @for (element of elements; track element.id) {
+        <app-element-card [element]="element" fNode fDragHandle [fNodePosition]="element.nodePosition" fNodeOutput
+          [fOutputId]="element.id + '-out'" fNodeInput [fInputId]="element.id + '-in'" (fNodePositionChange)="onNodeMoveEvent(element.id, $event)">
+        </app-element-card>
+        }
+
+      </f-canvas>
+    </f-flow>
+  </main>
+</div>
+
+
+<!-- MODAL: Elementos Narrativos -->
+<ng-template #newElementModal>
+  <app-modal [hideFooter]="true">
+    <div>
+      <app-narrative-element-form [modalRef]="newElementModalRef" [elementForm]="elementForm" [historyId]="historyId" (updateDiagram)="updateDiagram()">
+      </app-narrative-element-form>
+    </div>
+  </app-modal>
+</ng-template>
+
+<!-- MODAL: Tipo Elementos Narrativos -->
+<ng-template #newElementTypeModal>
+  <app-modal [hideFooter]="true">
+    <div>
+      <app-narrative-element-type-form [modalRef]="newElementTypeModalRef" [elementTypeForm]="elementTypeForm" [historyId]="historyId" (updateDiagram)="updateDiagram()">
+      </app-narrative-element-type-form>
+    </div>
+  </app-modal>
+</ng-template>
+
+<!-- MODAL: Tipo Relación -->
+<ng-template #relationshipTypesModal>
+  <app-modal [hideFooter]="true">
+    <div>
+      <app-relationship-type-form [modalRef]="relationshipTypesModalRef" [relTypeForm]="relTypeForm" (updateDiagram)="updateDiagram()">
+      </app-relationship-type-form>
+    </div>
+  </app-modal>
+</ng-template>
+
+
+
+<!-- MODAL: Relación -->
+<ng-template #relationshipModal>
+  <app-modal [hideFooter]="true">
+    <div>
+      <app-relationship-form [modalRef]="relationshipModalRef" [relForm]="relForm" [elements]="elements" (updateDiagram)="updateDiagram()">
+      </app-relationship-form>
+    </div>
+  </app-modal>
+</ng-template>

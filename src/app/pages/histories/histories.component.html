@@ -71,6 +71,15 @@
 
             <button
               type="button"
+              class="btn-icon btn-edit"
+              title="Elementos Narrativos"
+              (click)="showNarrativeElementsForm(history.id)"
+            >
+              <i class="fas fa-diagram-project"></i>
+            </button>
+
+            <button
+              type="button"
               class="btn-icon btn-delete"
               title="Eliminar"
               (click)="deleteHistory(history.id)"
@@ -137,6 +146,21 @@
         [deleteHistoryForm]="historyForm"
         (callUpdateMethod)="updateHistoriesList()"
       ></app-delete-form>
+    </div>
+  </app-modal>
+</ng-template>
+
+
+<!-- MODAL: Elementos Narrativos -->
+<ng-template #historyNarrativeElementsModal>
+  <app-modal [hideFooter]="true">
+    <div>
+
+      <app-elements-diagram 
+        [historyId]="historyForm.controls['id'].value" 
+        (closeModal)="closeNarrativeElementsForm()">
+      </app-elements-diagram>
+
     </div>
   </app-modal>
 </ng-template>

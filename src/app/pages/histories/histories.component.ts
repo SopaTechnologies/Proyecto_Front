@@ -14,6 +14,8 @@ import { HistoriaModel } from '../../models/historia.model';
 import { CrearHistoriaComponent } from '../../components/histories/crear-historia/crear-historia.component';
 import { RedactarHistoriaComponent } from '../../components/histories/redactar-historia/redactar-historia.component';
 import { DeleteFormComponent } from "../../components/histories/delete-form/delete-form.component";
+import { ElementsDiagramComponent } from '../../components/narrative-elements/elements-diagram/elements-diagram.component';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-histories',
@@ -24,7 +26,8 @@ import { DeleteFormComponent } from "../../components/histories/delete-form/dele
     CommonModule,
     CrearHistoriaComponent,
     RedactarHistoriaComponent,
-    DeleteFormComponent
+    DeleteFormComponent,
+    ElementsDiagramComponent
 ],
   templateUrl: './histories.component.html',
   styleUrl: './histories.component.scss'
@@ -37,6 +40,9 @@ export class HistoriesCardComponent {
   @ViewChild('addHistoryModal') public addHistoryModal: any;
   @ViewChild('editHistoryModal') public editHistoryModal: any;
   @ViewChild('deleteHistoryModal') public deleteHistoryModal: any;
+
+  @ViewChild('historyNarrativeElementsModal') public historyNarrativeElementsModal: any;
+  narrativeElementsModalRef: NgbModalRef | null = null;
 
   histories: HistoriaModel[] = [];
 
@@ -79,4 +85,18 @@ export class HistoriesCardComponent {
       }
     })
   }
+
+  showNarrativeElementsForm(id: number) {
+    this.historyForm.controls['id'].setValue(id ? JSON.stringify(id) : '');
+    // this.genreForm.controls['name'].setValue(genre.name ? genre.name : '');
+    this.narrativeElementsModalRef = this.modalService.displayModalInstance('md', this.historyNarrativeElementsModal);
+  }
+
+  closeNarrativeElementsForm() {
+    if (this.narrativeElementsModalRef) {
+      this.modalService.closeModal(this.narrativeElementsModalRef);
+      this.narrativeElementsModalRef = null;
+    }
+  }
+
 }

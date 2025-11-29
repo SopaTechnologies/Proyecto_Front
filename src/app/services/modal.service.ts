@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +16,21 @@ export class ModalService {
     });
   }
 
+  displayModalInstance(size: string, modalInstance: any): NgbModalRef {
+    return this.ngbModalService.open(modalInstance, {
+      size: size ? size : 'sm',
+      centered: true,
+      backdrop: 'static',
+      keyboard: false
+    });
+  }
+
   closeAll() {
     this.ngbModalService.dismissAll();
+  }
+
+  closeModal(modalInstance: NgbModalRef) {
+    modalInstance.close();
   }
    
 }

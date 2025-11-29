@@ -1,0 +1,40 @@
+<div class="modal-form-container">
+  <div class="modal-header-custom">
+    <h2>{{ elementTypeForm.value.id ? 'Editar Tipo de Elemento' : 'Nuevo Tipo de Elemento' }}</h2>
+    <button type="button" class="btn-close-modal" (click)="cancel()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <form [formGroup]="elementTypeForm" (ngSubmit)="onSubmit()" class="modal-form">
+    <div class="form-group">
+      <label for="name">Tipo de elemento</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="Ingresa el nombre del tipo de elemento"
+        [class.error]="nameCtrl?.invalid && nameCtrl?.touched"
+      />
+      <p *ngIf="nameCtrl?.invalid && nameCtrl?.touched" class="error-message">
+        El nombre es obligatorio.
+      </p>
+    </div>
+
+    <div class="form-actions">
+      <button
+        type="button"
+        (click)="cancel()"
+        class="btn-cancel"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="btn-submit">
+          {{ elementTypeForm.value.id ? 'Actualizar' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>

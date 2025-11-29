@@ -11,8 +11,8 @@ import { environment } from '../../environments/environment';
 export class HistoriaService {
 
 
-private apiUrl = `${environment.apiUrl}/historias`;
-private genresAPIUrl = `${environment.apiUrl}/genres`;
+  private apiUrl = `${environment.apiUrl}/historias`;
+  private genresAPIUrl = `${environment.apiUrl}/genres`;
 
 
   constructor(private http: HttpClient) {}

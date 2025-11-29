@@ -1,0 +1,110 @@
+<!-- * Identificador de la historia.
+* Nombre del elemento (String, 50 caracteres, obligatorio).
+* Tipo de elemento (país, alianza, poder, organización, etc.).
+* Descripción general (String, 255 caracteres, opcional).
+* Lista de personajes asociados (IDs).
+* Relaciones con otros elementos (alianza, enemistad, subordinación, independencia). -->
+
+
+<div class="modal-form-container">
+  <!-- Header -->
+  <header class="modal-header-custom">
+    <div class="title-block">
+      <span class="pill">
+        <i class="fas fa-book-open"></i>
+        Historia
+      </span>
+      <h2>
+        {{ elementForm.value.id ? 'Editar Elemento Narrativo' : 'Nuevo Elemento Narrativo' }}
+    </h2>
+      <!-- <p class="subtitle">
+        Define el título, la descripción y el género de tu libro.
+      </p> -->
+    </div>
+
+    <button type="button" class="btn-close-modal" (click)="cancel()">
+      <i class="fas fa-times"></i>
+    </button>
+  </header>
+
+  <!-- Cuerpo -->
+  <main class="modal-main">
+    <!-- Columna izquierda: formulario principal -->
+    <section class="form-section">
+      <form (ngSubmit)="guardar()" #form="ngForm" [formGroup]="elementForm" class="modal-form">
+        <!-- Título -->
+        <div class="form-group">
+          <label for="nombre">Nombre del elemento</label>
+          <input
+            type="text"
+            id="nombre"
+            formControlName="name"
+            maxlength="50"
+            required
+            pattern="^[a-zA-Z0-9\\sáéíóúÁÉÍÓÚñÑ]+$"
+          />
+          <!-- @if (form.submitted && elementForm.controls['name'].invalid) {
+            <div class="error">
+              El nombre es obligatorio.
+            </div>
+          } -->
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <textarea
+            id="descripcion"
+            name="descripcion"
+            maxlength="255"
+            required
+            formControlName="description"
+          ></textarea>
+          <!-- @if (!narrativeElement.description) {
+            <div class="error">
+              La descripción es obligatoria.
+            </div>
+          } -->
+        </div>
+
+        <!-- Tipo -->
+        <div class="form-group">
+          <label for="type">Tipo</label>
+          <select
+            id="type"
+            name="type"
+            required
+            formControlName="type"
+          >
+            <option value="">Selecciona el Tipo de Elemento</option>
+            <option
+              *ngFor="let type of elementTypes"
+              [value]="type.id"
+            >
+              {{ type.name }}
+            </option>
+          </select>
+          <!-- @if (!narrativeElement.type.name) {
+            <div class="error">
+              Debes seleccionar un género.
+            </div>
+          } -->
+        </div>
+       
+      </form>
+    </section>
+
+    <!-- Columna derecha: autor, acciones, mensajes -->
+    <aside class="sidebar">
+      <div class="sidebar-card">
+
+        <div class="buttons">
+          <button type="button" (click)="guardar()" class="btn-save">
+            Guardar Elemento
+          </button>
+        </div>
+
+      </div>
+    </aside>
+  </main>
+</div>

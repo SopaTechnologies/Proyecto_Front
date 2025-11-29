@@ -1,0 +1,50 @@
+<div class="modal-form-container">
+  <div class="modal-header-custom">
+    <h2>{{ relForm.value.id ? 'Editar Relación' : 'Nueva Relación' }}</h2>
+    <button type="button" class="btn-close-modal" (click)="cancel()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <form [formGroup]="relForm" (ngSubmit)="onSubmit()" class="modal-form">
+    <div class="form-group">
+      <label for="from">Desde Elemento Narrativo</label>
+      <select id="from" formControlName="from" class="form-control">
+        <option value="">Seleccionar elemento</option>
+        <option *ngFor="let element of elements" [value]="element.id">
+          {{ element.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="type">Tipo de Relación</label>
+      <select id="type" formControlName="type" class="form-control">
+        <option value="">Seleccionar elemento</option>
+        <option *ngFor="let type of relationshipTypes" [value]="type.id">
+          {{ type.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="to">Hacia Elemento Narrativo</label>
+      <select id="to" formControlName="to" class="form-control">
+        <option value="">Seleccionar elemento</option>
+        <option *ngFor="let element of elements" [value]="element.id">
+          {{ element.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="cancel()" class="btn-cancel">
+        Cancelar
+      </button>
+
+      <button type="submit" class="btn-submit">
+        {{ relForm.value.id ? 'Actualizar' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>
