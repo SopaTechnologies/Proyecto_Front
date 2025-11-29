@@ -1,0 +1,25 @@
+<div class="personaje-card">
+    <div class="personaje-info">
+        <h3 class="personaje-nombre">{{ element?.name }}</h3>
+        <p class="personaje-descripcion">{{ element?.description }}</p>
+
+        <div class="personaje-meta">
+            <!-- <span class="personaje-fecha">
+                <i class="fas fa-calendar"></i>
+                10/05/2023
+            </span> -->
+            <span class="personaje-status">
+                <i class="fas fa-circle"></i>
+                {{ element?.type?.name }}
+            </span>
+        </div>
+    </div>
+    <div class="personaje-actions">
+        <button class="btn-edit" title="Editar">
+            <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn-delete" title="Eliminar">
+            <i class="fas fa-trash"></i>
+        </button>
+    </div>
+</div>
