@@ -12,6 +12,6 @@ export class ChatService {
   constructor(private http: HttpClient) {}
 
   enviarPregunta(idHistoria: number, pregunta: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/historias/${idHistoria}`, { pregunta });
+    return this.http.post(`${this.apiUrl}/${idHistoria}`, { pregunta });
   }
 }
