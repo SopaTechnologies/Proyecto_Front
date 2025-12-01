@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { GameApiService } from '../../services/game-api.service';
 
 @Component({
@@ -25,7 +26,9 @@ export class GameLobbyComponent implements OnInit {
   private gameId: number = -1;
   private playerIndex: number = 0;
   
-  constructor(private gameApi: GameApiService) {}
+  constructor(private gameApi: GameApiService,
+    private router: Router
+  ) {}
   
   ngOnInit(): void {
 
@@ -34,11 +37,11 @@ export class GameLobbyComponent implements OnInit {
         this.gameStatus = state.status;
         
      
-        if (state.status === 'ACTIVE') {
-          this.gameStarted.emit({ 
-            gameId: state.gameId, 
-            playerIndex: this.playerIndex 
-          });
+        if (state.status === 'ACTIVE' && this.gameId !== -1) {
+          this.router.navigate([ '/app/game-board', 
+            this.gameId, 
+            this.playerIndex 
+          ]);
         }
       }
     });
@@ -75,6 +78,7 @@ export class GameLobbyComponent implements OnInit {
         
         this.gameApi.connectToGame(this.gameId);
         
+        this.router.navigate(['/app/game-board', this.gameId, this.playerIndex]);
       },
       error: (error) => {
         this.errorMessage = error.error?.message || 'Error al unirse.';

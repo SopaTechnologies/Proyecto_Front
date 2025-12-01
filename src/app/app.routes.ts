@@ -155,7 +155,8 @@ export const routes: Routes = [
   },
 },
 {
-  path: "game-board",
+  path: "game-board/:gameId/:playerIndex",
+  
   component: GameBoardComponent,
   canActivate: [AuthGuard],
   data: {
