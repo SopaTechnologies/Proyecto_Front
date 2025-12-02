@@ -162,6 +162,7 @@ export interface Unit {
   movement: number;
   remainingMovement: number;
   hasAttacked: boolean;
+  attackRange: number;
   color: string;
   icon: string;
 }
@@ -250,6 +251,7 @@ export const UNIT_TEMPLATES: Record<UnitType, Omit<Unit, 'id' | 'owner' | 'q' | 
     defense: 15,
     movement: 2,
     remainingMovement: 2,
+    attackRange: 1,
     hasAttacked: false,
     icon: '⚔️',
   },
@@ -262,6 +264,7 @@ export const UNIT_TEMPLATES: Record<UnitType, Omit<Unit, 'id' | 'owner' | 'q' | 
     defense: 8,
     movement: 2,
     remainingMovement: 2,
+    attackRange: 3,
     hasAttacked: false,
     icon: '🏹',
   },
@@ -274,6 +277,7 @@ export const UNIT_TEMPLATES: Record<UnitType, Omit<Unit, 'id' | 'owner' | 'q' | 
     defense: 10,
     movement: 4,
     remainingMovement: 4,
+    attackRange: 1,
     hasAttacked: false,
     icon: '🐴',
   },
@@ -286,6 +290,7 @@ export const UNIT_TEMPLATES: Record<UnitType, Omit<Unit, 'id' | 'owner' | 'q' | 
     defense: 5,
     movement: 2,
     remainingMovement: 2,
+    attackRange: 1,
     hasAttacked: false,
     icon: '🏠',
   },
@@ -328,4 +333,5 @@ export interface GameUnit {
   hasAttacked: boolean;
   color: string;
   icon: string;
+  attackRange: number;
 }

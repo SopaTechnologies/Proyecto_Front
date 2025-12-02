@@ -15,7 +15,7 @@ import { TerrainGeneratorService } from "../../services/Maps-Generate/terrain-ge
 import { HexGridService } from "../../services/Maps-Generate/hex-grid.service";
 import { HexTile } from "../../interfaces";
 import { Subscription } from "rxjs";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router} from "@angular/router";
 
 interface CombatLog {
   message: string;
@@ -51,13 +51,16 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   attackableTiles: Set<string> = new Set();
   combatLog: CombatLog[] = [];
 
+  attackRangeTiles: Set<string> = new Set();
+
   private gameStateSubscription?: Subscription;
 
   constructor(
     private gameApi: GameApiService,
     private terrainGen: TerrainGeneratorService,
     private hexGrid: HexGridService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -174,14 +177,19 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     isReachable: boolean,
     isAttackable: boolean
   ): void {
+    const coord = `${Math.round(x / this.hexSize)},${Math.round(
+      y / this.hexSize
+    )}`;
+    const isInAttackRange = this.attackRangeTiles.has(coord);
     ctx.save();
     ctx.translate(x, y);
 
-    if (isSelected || isReachable || isAttackable) {
+    if (isSelected || isReachable || isAttackable || isInAttackRange) {
       ctx.shadowBlur = 20;
       if (isSelected) ctx.shadowColor = "rgba(255, 215, 0, 0.8)";
       else if (isAttackable) ctx.shadowColor = "rgba(255, 0, 0, 0.8)";
       else if (isReachable) ctx.shadowColor = "rgba(0, 255, 0, 0.6)";
+      else if (isInAttackRange) ctx.shadowColor = "rgba(255, 165, 0, 0.5)";
     }
 
     ctx.beginPath();
@@ -199,6 +207,9 @@ export class GameBoardComponent implements OnInit, OnDestroy {
       ctx.fill();
     } else if (isAttackable) {
       ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
+      ctx.fill();
+    } else if (isInAttackRange) {
+      ctx.fillStyle = "rgba(255, 165, 0, 0.15)";
       ctx.fill();
     } else {
       ctx.fillStyle = fillColor;
@@ -272,18 +283,34 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     );
 
     if (clickedUnit) {
-      if (
-        clickedUnit.owner !== this.playerIndex &&
-        this.selectedUnit &&
-        this.attackableTiles.has(`${q},${r}`)
-      ) {
-        this.attackUnit(this.selectedUnit.id, clickedUnit.id);
-      } else if (clickedUnit.owner === this.playerIndex) {
+      if (clickedUnit.owner === this.playerIndex) {
         this.selectUnit(clickedUnit);
+      } else if (this.selectedUnit && this.attackableTiles.has(`${q},${r}`)) {
+        this.attackUnit(this.selectedUnit.id, clickedUnit.id);
+      } else {
+        this.showEnemyUnitRange(clickedUnit);
       }
     } else if (this.selectedUnit && this.reachableTiles.has(`${q},${r}`)) {
       this.moveUnit(this.selectedUnit.id, q, r);
     }
+  }
+
+  showEnemyUnitRange(unit: GameUnit): void {
+    this.attackRangeTiles.clear();
+    const rangeTiles = this.getAllTilesInRange(
+      unit.q,
+      unit.r,
+      unit.attackRange
+    );
+    rangeTiles.forEach((tile) => {
+      this.attackRangeTiles.add(`${tile.q},${tile.r}`);
+    });
+    this.renderGame();
+
+    setTimeout(() => {
+      this.attackRangeTiles.clear();
+      this.renderGame();
+    }, 3000);
   }
 
   selectUnit(unit: GameUnit): void {
@@ -292,6 +319,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     this.selectedUnit = unit;
     this.calculateReachableTiles(unit);
     this.calculateAttackableTiles(unit);
+    this.calculateAttackRange(unit);
     this.renderGame();
   }
 
@@ -299,7 +327,48 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     this.selectedUnit = null;
     this.reachableTiles.clear();
     this.attackableTiles.clear();
+    this.attackRangeTiles.clear();
     this.renderGame();
+  }
+
+  calculateAttackRange(unit: GameUnit): void {
+    this.attackRangeTiles.clear();
+
+    if (unit.hasAttacked) return;
+
+    const allTiles = this.getAllTilesInRange(unit.q, unit.r, unit.attackRange);
+
+    allTiles.forEach((tile) => {
+      this.attackRangeTiles.add(`${tile.q},${tile.r}`);
+    });
+  }
+
+  getAllTilesInRange(
+    centerQ: number,
+    centerR: number,
+    range: number
+  ): Array<{ q: number; r: number }> {
+    const tiles: Array<{ q: number; r: number }> = [];
+
+    for (let q = -range; q <= range; q++) {
+      for (
+        let r = Math.max(-range, -q - range);
+        r <= Math.min(range, -q + range);
+        r++
+      ) {
+        const distance = this.hexGrid.distance(
+          centerQ,
+          centerR,
+          centerQ + q,
+          centerR + r
+        );
+        if (distance <= range && distance > 0) {
+          tiles.push({ q: centerQ + q, r: centerR + r });
+        }
+      }
+    }
+
+    return tiles;
   }
 
   calculateReachableTiles(unit: GameUnit): void {
@@ -327,21 +396,15 @@ export class GameBoardComponent implements OnInit, OnDestroy {
 
     if (unit.hasAttacked) return;
 
-    const enemyPositions = new Set(
-      this.gameState!.units.filter((u) => u.owner !== unit.owner).map(
-        (u) => `${u.q},${u.r}`
-      )
+    const enemyUnits = this.gameState!.units.filter(
+      (u) => u.owner !== unit.owner
     );
 
-    const attackable = this.hexGrid.getAttackableTiles(
-      unit.q,
-      unit.r,
-      this.tiles,
-      enemyPositions
-    );
-
-    attackable.forEach((tile) => {
-      this.attackableTiles.add(`${tile.q},${tile.r}`);
+    enemyUnits.forEach((enemy) => {
+      const distance = this.hexGrid.distance(unit.q, unit.r, enemy.q, enemy.r);
+      if (distance <= unit.attackRange) {
+        this.attackableTiles.add(`${enemy.q},${enemy.r}`);
+      }
     });
   }
 
@@ -371,11 +434,25 @@ export class GameBoardComponent implements OnInit, OnDestroy {
         if (result.defenderDied) {
           this.addCombatLog(`${result.defender.name} was destroyed!`);
         }
+        if (result.attackerDied) {
+          this.addCombatLog(
+            `${result.attacker.name} was destroyed in counter-attack!`
+          );
+        }
 
         this.deselectUnit();
+
+        // if (this.gameState && this.gameState.status === "FINISHED") {
+        //   setTimeout(() => {
+        //     this.showGameOverModal();
+        //   }, 1000);
+        // }
       },
       error: (err) => {
         console.error("Attack error:", err);
+        this.addCombatLog(
+          `Attack failed: ${err.error?.message || err.message}`
+        );
       },
     });
   }
@@ -469,6 +546,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   }
 
   returnToLobby(): void {
-    this.returnToLobbyEvent.emit();
+    this.gameApi.disconnect();
+    this.router.navigate(["/app/game-lobby"]);
   }
 }
