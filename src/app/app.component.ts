@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import AOS from 'aos';
 
-@Component(
-  {
+@Component({
   selector: 'app-root',
   standalone: true,
   imports: [
@@ -12,7 +12,15 @@ import { RouterOutlet } from '@angular/router';
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
+})
+export class AppComponent implements OnInit {
+
+ ngOnInit(): void {
+  AOS.init({
+    duration: 800,
+    once: false,   
+    mirror: true,   
+    offset: 0,      
+  });
 }
-)
-export class AppComponent {
 }

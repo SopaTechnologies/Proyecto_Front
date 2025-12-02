@@ -1,0 +1,130 @@
+<div class="page">
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar-content container" data-aos="fade-down">
+      <div class="logo-area">
+        <img
+          src="../../../../assets/icons/logo@2x.png"
+          alt="Mahou Site"
+          class="logo-img"
+        />
+        <span class="brand-name">Mahou Site</span>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn btn-light" (click)="goToLogin()">
+          Iniciar sesión
+        </button>
+        <button class="btn btn-light" (click)="goToSignup()">
+          Registrarse
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-inner container">
+        <div class="hero-image" data-aos="fade-right">
+          <img
+            src="../../../assets/img/BooksLanding.jpg"
+            alt="Libros mágicos"
+          />
+        </div>
+
+        <div class="hero-text" data-aos="fade-left">
+          <h1>Donde tus historias cobran vida</h1>
+          <p>
+            Mahou Site es la herramienta donde la imaginación y la
+            tecnología se entrelazan para crear historias completas,
+            desde la primera idea hasta el último punto final.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+      <div class="container" data-aos="fade-up">
+        <h2>Da vida a tus mundos</h2>
+        <p class="features-subtitle">
+          Escribe, organiza y crea sin límites
+        </p>
+
+        <div class="features-grid">
+          <article class="feature-card" data-aos="zoom-in" data-aos-delay="100">
+            <div class="feature-icon">
+              <img src="../../../assets/icons/book.png" alt="Libro" />
+            </div>
+            <h3>Trabaja en conjunto</h3>
+            <p>
+              Crea en compañía. Comparte, comenta y construye historias
+              con otros escritores en tiempo real para dar vida a mundos
+              más ricos y complejos.
+            </p>
+          </article>
+
+          <article class="feature-card" data-aos="zoom-in" data-aos-delay="200">
+            <div class="feature-icon">
+              <img src="../../../assets/icons/profile.png" alt="Personaje" />
+            </div>
+            <h3>Maneja tus propios personajes</h3>
+            <p>
+              Da vida a tus creaciones. Organiza, conecta y da
+              seguimiento a cada detalle de tus héroes, villanos y
+              mundos con las herramientas que solo Mahou Site puede
+              ofrecer.
+            </p>
+          </article>
+
+          <article class="feature-card" data-aos="zoom-in" data-aos-delay="300">
+            <div class="feature-icon">
+              <img
+                src="../../../assets/icons/game-controller.png"
+                alt="Control"
+              />
+            </div>
+            <h3>Juega tu propia historia</h3>
+            <p>
+              Convierte tus relatos en experiencias interactivas. Explora,
+              decide y moldea finales distintos mientras tus lectores se
+              sumergen en la aventura de tu imaginación.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div class="container" data-aos="fade-up">
+        <div class="cta-card">
+          <h2>¿Listo para empezar tu aventura?</h2>
+          <p>
+            Empieza capítulo a capítulo. Entra a Mahou Site y comienza a
+            crear, jugar y dar forma a historias que solo existen en tu
+            imaginación.
+          </p>
+          <p>
+            Regístrate hoy y deja que tus historias cobren vida contigo.
+          </p>
+          <button class="btn btn-primary" (click)="goToSignup()">
+            Empezar a escribir
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  
+  <!-- Botón flotante scroll-top -->
+  <button
+    class="scroll-top-btn"
+    *ngIf="showScrollTop"
+    (click)="scrollToTop()"
+    aria-label="Volver arriba"
+  >
+    ↑
+  </button>
+</div>

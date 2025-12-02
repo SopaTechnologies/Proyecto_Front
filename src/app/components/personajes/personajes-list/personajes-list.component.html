@@ -5,211 +5,19 @@
       <!-- Árbol genealógico -->
       <div class="genealogia-container" *ngIf="personajes.length > 0">
         <ng-container *ngFor="let personaje of getPersonajesRaiz(); let last = last">
-          <!-- Árbol de personaje recursivo incluido directamente -->
+          <!-- Nodo raíz -->
           <div class="arbol-personaje">
-            <div class="container-fluid">
-              <div class="row justify-content-center g-3">
-                <!-- Si tiene pareja, usar col-sm-6 para cada uno -->
-                <ng-container *ngIf="personaje.relacionId && tieneRelacion(personaje.relacionId) && getPareja(personaje.id!, personaje.relacionId) as pareja; else soloPersonaje">
-                  <!-- Personaje principal -->
-                  <div class="col-12 col-md-6 ">
-                    <div class="personaje-card">
-                      <div class="personaje-image-container">
-                        <img [src]="personaje.imagenUrl || 'https://image.pollinations.ai/prompt/character%20portrait%20placeholder?width=512&height=768&seed=0&model=flux'"
-                            [alt]="personaje.nombre"
-                            class="personaje-image"
-                            (error)="onImageError($event)">
-                      </div>
-                      <div class="personaje-info">
-                        <h3 class="personaje-nombre">{{personaje.nombre}} {{personaje.apellido}}</h3>
-                        <p class="personaje-descripcion">{{personaje.descripcion}}</p>
-                        <div class="personaje-meta">
-                          <span class="personaje-fecha">
-                            <i class="fas fa-calendar"></i>
-                            {{personaje.createdAt | date:'dd/MM/yyyy'}}
-                          </span>
-                          <span class="personaje-status">
-                            <i class="fas fa-circle"></i>
-                            {{personaje.estado}}
-                          </span>
-                        </div>
-                      </div>
-                      <div class="personaje-actions">
-                        <button class="btn-edit" (click)="onEditPersonaje(personaje)" title="Editar">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn-delete" (click)="onDeletePersonaje(personaje.id!)" title="Eliminar">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Personaje pareja -->
-                  <div class="col-12 col-md-6 ">
-                    <div class="personaje-card">
-                      <div class="personaje-image-container">
-                        <img [src]="pareja.imagenUrl || 'https://image.pollinations.ai/prompt/character%20portrait%20placeholder?width=512&height=768&seed=0&model=flux'"
-                            [alt]="pareja.nombre"
-                            class="personaje-image"
-                            (error)="onImageError($event)">
-                      </div>
-                      <div class="personaje-info">
-                        <h3 class="personaje-nombre">{{pareja.nombre}} {{pareja.apellido}}</h3>
-                        <p class="personaje-descripcion">{{pareja.descripcion}}</p>
-                        <div class="personaje-meta">
-                          <span class="personaje-fecha">
-                            <i class="fas fa-calendar"></i>
-                            {{pareja.createdAt | date:'dd/MM/yyyy'}}
-                          </span>
-                          <span class="personaje-status">
-                            <i class="fas fa-circle"></i>
-                            {{pareja.estado}}
-                          </span>
-                        </div>
-                      </div>
-                      <div class="personaje-actions">
-                        <button class="btn-edit" (click)="onEditPersonaje(pareja)" title="Editar">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn-delete" (click)="onDeletePersonaje(pareja.id!)" title="Eliminar">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </ng-container>
-
-                <!-- Si no tiene pareja, centrar en una sola columna -->
-                <ng-template #soloPersonaje>
-                  <div class="col-12 col-md-6 ">
-                    <div class="personaje-card">
-                      <div class="personaje-image-container">
-                        <img [src]="personaje.imagenUrl || 'https://image.pollinations.ai/prompt/character%20portrait%20placeholder?width=512&height=768&seed=0&model=flux'"
-                            [alt]="personaje.nombre"
-                            class="personaje-image"
-                            (error)="onImageError($event)">
-                      </div>
-                      <div class="personaje-info">
-                        <h3 class="personaje-nombre">{{personaje.nombre}} {{personaje.apellido}}</h3>
-                        <p class="personaje-descripcion">{{personaje.descripcion}}</p>
-                        <div class="personaje-meta">
-                          <span class="personaje-fecha">
-                            <i class="fas fa-calendar"></i>
-                            {{personaje.createdAt | date:'dd/MM/yyyy'}}
-                          </span>
-                          <span class="personaje-status">
-                            <i class="fas fa-circle"></i>
-                            {{personaje.estado}}
-                          </span>
-                        </div>
-                      </div>
-                      <div class="personaje-actions">
-                        <button class="btn-edit" (click)="onEditPersonaje(personaje)" title="Editar">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn-delete" (click)="onDeletePersonaje(personaje.id!)" title="Eliminar">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </ng-template>
-              </div>
-            </div>
-
-            <!-- Hijos del personaje -->
-            <div class="genealogia-hijos-wrapper" *ngIf="tieneHijos(personaje.id!)">
-              <div class="genealogia-hijos-list">
-                <ng-container *ngFor="let hijo of getHijos(personaje.id!)">
-                  <ng-container *ngTemplateOutlet="arbolRecursivo; context: { $implicit: hijo }"></ng-container>
-                </ng-container>
-              </div>
-            </div>
-
-            <!-- Enemigos del personaje -->
-            <div class="enemigos-wrapper" *ngIf="tieneEnemigos(personaje.id!)">
-              <div class="enemigos-header">
-                <span class="enemigos-icon">⚔️</span>
-                <span class="enemigos-title">Enemigos</span>
-              </div>
-              <div class="enemigos-list">
-                <div class="enemigo-card" *ngFor="let enemigo of getEnemigos(personaje.id!)">
-                  <div class="personaje-image-container">
-                    <img [src]="enemigo.imagenUrl || 'https://image.pollinations.ai/prompt/character%20portrait%20placeholder?width=512&height=768&seed=0&model=flux'"
-                        [alt]="enemigo.nombre"
-                        class="personaje-image"
-                        (error)="onImageError($event)">
-                  </div>
-                  <div class="personaje-info">
-                    <h3 class="personaje-nombre">{{enemigo.nombre}} {{enemigo.apellido}}</h3>
-                    <p class="personaje-descripcion">{{enemigo.descripcion}}</p>
-                    <div class="personaje-meta">
-                      <span class="personaje-fecha">
-                        <i class="fas fa-calendar"></i>
-                        {{enemigo.createdAt | date:'dd/MM/yyyy'}}
-                      </span>
-                      <span class="personaje-status">
-                        <i class="fas fa-circle"></i>
-                        {{enemigo.estado}}
-                      </span>
-                    </div>
-                  </div>
-                  <div class="personaje-actions">
-                    <button class="btn-edit" (click)="onEditPersonaje(enemigo)" title="Editar">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn-delete" (click)="onDeletePersonaje(enemigo.id!)" title="Eliminar">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Amistades del personaje -->
-            <div class="amistades-wrapper" *ngIf="tieneAmistades(personaje.id!)">
-              <div class="amistades-header">
-                <span class="amistades-icon">🤝</span>
-                <span class="amistades-title">Amistades</span>
-              </div>
-              <div class="amistades-list">
-                <div class="amistad-card" *ngFor="let amistad of getAmistades(personaje.id!)">
-                  <div class="personaje-image-container">
-                    <img [src]="amistad.imagenUrl || 'https://image.pollinations.ai/prompt/character%20portrait%20placeholder?width=512&height=768&seed=0&model=flux'"
-                        [alt]="amistad.nombre"
-                        class="personaje-image"
-                        (error)="onImageError($event)">
-                  </div>
-                  <div class="personaje-info">
-                    <h3 class="personaje-nombre">{{amistad.nombre}} {{amistad.apellido}}</h3>
-                    <p class="personaje-descripcion">{{amistad.descripcion}}</p>
-                    <div class="personaje-meta">
-                      <span class="personaje-fecha">
-                        <i class="fas fa-calendar"></i>
-                        {{amistad.createdAt | date:'dd/MM/yyyy'}}
-                      </span>
-                      <span class="personaje-status">
-                        <i class="fas fa-circle"></i>
-                        {{amistad.estado}}
-                      </span>
-                    </div>
-                  </div>
-                  <div class="personaje-actions">
-                    <button class="btn-edit" (click)="onEditPersonaje(amistad)" title="Editar">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn-delete" (click)="onDeletePersonaje(amistad.id!)" title="Eliminar">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ng-container
+              *ngTemplateOutlet="arbolNodo; context: { $implicit: personaje }"
+            ></ng-container>
           </div>
-          
+
           <!-- Separador entre familias -->
-          <div class="familia-separador" *ngIf="!last"> <br><br><hr></div>
+          <div class="familia-separador" *ngIf="!last">
+            <br />
+            <br />
+            <hr />
+          </div>
         </ng-container>
       </div>
 
@@ -226,215 +34,237 @@
         </button>
       </div>
 
-      <!-- Indicador de galería en la parte inferior -->
-      <div class="gallery-indicator" *ngIf="personajes.length > 0">
-        <div class="gallery-circle"></div>
-        <span class="gallery-text">Galería de Personajes</span>
-        <p class="gallery-description">Personajes generados con inteligencia artificial</p>
-      </div>
     </div>
   </div>
 </div>
 
-<!-- Template recursivo para mostrar hijos -->
-<ng-template #arbolRecursivo let-hijo>
-  <div class="arbol-personaje">
-    <div class="container-fluid">
-      <div class="row justify-content-center g-3">
-        <!-- Si tiene pareja -->
-        <ng-container *ngIf="hijo.relacionId && tieneRelacion(hijo.relacionId) && getPareja(hijo.id!, hijo.relacionId) as pareja; else soloHijo">
-          <!-- Hijo principal -->
-          <div class="col-12 col-md-6">
-            <div class="personaje-card">
-              <div class="personaje-image-container">
-                <img [src]="hijo.imagenUrl || 'https://image.pollinations.ai/prompt/character%20portrait%20placeholder?width=512&height=768&seed=0&model=flux'"
-                    [alt]="hijo.nombre"
-                    class="personaje-image"
-                    (error)="onImageError($event)">
-              </div>
-              <div class="personaje-info">
-                <h3 class="personaje-nombre">{{hijo.nombre}} {{hijo.apellido}}</h3>
-                <p class="personaje-descripcion">{{hijo.descripcion}}</p>
-                <div class="personaje-meta">
-                  <span class="personaje-fecha">
-                    <i class="fas fa-calendar"></i>
-                    {{hijo.createdAt | date:'dd/MM/yyyy'}}
-                  </span>
-                  <span class="personaje-status">
-                    <i class="fas fa-circle"></i>
-                    {{hijo.estado}}
-                  </span>
-                </div>
-              </div>
-              <div class="personaje-actions">
-                <button class="btn-edit" (click)="onEditPersonaje(hijo)" title="Editar">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn-delete" (click)="onDeletePersonaje(hijo.id!)" title="Eliminar">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pareja del hijo -->
-          <div class="col-12 col-md-6">
-            <div class="personaje-card">
-              <div class="personaje-image-container">
-                <img [src]="pareja.imagenUrl || 'https://image.pollinations.ai/prompt/character%20portrait%20placeholder?width=512&height=768&seed=0&model=flux'"
-                    [alt]="pareja.nombre"
-                    class="personaje-image"
-                    (error)="onImageError($event)">
-              </div>
-              <div class="personaje-info">
-                <h3 class="personaje-nombre">{{pareja.nombre}} {{pareja.apellido}}</h3>
-                <p class="personaje-descripcion">{{pareja.descripcion}}</p>
-                <div class="personaje-meta">
-                  <span class="personaje-fecha">
-                    <i class="fas fa-calendar"></i>
-                    {{pareja.createdAt | date:'dd/MM/yyyy'}}
-                  </span>
-                  <span class="personaje-status">
-                    <i class="fas fa-circle"></i>
-                    {{pareja.estado}}
-                  </span>
-                </div>
-              </div>
-              <div class="personaje-actions">
-                <button class="btn-edit" (click)="onEditPersonaje(pareja)" title="Editar">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn-delete" (click)="onDeletePersonaje(pareja.id!)" title="Eliminar">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-
-        <!-- Sin pareja -->
-        <ng-template #soloHijo>
-          <div class="col-12 col-md-6">
-            <div class="personaje-card">
-              <div class="personaje-image-container">
-                <img [src]="hijo.imagenUrl || 'https://image.pollinations.ai/prompt/character%20portrait%20placeholder?width=512&height=768&seed=0&model=flux'"
-                    [alt]="hijo.nombre"
-                    class="personaje-image"
-                    (error)="onImageError($event)">
-              </div>
-              <div class="personaje-info">
-                <h3 class="personaje-nombre">{{hijo.nombre}} {{hijo.apellido}}</h3>
-                <p class="personaje-descripcion">{{hijo.descripcion}}</p>
-                <div class="personaje-meta">
-                  <span class="personaje-fecha">
-                    <i class="fas fa-calendar"></i>
-                    {{hijo.createdAt | date:'dd/MM/yyyy'}}
-                  </span>
-                  <span class="personaje-status">
-                    <i class="fas fa-circle"></i>
-                    {{hijo.estado}}
-                  </span>
-                </div>
-              </div>
-              <div class="personaje-actions">
-                <button class="btn-edit" (click)="onEditPersonaje(hijo)" title="Editar">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn-delete" (click)="onDeletePersonaje(hijo.id!)" title="Eliminar">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </ng-template>
-      </div>
-    </div>
-
-    <!-- Hijos del hijo -->
-    <div class="genealogia-hijos-wrapper" *ngIf="tieneHijos(hijo.id!)">
-      <div class="genealogia-hijos-list">
-        <ng-container *ngFor="let nieto of getHijos(hijo.id!)">
-          <ng-container *ngTemplateOutlet="arbolRecursivo; context: { $implicit: nieto }"></ng-container>
-        </ng-container>
-      </div>
-    </div>
-
-    <!-- Enemigos -->
-    <div class="enemigos-wrapper" *ngIf="tieneEnemigos(hijo.id!)">
-      <div class="enemigos-header">
-        <span class="enemigos-icon">⚔️</span>
-        <span class="enemigos-title">Enemigos</span>
-      </div>
-      <div class="enemigos-list">
-        <div class="enemigo-card" *ngFor="let enemigo of getEnemigos(hijo.id!)">
-          <div class="personaje-image-container">
-            <img [src]="enemigo.imagenUrl || 'https://image.pollinations.ai/prompt/character%20portrait%20placeholder?width=512&height=768&seed=0&model=flux'"
-                [alt]="enemigo.nombre"
+<!-- ===================================================== -->
+<!-- TEMPLATE RECURSIVO: UN NODO DEL ÁRBOL (PERS)          -->
+<!-- ===================================================== -->
+<ng-template #arbolNodo let-pers>
+  <div class="container-fluid">
+    <div class="row justify-content-center g-3">
+      <!-- Si tiene pareja -->
+      <ng-container
+        *ngIf="
+          pers.relacionId &&
+          tieneRelacion(pers.relacionId) &&
+          getPareja(pers.id!, pers.relacionId) as pareja;
+        else soloPers
+      ">
+        <!-- Personaje principal -->
+        <div class="col-12 col-md-6">
+          <div class="personaje-card">
+            <div class="personaje-image-container">
+              <img
+                [src]="pers.imagenUrl || placeholderImageUrl"
+                [alt]="pers.nombre"
                 class="personaje-image"
-                (error)="onImageError($event)">
-          </div>
-          <div class="personaje-info">
-            <h3 class="personaje-nombre">{{enemigo.nombre}} {{enemigo.apellido}}</h3>
-            <p class="personaje-descripcion">{{enemigo.descripcion}}</p>
-            <div class="personaje-meta">
-              <span class="personaje-fecha">
-                <i class="fas fa-calendar"></i>
-                {{enemigo.createdAt | date:'dd/MM/yyyy'}}
-              </span>
-              <span class="personaje-status">
-                <i class="fas fa-circle"></i>
-                {{enemigo.estado}}
-              </span>
+                (error)="onImageError($event)"
+              />
+            </div>
+            <div class="personaje-info">
+              <h3 class="personaje-nombre">
+                {{ pers.nombre }} {{ pers.apellido }}
+              </h3>
+              <p class="personaje-descripcion">
+                {{ pers.descripcion }}
+              </p>
+              <div class="personaje-meta">
+                <span class="personaje-fecha">
+                  <i class="fas fa-calendar"></i>
+                  {{ pers.createdAt | date : 'dd/MM/yyyy' }}
+                </span>
+                <span class="personaje-status">
+                  <i class="fas fa-circle"></i>
+                  {{ pers.estado }}
+                </span>
+              </div>
+            </div>
+            <div class="personaje-actions">
+              <button
+                class="btn-edit"
+                (click)="onEditPersonaje(pers)"
+                title="Editar"
+              >
+                <i class="fas fa-edit"></i>
+              </button>
+              <button
+                class="btn-delete"
+                (click)="onDeletePersonaje(pers.id!)"
+                title="Eliminar"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
             </div>
           </div>
-          <div class="personaje-actions">
-            <button class="btn-edit" (click)="onEditPersonaje(enemigo)" title="Editar">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn-delete" (click)="onDeletePersonaje(enemigo.id!)" title="Eliminar">
-              <i class="fas fa-trash"></i>
-            </button>
+        </div>
+
+        <!-- Pareja -->
+        <div class="col-12 col-md-6">
+          <div class="personaje-card">
+            <div class="personaje-image-container">
+              <img
+                [src]="pareja.imagenUrl || placeholderImageUrl"
+                [alt]="pareja.nombre"
+                class="personaje-image"
+                (error)="onImageError($event)"
+              />
+            </div>
+            <div class="personaje-info">
+              <h3 class="personaje-nombre">
+                {{ pareja.nombre }} {{ pareja.apellido }}
+              </h3>
+              <p class="personaje-descripcion">
+                {{ pareja.descripcion }}
+              </p>
+              <div class="personaje-meta">
+                <span class="personaje-fecha">
+                  <i class="fas fa-calendar"></i>
+                  {{ pareja.createdAt | date : 'dd/MM/yyyy' }}
+                </span>
+                <span class="personaje-status">
+                  <i class="fas fa-circle"></i>
+                  {{ pareja.estado }}
+                </span>
+              </div>
+            </div>
+            <div class="personaje-actions">
+              <button
+                class="btn-edit"
+                (click)="onEditPersonaje(pareja)"
+                title="Editar"
+              >
+                <i class="fas fa-edit"></i>
+              </button>
+              <button
+                class="btn-delete"
+                (click)="onDeletePersonaje(pareja.id!)"
+                title="Eliminar"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
           </div>
+        </div>
+      </ng-container>
+
+      <!-- Sin pareja -->
+      <ng-template #soloPers>
+        <div class="col-12 col-md-6">
+          <div class="personaje-card">
+            <div class="personaje-image-container">
+              <img
+                [src]="pers.imagenUrl || placeholderImageUrl"
+                [alt]="pers.nombre"
+                class="personaje-image"
+                (error)="onImageError($event)"
+              />
+            </div>
+            <div class="personaje-info">
+              <h3 class="personaje-nombre">
+                {{ pers.nombre }} {{ pers.apellido }}
+              </h3>
+              <p class="personaje-descripcion">
+                {{ pers.descripcion }}
+              </p>
+              <div class="personaje-meta">
+                <span class="personaje-fecha">
+                  <i class="fas fa-calendar"></i>
+                  {{ pers.createdAt | date : 'dd/MM/yyyy' }}
+                </span>
+                <span class="personaje-status">
+                  <i class="fas fa-circle"></i>
+                  {{ pers.estado }}
+                </span>
+              </div>
+            </div>
+            <div class="personaje-actions">
+              <button
+                class="btn-edit"
+                (click)="onEditPersonaje(pers)"
+                title="Editar"
+              >
+                <i class="fas fa-edit"></i>
+              </button>
+              <button
+                class="btn-delete"
+                (click)="onDeletePersonaje(pers.id!)"
+                title="Eliminar"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Hijos de este personaje (subnivel del árbol) -->
+  <div class="genealogia-hijos-wrapper" *ngIf="tieneHijos(pers.id!)">
+    <div class="genealogia-hijos-list">
+      <ng-container *ngFor="let hijo of getHijos(pers.id!)">
+        <div class="arbol-personaje">
+          <ng-container
+            *ngTemplateOutlet="arbolNodo; context: { $implicit: hijo }"
+          ></ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Enemigos -->
+  <div class="enemigos-wrapper" *ngIf="tieneEnemigos(pers.id!)">
+    <div class="enemigos-header">
+      <span class="enemigos-icon">⚔️</span>
+      <span class="enemigos-title">Enemigos</span>
+    </div>
+    <div class="enemigos-list">
+      <div
+        class="enemigo-card"
+        *ngFor="let enemigo of getEnemigos(pers.id!)"
+      >
+        <div class="personaje-image-container">
+          <img
+            [src]="enemigo.imagenUrl || placeholderImageUrl"
+            [alt]="enemigo.nombre"
+            class="personaje-image"
+            (error)="onImageError($event)"
+          />
+        </div>
+        <div class="personaje-info">
+          <h3 class="personaje-nombre">
+            {{ enemigo.nombre }} {{ enemigo.apellido }}
+          </h3>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Amistades -->
-    <div class="amistades-wrapper" *ngIf="tieneAmistades(hijo.id!)">
-      <div class="amistades-header">
-        <span class="amistades-icon">🤝</span>
-        <span class="amistades-title">Amistades</span>
-      </div>
-      <div class="amistades-list">
-        <div class="amistad-card" *ngFor="let amistad of getAmistades(hijo.id!)">
-          <div class="personaje-image-container">
-            <img [src]="amistad.imagenUrl || 'https://image.pollinations.ai/prompt/character%20portrait%20placeholder?width=512&height=768&seed=0&model=flux'"
-                [alt]="amistad.nombre"
-                class="personaje-image"
-                (error)="onImageError($event)">
-          </div>
-          <div class="personaje-info">
-            <h3 class="personaje-nombre">{{amistad.nombre}} {{amistad.apellido}}</h3>
-            <p class="personaje-descripcion">{{amistad.descripcion}}</p>
-            <div class="personaje-meta">
-              <span class="personaje-fecha">
-                <i class="fas fa-calendar"></i>
-                {{amistad.createdAt | date:'dd/MM/yyyy'}}
-              </span>
-              <span class="personaje-status">
-                <i class="fas fa-circle"></i>
-                {{amistad.estado}}
-              </span>
-            </div>
-          </div>
-          <div class="personaje-actions">
-            <button class="btn-edit" (click)="onEditPersonaje(amistad)" title="Editar">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn-delete" (click)="onDeletePersonaje(amistad.id!)" title="Eliminar">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>
+  <!-- Amistades -->
+  <div class="amistades-wrapper" *ngIf="tieneAmistades(pers.id!)">
+    <div class="amistades-header">
+      <span class="amistades-icon">🤝</span>
+      <span class="amistades-title">Amistades</span>
+    </div>
+    <div class="amistades-list">
+      <div
+        class="amistad-card"
+        *ngFor="let amistad of getAmistades(pers.id!)"
+      >
+        <div class="personaje-image-container">
+          <img
+            [src]="amistad.imagenUrl || placeholderImageUrl"
+            [alt]="amistad.nombre"
+            class="personaje-image"
+            (error)="onImageError($event)"
+          />
+        </div>
+        <div class="personaje-info">
+          <h3 class="personaje-nombre">
+            {{ amistad.nombre }} {{ amistad.apellido }}
+          </h3>
         </div>
       </div>
     </div>
