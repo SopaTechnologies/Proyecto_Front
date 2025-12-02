@@ -62,7 +62,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.gameId = +params[this.gameId];
+      this.gameId = +params["gameId"];
       this.playerIndex = +params["playerIndex"];
 
       this.gameStateSubscription = this.gameApi
