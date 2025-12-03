@@ -1,152 +1,235 @@
+// ===== Paleta café estándar =====
+$color-bg: #2b1c1c;
+$color-bg-soft: #3a2828;
+$color-bg-soft2: #4a2f2f;
+$color-accent: #c8b2a9;
+$color-accent-strong: #d4a574;
+$color-text-main: #f7f1ec;
+$color-text-muted: #e0d1c8;
+$color-border-soft: rgba(255, 255, 255, 0.12);
+$color-danger: #d94747;
+
+/* ===== Modal wrapper ===== */
 .modal-form-container {
-  background-color: #3a2828;
-  border-radius: 12px;
+  background: radial-gradient(
+    circle at top left,
+    $color-bg-soft2 0,
+    #2b1818 40%,
+    #1a0e0e 100%
+  );
+  border-radius: 1.1rem;
   overflow: hidden;
   width: 500px;
   max-width: 90vw;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
   margin: 0 auto;
+  color: $color-text-main;
+  animation: modalFadeUp 0.3s ease-out;
 }
 
+/* ===== Header ===== */
 .modal-header-custom {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px;
-  border-bottom: 2px solid #a15c3e;
+  padding: 1.1rem 1.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
   h2 {
-    color: #fff;
-    font-size: 24px;
-    font-weight: bold;
+    color: $color-text-main;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     margin: 0;
+    text-transform: uppercase;
   }
 }
 
 .btn-close-modal {
   background: transparent;
   border: none;
-  color: #d9a77a;
-  font-size: 24px;
+  color: $color-text-muted;
+  font-size: 1.25rem;
   cursor: pointer;
-  padding: 5px;
+  padding: 0.2rem;
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: all 0.3s ease;
+  border-radius: 999px;
+  transition:
+    background-color 0.16s ease-out,
+    transform 0.12s ease-out,
+    color 0.16s ease-out;
 
   &:hover {
-    background-color: #4a2f2f;
-    color: #d48656;
+    background-color: rgba(0, 0, 0, 0.45);
+    color: $color-accent-strong;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
+
+/* ===== Cuerpo del formulario ===== */
 .modal-form {
-  padding: 30px;
+  padding: 1.4rem 1.6rem 1.5rem;
 }
 
+/* ===== Grupos de campos ===== */
 .form-group {
-  margin-bottom: 25px;
+  margin-bottom: 1.2rem;
 
   label {
     display: block;
-    font-weight: bold;
-    color: #d9a77a;
-    margin-bottom: 8px;
-    font-size: 14px;
+    font-weight: 500;
+    color: $color-text-muted;
+    margin-bottom: 0.4rem;
+    font-size: 0.78rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.12em;
   }
 
-  input {
+  input,
+  select,
+  textarea {
     width: 100%;
-    padding: 12px 15px;
-    border-radius: 8px;
-    background-color: #1b0f0f;
-    border: 2px solid #a15c3e;
-    color: #fff;
-    font-size: 16px;
-    transition: all 0.3s ease;
+    padding: 0.7rem 0.9rem;
+    border-radius: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.38);
+    border: 1px solid $color-border-soft;
+    color: $color-text-main;
+    font-size: 0.9rem;
+    transition:
+      border-color 0.18s ease-out,
+      box-shadow 0.18s ease-out,
+      background-color 0.18s ease-out,
+      transform 0.12s ease-out;
 
     &::placeholder {
-      color: rgba(217, 167, 122, 0.5);
+      color: rgba($color-text-muted, 0.6);
     }
 
     &:focus {
       outline: none;
-      border-color: #d48656;
-      box-shadow: 0 0 0 3px rgba(212, 134, 86, 0.1);
+      border-color: $color-accent-strong;
+      background-color: rgba(0, 0, 0, 0.55);
+      box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.7);
+      transform: translateY(-1px);
     }
 
     &.error {
-      border-color: #c94545;
+      border-color: $color-danger;
+      box-shadow: 0 0 0 1px rgba($color-danger, 0.6);
     }
   }
 
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
   .error-message {
-    color: #e05555;
-    font-size: 13px;
-    margin-top: 8px;
+    color: lighten($color-danger, 10%);
+    font-size: 0.78rem;
+    margin-top: 0.4rem;
     margin-bottom: 0;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.35rem;
 
     &:before {
-      content: "⚠";
-      font-size: 14px;
+      content: '⚠';
+      font-size: 0.9rem;
     }
   }
 }
 
+/* ===== Acciones ===== */
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #a15c3e;
+  gap: 0.75rem;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 
   button {
-    padding: 12px 24px;
-    border-radius: 8px;
+    padding: 0.65rem 1.4rem;
+    border-radius: 0.8rem;
     border: none;
-    font-weight: bold;
-    font-size: 14px;
+    font-weight: 600;
+    font-size: 0.8rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition:
+      background-color 0.18s ease-out,
+      transform 0.16s ease-out,
+      box-shadow 0.16s ease-out,
+      opacity 0.16s ease-out;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.08em;
 
     &:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
     }
   }
 }
 
 .btn-cancel {
-  background-color: #3a1f1f;
-  color: #d9a77a;
+  background-color: rgba(0, 0, 0, 0.35);
+  color: $color-text-muted;
+  border: 1px solid $color-border-soft;
 
   &:hover:not(:disabled) {
-    background-color: #4a2f2f;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 }
 
 .btn-submit {
-  background-color: #d48656;
-  color: #1b0f0f;
+  background: linear-gradient(135deg, $color-accent, $color-accent-strong);
+  color: #1a0e0e;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(0, 0, 0, 0.7);
 
   &:hover:not(:disabled) {
-    background-color: #e29a6f;
+    background: linear-gradient(
+      135deg,
+      lighten($color-accent, 4%),
+      lighten($color-accent-strong, 4%)
+    );
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(212, 134, 86, 0.3);
+    box-shadow:
+      0 16px 32px rgba(0, 0, 0, 0.95),
+      0 0 0 1px rgba(0, 0, 0, 0.85);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
   }
 
   i {
-    margin-right: 5px;
+    margin-right: 0.35rem;
+  }
+}
+
+/* ===== Animación ===== */
+@keyframes modalFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }

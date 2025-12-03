@@ -1,10 +1,8 @@
-import { Component, EventEmitter, Input, Output, inject, signal } from '@angular/core';
+import { Component, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AlertService } from '../../../services/alert.service';
-import { ModalService } from '../../../services/modal.service';
-import { RelationshipTypeModel } from '../../../models/narrative-element.model';
+import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { RelationshipTypeModel } from '../../../models/narrative-element.model';
 import { NarrativeelementsService } from '../../../services/narrativeelements.service';
 
 @Component({
@@ -12,64 +10,52 @@ import { NarrativeelementsService } from '../../../services/narrativeelements.se
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './relationship-type-form.component.html',
-  styleUrl: './relationship-type-form.component.scss'
+  styleUrls: ['./relationship-type-form.component.scss']
 })
 export class RelationshipTypeFormComponent {
-
-  @Input() modalRef : NgbModalRef | null = null;
+  @Input() modalRef: NgbModalRef | null = null;
   @Input() relTypeForm!: FormGroup;
 
-  private alertService = inject(AlertService);
-  private modalService = inject(ModalService);
-
-  narrativeElementsService = inject(NarrativeelementsService);
+  private narrativeElementsService = inject(NarrativeelementsService);
 
   loading = signal(false);
+
+  ngOnInit(): void {
+    if (!this.relTypeForm.get('name')) {
+      this.relTypeForm.addControl(
+        'name',
+        new (this.relTypeForm.constructor as any).prototype.constructor().control(
+          '',
+          [Validators.required, Validators.minLength(3)]
+        )
+      );
+    }
+  }
 
   onSubmit(): void {
     if (this.relTypeForm.invalid) {
       this.relTypeForm.markAllAsTouched();
-      this.alertService.displayAlert(
-        'error',
-        'Revisa los campos antes de continuar',
-        'center',
-        'top',
-        ['error-snackbar']
-      );
       return;
     }
 
     this.loading.set(true);
     const relTypeData: RelationshipTypeModel = this.relTypeForm.value;
-    relTypeData.id = 0
+    relTypeData.id = 0;
 
     this.narrativeElementsService.createRelationshipType(relTypeData).subscribe({
       next: (response) => {
-        this.alertService.displayAlert(
-          'success',
-          'Tipo de relación creado exitosamente',
-          'center',
-          'top',
-          ['success-snackbar']
-        );
+        console.log('Tipo de relación creado exitosamente', response);
         this.resetForm();
         this.cancel();
       },
       error: (error) => {
-        this.alertService.displayAlert(
-          'error',
-          'Error al crear el tipo de relación. Intenta nuevamente.',
-          'center',
-          'top',
-          ['error-snackbar']
-        );
+        console.error('Error al crear el tipo de relación. Intenta nuevamente.', error);
         this.loading.set(false);
       }
     });
   }
 
   resetForm(): void {
-
     this.loading.set(false);
     this.relTypeForm.reset();
   }
@@ -78,7 +64,7 @@ export class RelationshipTypeFormComponent {
     if (this.relTypeForm) {
       this.relTypeForm.reset();
     }
-    
+
     if (this.modalRef) {
       this.modalRef.close();
     }
