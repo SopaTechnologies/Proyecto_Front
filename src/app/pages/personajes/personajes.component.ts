@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { PersonajesListComponent } from '../../components/personajes/personajes-list/personajes-list.component';
 import { PersonajesFormComponent } from '../../components/personajes/personajes-form/personajes-form.component';
 
-
 @Component({
   selector: 'app-personajes',
   standalone: true,
@@ -26,6 +25,9 @@ export class PersonajesComponent implements OnInit {
   loadingPersonajes: boolean = false;
   errorPersonajes: string | null = null;
 
+  showDeleteModal: boolean = false;
+  personajeIdToDelete: number | null = null;
+
   constructor(private personajeService: PersonajeService) {}
 
   ngOnInit(): void {
@@ -40,7 +42,7 @@ export class PersonajesComponent implements OnInit {
         this.personajes = personajes.map(p => ({
           ...p,
           imagenUrl: p.imagen
-            ? `http://localhost:8081/upload/${p.imagen.replace(/^\/?upload\//, '')}`
+            ? `http://localhost:8080/upload/${p.imagen.replace(/^\/?upload\//, '')}`
             : undefined
         }));
         this.loadingPersonajes = false;
@@ -76,24 +78,41 @@ export class PersonajesComponent implements OnInit {
     if (!('relacionId' in this.currentPersonaje)) this.currentPersonaje.relacionId = undefined;
     if (!('enemigos' in this.currentPersonaje)) this.currentPersonaje.enemigos = '[]';
     if (!('amistades' in this.currentPersonaje)) this.currentPersonaje.amistades = '[]';
-    
+
     this.editingPersonaje = personaje;
     this.showPersonajeModal = true;
     this.errorPersonajes = null;
   }
 
   handleDeletePersonaje(id: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este personaje?')) {
-      this.personajeService.deletePersonaje(id).subscribe({
-        next: () => {
-          this.loadAllPersonajes();
-        },
-        error: (error: any) => {
-          this.errorPersonajes = 'Error al eliminar el personaje';
-          console.error('Error al eliminar personaje:', error);
-        }
-      });
-    }
+    this.personajeIdToDelete = id;
+    this.showDeleteModal = true;
+    this.errorPersonajes = null;
+  }
+
+  // Confirmar eliminación desde el modal
+  confirmDeletePersonaje(): void {
+    if (this.personajeIdToDelete == null) return;
+
+    this.personajeService.deletePersonaje(this.personajeIdToDelete).subscribe({
+      next: () => {
+        this.loadAllPersonajes();
+        this.showDeleteModal = false;
+        this.personajeIdToDelete = null;
+      },
+      error: (error: any) => {
+        this.errorPersonajes = 'Error al eliminar el personaje';
+        console.error('Error al eliminar personaje:', error);
+        this.showDeleteModal = false;
+        this.personajeIdToDelete = null;
+      }
+    });
+  }
+
+  // Cancelar eliminación
+  cancelDeletePersonaje(): void {
+    this.showDeleteModal = false;
+    this.personajeIdToDelete = null;
   }
 
   handleCloseModal(): void {

@@ -158,6 +158,25 @@ $color-text-muted: #e0d1c8;
   overflow: hidden;
 }
 
+.history-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.history-select label {
+  font-size: 13px;
+  color: #444;
+}
+
+.history-select select {
+  flex: 1 1 auto;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
 .messages {
   max-height: 260px;
   overflow-y: auto;
