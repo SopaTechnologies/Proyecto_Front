@@ -3,30 +3,21 @@ import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-mahou-landing-page',
+  selector: 'app-sopa-landing-page',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './mahou-landing-page.component.html',
-  styleUrl: './mahou-landing-page.component.scss',
+  templateUrl: './sopa-landing-page.component.html',
+  styleUrl: './sopa-landing-page.component.scss',
 })
-export class LandingPageComponent {
+export class SopaLandingPageComponent {
   // para mostrar / ocultar el botón de subir
   showScrollTop = false;
 
   constructor(private router: Router) {}
 
-  goToLogin(): void {
-    this.router.navigate(['/login']);
-  }
-
-  goToSignup(): void {
-    this.router.navigate(['/signup']);
-  }
-
-  // NUEVO: ir al landing del equipo / Sopa
-  goToTeam(): void {
-    // cambia '/sopa' por la ruta real que tengas configurada
-    this.router.navigate(['/sopa']);
+  // volver al landing principal de Mahou
+  goToMahou(): void {
+    this.router.navigate(['/']);
   }
 
   // se dispara cada vez que haces scroll
