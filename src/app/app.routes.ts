@@ -61,7 +61,7 @@ export const routes: Routes = [
       {
         path: 'perlin-noise',
         component: PerlinNoiseComponent,
-        canActivate: [AdminRoleGuard],
+        canActivate: [AuthGuard],
         data: {
           authorities: [
             IRoleType.user,
