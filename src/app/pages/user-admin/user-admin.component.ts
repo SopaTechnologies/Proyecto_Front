@@ -1,41 +1,41 @@
-import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { FormsModule, NgModel } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { UserService } from '../../services/user.service';
-import { IUser2 } from '../../../app/interfaces/index';
-import { HttpClient } from '@angular/common/http';
-import { UserListComponent } from '../../components/user/user-list/user-list.component';
+import { CommonModule } from "@angular/common";
+import { Component, ViewChild } from "@angular/core";
+import { FormsModule, NgModel } from "@angular/forms";
+import { Router, RouterLink } from "@angular/router";
+import { AuthService } from "../../services/auth.service";
+import { UserService } from "../../services/user.service";
+import { IUser2 } from "../../../app/interfaces/index";
+import { HttpClient } from "@angular/common/http";
+import { UserListComponent } from "../../components/user/user-list/user-list.component";
 
 @Component({
-  selector: 'app-user-admin',
+  selector: "app-user-admin",
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, UserListComponent],
-  templateUrl: './user-admin.component.html',
-  styleUrl: './user-admin.component.scss',
+  templateUrl: "./user-admin.component.html",
+  styleUrl: "./user-admin.component.scss",
 })
 export class UserAdminComponent {
-  public signUpError: string = '';
+  public signUpError: string = "";
   public validSignup: boolean = false;
 
-  @ViewChild('name') nameModel!: NgModel;
-  @ViewChild('lastname') lastnameModel!: NgModel;
-  @ViewChild('email') emailModel!: NgModel;
-  @ViewChild('photo') photoModel!: NgModel;
-  @ViewChild('username') usernameModel!: NgModel;
-  @ViewChild('password') passwordModel!: NgModel;
-  @ViewChild('role') roleModel!: NgModel;
-  @ViewChild('photoInput') photoInput!: any;
+  @ViewChild("name") nameModel!: NgModel;
+  @ViewChild("lastname") lastnameModel!: NgModel;
+  @ViewChild("email") emailModel!: NgModel;
+  @ViewChild("photo") photoModel!: NgModel;
+  @ViewChild("username") usernameModel!: NgModel;
+  @ViewChild("password") passwordModel!: NgModel;
+  @ViewChild("role") roleModel!: NgModel;
+  @ViewChild("photoInput") photoInput!: any;
 
-  public user: IUser2 = { role: { name: '' } };
+  public user: IUser2 = { role: { name: "" } };
 
   get roleName(): string {
-    return this.user.role?.name || '';
+    return this.user.role?.name || "";
   }
 
   set roleName(value: string) {
-    if (!this.user.role) this.user.role = { name: '' };
+    if (!this.user.role) this.user.role = { name: "" };
     this.user.role.name = value;
   }
 
@@ -60,9 +60,9 @@ export class UserAdminComponent {
     }
 
     // Validar tipo de archivo
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith("image/")) {
       this.signUpError =
-        'Solo se permiten archivos de imagen (JPG, PNG, etc.).';
+        "Solo se permiten archivos de imagen (JPG, PNG, etc.).";
       this.validSignup = false;
       this.selectedFile = null;
       this.previewUrl = null;
@@ -85,7 +85,7 @@ export class UserAdminComponent {
       return;
     }
 
-    this.signUpError = '';
+    this.signUpError = "";
     this.selectedFile = file;
 
     const reader = new FileReader();
@@ -97,39 +97,41 @@ export class UserAdminComponent {
 
   confirmPhotoUpload() {
     if (!this.selectedFile) {
-      this.signUpError = 'Primero selecciona una imagen para subir.';
+      this.signUpError = "Primero selecciona una imagen para subir.";
       this.validSignup = false;
       return;
     }
 
     this.isUploadingPhoto = true;
-    this.signUpError = '';
+    this.signUpError = "";
     this.validSignup = false;
 
     const formData = new FormData();
-    formData.append('file', this.selectedFile);
-    formData.append('upload_preset', 'user_photos_unsi');
-    formData.append('cloud_name', 'dmbdlq4cx');
+    formData.append("file", this.selectedFile);
+    formData.append("upload_preset", "user_photos_unsi");
+    formData.append("cloud_name", "dmbdlq4cx");
 
-    fetch('https://api.cloudinary.com/v1_1/dmbdlq4cx/image/upload', {
-      method: 'POST',
+    fetch("https://api.cloudinary.com/v1_1/dmbdlq4cx/image/upload", {
+      method: "POST",
       body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
         if (!data?.secure_url) {
-          throw new Error('No se recibió la URL de la imagen desde el servidor.');
+          throw new Error(
+            "No se recibió la URL de la imagen desde el servidor."
+          );
         }
 
         // Guardar URL de foto en el usuario
         this.user.photo = data.secure_url;
         this.validSignup = true;
-        this.signUpError = '';
+        this.signUpError = "";
       })
       .catch((err) => {
-        console.error('Upload error:', err);
+        console.error("Upload error:", err);
         this.signUpError =
-          'Error al subir la foto. Inténtalo de nuevo más tarde.';
+          "Error al subir la foto. Inténtalo de nuevo más tarde.";
         this.validSignup = false;
       })
       .finally(() => {
@@ -140,42 +142,49 @@ export class UserAdminComponent {
   resetForm() {
     this.previewUrl = null;
     this.selectedFile = null;
-    this.user = { role: { name: '' } };
-    this.signUpError = '';
+    this.user = { role: { name: "" } };
+    this.signUpError = "";
     this.validSignup = false;
     if (this.photoInput) {
       this.photoInput.nativeElement.value = null;
     }
+    this.validSignup = true;
   }
 
   public handleSignup(event: Event) {
     event.preventDefault();
 
-    this.signUpError = '';
+    this.signUpError = "";
     this.validSignup = false;
 
     // Validar email
     if (!this.emailModel?.valid) {
       this.emailModel.control.markAsTouched();
       this.signUpError =
-        'Por favor indique un correo válido para actualizar el usuario.';
+        "Por favor indique un correo válido para actualizar el usuario.";
       return;
     }
 
     // Validar contraseña si viene (opcional al editar)
-    if (this.user.password && this.user.password.trim() !== '') {
+    if (this.user.password && this.user.password.trim() !== "") {
       const c = this.user.password.length;
       if (c < 8 || c > 16) {
-        this.signUpError =
-          'La contraseña debe tener entre 8 y 16 caracteres.';
+        this.signUpError = "La contraseña debe tener entre 8 y 16 caracteres.";
         return;
       }
+    }
+
+    if (!this.roleModel?.valid) {
+      this.roleModel.control.markAsTouched();
+      this.signUpError = "Por favor seleccione un rol válido.";
+      return;
     }
 
     this.ne();
   }
 
   ne() {
+
     const payload = {
       email: this.user.email,
       username: this.user.username,
@@ -184,23 +193,26 @@ export class UserAdminComponent {
       name: this.user.name,
       photo: this.user.photo,
       status: this.user.status,
-      role: {
-        name: this.user.role?.name || '',
-      },
+      roleName: this.user.role?.name,
     };
 
     this.userService.updateOrSave(payload as IUser2).subscribe({
       next: (response: any) => {
         this.validSignup = true;
-        this.signUpError = '';
+        this.signUpError = "";
         this.ngOnInit();
         this.resetForm();
       },
+
       error: (err: any) => {
         this.validSignup = false;
-        this.signUpError = err.error?.description || err.message || 'Error al guardar el usuario.';
+        this.signUpError =
+          err.error?.description ||
+          err.message ||
+          "Error al guardar el usuario.";
       },
     });
+    this.signUpError = "";
   }
 
   ngOnInit() {
@@ -216,10 +228,11 @@ export class UserAdminComponent {
 
   onEditUser(user: any) {
     this.user = { ...user };
-    this.roleName = user.role?.name || '';
+    this.roleName = user.role?.name || "";
     // Limpiar preview cuando se edita
     this.previewUrl = null;
     this.selectedFile = null;
+    this.signUpError = "";
     if (this.photoInput) {
       this.photoInput.nativeElement.value = null;
     }

@@ -1,0 +1,264 @@
+.lobby-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2b1c1c 0%, #1a1010 100%);
+  padding: 2rem;
+}
+
+.lobby-card {
+  background: #3a2828;
+  border-radius: 1.5rem;
+  padding: 3rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+  
+  h1 {
+    margin: 0 0 2rem;
+    font-size: 2rem;
+    text-align: center;
+    color: #f7f1ec;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  
+  h2 {
+    margin: 0 0 1.5rem;
+    font-size: 1.3rem;
+    color: #d4a574;
+    text-align: center;
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+  label {
+    font-size: 0.9rem;
+    color: #e0d1c8;
+    font-weight: 500;
+  }
+}
+
+.input-field {
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+  color: #f7f1ec;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s;
+  
+  &:focus {
+    border-color: #d4a574;
+    box-shadow: 0 0 0 2px rgba(212, 165, 116, 0.3);
+  }
+  
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-primary, .btn-secondary, .btn-copy {
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  
+  i {
+    font-size: 1rem;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-primary {
+  flex: 1;
+  background: linear-gradient(135deg, #d4a574 0%, #a06f3c 100%);
+  color: #2b1b1b;
+  box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4);
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(212, 165, 116, 0.6);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+.btn-secondary {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e0d1c8;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.game-code-display {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  border: 2px dashed rgba(212, 165, 116, 0.3);
+  
+  .code-label {
+    font-size: 0.85rem;
+    color: #e0d1c8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+  
+  .code-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #d4a574;
+    letter-spacing: 0.3em;
+    margin-bottom: 1rem;
+    font-family: 'Courier New', monospace;
+  }
+}
+
+.btn-copy {
+  background: rgba(255, 255, 255, 0.1);
+  color: #d4a574;
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.waiting-message {
+  text-align: center;
+  color: #e0d1c8;
+  padding: 2rem 0;
+  
+  i {
+    font-size: 2rem;
+    color: #d4a574;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  
+  p {
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.player-card {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  i {
+    font-size: 1.2rem;
+  }
+  
+  span {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  
+  &.host {
+    border-color: rgba(74, 144, 217, 0.4);
+    
+    i {
+      color: #4a90d9;
+    }
+    
+    span {
+      color: #f7f1ec;
+    }
+  }
+  
+  &.waiting {
+    opacity: 0.5;
+    
+    i {
+      color: #888;
+    }
+    
+    span {
+      color: #aaa;
+    }
+  }
+}
+
+.error-message {
+  background: rgba(217, 74, 74, 0.2);
+  border: 1px solid rgba(217, 74, 74, 0.4);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  color: #ff6b6b;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .lobby-card {
+    padding: 2rem 1.5rem;
+    
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .game-code-display .code-value {
+    font-size: 2rem;
+  }
+}

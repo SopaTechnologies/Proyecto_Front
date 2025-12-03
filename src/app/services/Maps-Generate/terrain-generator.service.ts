@@ -92,4 +92,52 @@ export class TerrainGeneratorService {
     if (moisture < 0.4) return { q, r, type: 'Tundra', color: '#a0b0a0', elevation, moisture, temperature };
     return { q, r, type: 'Nieve', color: '#e8f4f8', elevation, moisture, temperature };
   }
+  findSpawnLocations(tiles: HexTile[], count: number): { q: number; r: number }[] {
+    const passableTiles = tiles.filter(t => {
+      const type = t.type;
+      return type !== 'Lagos o aguas profundas' && 
+             type !== 'Rios o aguas no tan profundas' &&
+             type !== 'Montañas';
+    });
+
+    if (passableTiles.length < count) {
+      console.warn('Not enough passable tiles for spawns');
+      return passableTiles.slice(0, count).map(t => ({ q: t.q, r: t.r }));
+    }
+    const spawns: { q: number; r: number }[] = [];
+    const gridService = new (class {
+      distance(q1: number, r1: number, q2: number, r2: number): number {
+        const x1 = q1, z1 = r1, y1 = -q1 - r1;
+        const x2 = q2, z2 = r2, y2 = -q2 - r2;
+        return (Math.abs(x1 - x2) + Math.abs(y1 - y2) + Math.abs(z1 - z2)) / 2;
+      }
+    })();
+    const sortedByDistance = [...passableTiles].sort((a, b) => {
+      const distA = Math.max(Math.abs(a.q), Math.abs(a.r), Math.abs(-a.q - a.r));
+      const distB = Math.max(Math.abs(b.q), Math.abs(b.r), Math.abs(-b.q - b.r));
+      return distB - distA;
+    });
+
+    spawns.push({ q: sortedByDistance[0].q, r: sortedByDistance[0].r });
+
+    for (let i = 1; i < count; i++) {
+      let bestTile = passableTiles[0];
+      let bestMinDist = 0;
+
+      for (const tile of passableTiles) {
+        let minDist = Infinity;
+        for (const spawn of spawns) {
+          const dist = gridService.distance(tile.q, tile.r, spawn.q, spawn.r);
+          minDist = Math.min(minDist, dist);
+        }
+        if (minDist > bestMinDist) {
+          bestMinDist = minDist;
+          bestTile = tile;
+        }
+      }
+      
+      spawns.push({ q: bestTile.q, r: bestTile.r });
+    }
+    return spawns;
+  }
 }
