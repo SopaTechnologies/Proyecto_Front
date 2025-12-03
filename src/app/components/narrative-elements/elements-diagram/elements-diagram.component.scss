@@ -1,0 +1,334 @@
+// ===== Paleta café =====
+$color-bg: #2b1c1c;
+$color-bg-soft: #3a2828;
+$color-bg-soft2: #4a2f2f;
+$color-accent: #c8b2a9;
+$color-accent-strong: #d4a574;
+$color-text-main: #f7f1ec;
+$color-text-muted: #e0d1c8;
+$color-border-soft: rgba(255, 255, 255, 0.08);
+$color-success: #38b981;
+$color-danger: #d94747;
+
+
+.elements-toolbar {
+  // height: 40px;
+  // background: rgba(0, 0, 0, 0.2);
+  // border-radius: 0.8rem;
+  // margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+
+::ng-deep {
+
+  .f-flow {
+    // width: 2000px;
+  }
+
+  .f-node {
+      padding: 10px;
+  //   color: rgba(60, 60, 67);
+  //   text-align: center;
+  //   background: #ffffff;
+  //   border-radius: 2px;
+  //   border: 0.2px solid rgba(60, 60, 67);
+
+    &.f-selected {
+      border-color: #3451b2;
+      // Highlights the border when the node is selected
+      // The f-selected class is automatically added by the library when a node or connection is selected.
+    }
+  }
+
+  .f-drag-handle {
+    cursor: move;
+  }
+
+
+  .f-connection {
+    .f-connection-drag-handle {
+      fill: transparent;
+      // By default, this element has a black fill and is used to detect the start of dragging (e.g., onmousedown).
+      // We make it transparent to avoid visual clutter, while keeping it functional.
+    }
+
+    .f-connection-selection {
+      stroke-width: 10;
+      // This is a pseudo-connection (a copy of the main path) used to make it easier to select the connection.
+      // It's slightly thicker than the actual path (which is often only 1px), making it easier to interact with.
+      // It remains invisible to avoid affecting visual clarity but stays active for user interaction.
+    }
+
+    .f-connection-path {
+      stroke: rgba(255, 255, 255, 0.5);
+      stroke-width: 2;
+    }
+
+   .f-connection-text,
+    .f-connection-center {
+      fill: rgba(0, 0, 0, 0.3);
+      color: white;
+    }
+
+    &.f-snap-connection {
+      .f-connection-path {
+        stroke: white;
+      }
+    }
+
+
+    &.f-selected {
+      .f-connection-path {
+        stroke: #3451b2;
+      }
+    }
+  }
+}
+
+.connection-marker {
+  circle,
+  rect,
+  path {
+    fill: white;
+  }
+}
+
+
+// ===== Header =====
+.modal-header-custom {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.8rem;
+}
+
+.title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .subtitle {
+    margin: 0;
+    font-size: 0.86rem;
+    color: $color-text-muted;
+  }
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.4);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $color-text-muted;
+
+  i {
+    font-size: 0.9rem;
+    color: $color-accent-strong;
+  }
+}
+
+.btn-close-modal {
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 999px;
+  transition:
+    background-color 0.15s ease-out,
+    transform 0.12s ease-out;
+
+  i {
+    font-size: 1.1rem;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.4);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Botones footer
+.btn-secondary,
+.btn-primary {
+  border-radius: 999px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.84rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    background-color 0.15s ease-out,
+    color 0.15s ease-out;
+
+  i {
+    margin-right: 0.35rem;
+    font-size: 0.9rem;
+  }
+}
+
+.btn-secondary {
+  background: transparent;
+  color: $color-text-muted;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.4);
+    color: $color-text-main;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  }
+}
+
+.btn-primary {
+  background: radial-gradient(circle at 30% 0, $color-accent-strong 45%, #a06f3c 100%);
+  color: #2b1b1b;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(0, 0, 0, 0.7);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 18px 36px rgba(0, 0, 0, 0.95),
+      0 0 0 1px rgba(0, 0, 0, 0.8);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
+  }
+}
+
+// ===== Mensajes de estado =====
+.status-message {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 0.9rem;
+  padding: 0.5rem 0.7rem;
+}
+
+.success-message {
+  background: rgba(56, 185, 129, 0.12);
+  color: #9cf3be;
+  border: 1px solid rgba(56, 185, 129, 0.45);
+}
+
+.error-message {
+  background: rgba(255, 128, 128, 0.12);
+  color: #ffb3b3;
+  border: 1px solid rgba(255, 128, 128, 0.4);
+}
+
+// ===== Animación =====
+@keyframes storyModalFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+// ===== Wrapper principal del modal =====
+.modal-form-container {
+  width: 90vw; /* 100% of the viewport width */
+  height: 80vh; /* 100% of the viewport height */
+
+
+  margin: 2rem auto;
+  border-radius: 1.5rem;
+  padding: 1.4rem 1.6rem 1.6rem;
+  background: radial-gradient(circle at top left, $color-bg-soft2 0, $color-bg-soft 40%, #211212 100%);
+  box-shadow:
+    0 24px 40px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  color: $color-text-main;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  animation: modalFadeUp 0.35s ease-out;
+  box-sizing: border-box;
+}
+
+// ===== Cuerpo (dos columnas) =====
+.modal-main {
+  // display: grid;
+  display: flex;
+  flex-direction: column;
+  // gap: 1.2rem;
+  // margin-top: 0.2rem;
+  width: 100%;
+  height: 80%;
+}
+
+// Botón guardar
+.buttons {
+  margin-top: 0.2rem;
+}
+
+.btn-toolbar {
+  border-radius: 999px;
+  border: none;
+  padding: 0.6rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: radial-gradient(circle at 30% 0, $color-accent-strong 45%, #a06f3c 100%);
+  color: #2b1b1b;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(0, 0, 0, 0.7);
+  transition:
+    transform 0.16s ease-out,
+    box-shadow 0.16s ease-out,
+    filter 0.16s ease-out;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 18px 36px rgba(0, 0, 0, 0.95),
+      0 0 0 1px rgba(0, 0, 0, 0.8);
+    filter: brightness(1.03);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
+  }
+}

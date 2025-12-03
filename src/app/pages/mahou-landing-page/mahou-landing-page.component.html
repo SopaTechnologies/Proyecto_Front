@@ -1,7 +1,12 @@
 <div class="page">
   <!-- NAVBAR -->
   <header class="navbar">
-    <div class="navbar-content container" data-aos="fade-down">
+    <div
+      class="navbar-content container"
+      data-aos="fade-down"
+      data-aos-duration="700"
+      data-aos-easing="ease-out-cubic"
+    >
       <div class="logo-area">
         <img
           src="../../../../assets/icons/logo@2x.png"
@@ -12,6 +17,11 @@
       </div>
 
       <div class="nav-actions">
+        <!-- Nuevo botón para ir al landing del equipo -->
+        <button class="btn btn-light" (click)="goToTeam()">
+          Nuestro equipo
+        </button>
+
         <button class="btn btn-light" (click)="goToLogin()">
           Iniciar sesión
         </button>
@@ -26,14 +36,24 @@
     <!-- HERO -->
     <section class="hero">
       <div class="hero-inner container">
-        <div class="hero-image" data-aos="fade-right">
+        <div
+          class="hero-image"
+          data-aos="fade-right"
+          data-aos-duration="800"
+          data-aos-easing="ease-out-cubic"
+        >
           <img
             src="../../../assets/img/BooksLanding.jpg"
             alt="Libros mágicos"
           />
         </div>
 
-        <div class="hero-text" data-aos="fade-left">
+        <div
+          class="hero-text"
+          data-aos="fade-left"
+          data-aos-duration="800"
+          data-aos-delay="150"
+        >
           <h1>Donde tus historias cobran vida</h1>
           <p>
             Mahou Site es la herramienta donde la imaginación y la
@@ -46,14 +66,23 @@
 
     <!-- FEATURES -->
     <section class="features">
-      <div class="container" data-aos="fade-up">
+      <div
+        class="container"
+        data-aos="fade-up"
+        data-aos-duration="800"
+        data-aos-offset="150"
+      >
         <h2>Da vida a tus mundos</h2>
         <p class="features-subtitle">
           Escribe, organiza y crea sin límites
         </p>
 
         <div class="features-grid">
-          <article class="feature-card" data-aos="zoom-in" data-aos-delay="100">
+          <article
+            class="feature-card"
+            data-aos="zoom-in"
+            data-aos-delay="100"
+          >
             <div class="feature-icon">
               <img src="../../../assets/icons/book.png" alt="Libro" />
             </div>
@@ -65,7 +94,11 @@
             </p>
           </article>
 
-          <article class="feature-card" data-aos="zoom-in" data-aos-delay="200">
+          <article
+            class="feature-card"
+            data-aos="zoom-in"
+            data-aos-delay="200"
+          >
             <div class="feature-icon">
               <img src="../../../assets/icons/profile.png" alt="Personaje" />
             </div>
@@ -78,7 +111,11 @@
             </p>
           </article>
 
-          <article class="feature-card" data-aos="zoom-in" data-aos-delay="300">
+          <article
+            class="feature-card"
+            data-aos="zoom-in"
+            data-aos-delay="300"
+          >
             <div class="feature-icon">
               <img
                 src="../../../assets/icons/game-controller.png"
@@ -98,7 +135,12 @@
 
     <!-- CTA -->
     <section class="cta">
-      <div class="container" data-aos="fade-up">
+      <div
+        class="container"
+        data-aos="fade-up"
+        data-aos-duration="800"
+        data-aos-offset="150"
+      >
         <div class="cta-card">
           <h2>¿Listo para empezar tu aventura?</h2>
           <p>
@@ -109,7 +151,7 @@
           <p>
             Regístrate hoy y deja que tus historias cobren vida contigo.
           </p>
-          <button class="btn btn-primary" (click)="goToSignup()">
+          <button class="btn btn-primary cta-btn" (click)="goToSignup()">
             Empezar a escribir
           </button>
         </div>
@@ -117,7 +159,6 @@
     </section>
   </main>
 
-  
   <!-- Botón flotante scroll-top -->
   <button
     class="scroll-top-btn"

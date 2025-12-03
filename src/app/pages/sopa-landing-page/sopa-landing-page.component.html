@@ -1,0 +1,159 @@
+<div class="page sopa-page">
+  <!-- NAVBAR -->
+  <header class="navbar sopa-navbar" data-aos="fade-down">
+    <div class="navbar-content container">
+      <div class="logo-area">
+        <img
+          src="../../../assets/img/sopaLogo.png"
+          alt="Sopa Technologies"
+          class="logo-img"
+        />
+        <span class="brand-name">Sopa Technologies</span>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn btn-light" (click)="goToMahou()">
+          Volver a Mahou Site
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="sopa-hero" data-aos="fade-up">
+      <div class="container">
+        <div class="hero-inner">
+          <hr class="sopa-divider" />
+
+          <div class="hero-content">
+            <img
+              src="../../../assets/img/sopaLogo.png"
+              alt="Taza Sopa"
+              class="hero-bowl"
+            />
+
+            <h1>Construyamos mundos juntos</h1>
+            <p class="hero-subtitle">Dándole sabor a la innovación</p>
+          </div>
+
+          <hr class="sopa-divider" />
+        </div>
+      </div>
+    </section>
+
+    <!-- MISIÓN -->
+    <section class="sopa-section sopa-section-light" id="mision">
+      <div class="container">
+        <div class="section-card" data-aos="fade-up" data-aos-delay="100">
+          <h2>Nuestra misión</h2>
+          <p>
+            Empoderar a nuestros usuarios a través de soluciones de software innovadoras y confiables,
+            liderando la transformación digital con un equipo altamente capacitado.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISIÓN -->
+    <section class="sopa-section sopa-section-light" id="vision">
+      <div class="container">
+        <div class="section-card" data-aos="fade-up" data-aos-delay="200">
+          <h2>Nuestra visión</h2>
+          <p>
+            Ser reconocidos como líderes en la industria de desarrollo de software, siendo pioneros en la
+            creación de soluciones vanguardistas que transformen la manera en que las personas interactúan
+            con la tecnología.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EQUIPO -->
+    <section class="sopa-section sopa-team" id="equipo">
+      <div class="container">
+        <h2 data-aos="fade-up">Conoce al equipo</h2>
+
+        <div class="team-grid">
+          <article class="team-member" data-aos="zoom-in" data-aos-delay="0">
+            <img
+              src="../../../assets/img/kendall.jpg"
+              alt="Kendall"
+              class="avatar"
+            />
+            <h3>Kendall</h3>
+            <p class="role">Coordinador de calidad</p>
+          </article>
+
+          <article class="team-member" data-aos="zoom-in" data-aos-delay="100">
+            <img
+              src="../../../assets/img/ricardo.jpg"
+              alt="Ricardo"
+              class="avatar"
+            />
+            <h3>Ricardo</h3>
+            <p class="role">Coordinador de soporte</p>
+          </article>
+
+          <article class="team-member" data-aos="zoom-in" data-aos-delay="200">
+            <img
+              src="../../../assets/img/andrey.jpg"
+              alt="Andrey"
+              class="avatar"
+            />
+            <h3>Andrey</h3>
+            <p class="role">Coordinador de calidad</p>
+          </article>
+
+          <article class="team-member" data-aos="zoom-in" data-aos-delay="300">
+            <img
+              src="../../../assets/img/santiago.jpg"
+              alt="Santiago"
+              class="avatar"
+            />
+            <h3>Santiago</h3>
+            <p class="role">Coordinador técnico</p>
+          </article>
+
+          <article class="team-member" data-aos="zoom-in" data-aos-delay="400">
+            <img
+              src="../../../assets/img/fabiana.jpg"
+              alt="Fabiana"
+              class="avatar"
+            />
+            <h3>Fabiana</h3>
+            <p class="role">Coordinadora general</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="sopa-section sopa-cta">
+      <div class="container">
+        <div class="cta-card" data-aos="fade-up" data-aos-delay="100">
+          <h2>Incorpórate a nuestro mundo</h2>
+          <p>
+            En Sopa Technologies cada línea de código, cada diseño y cada idea cuentan para construir
+            experiencias que transforman la creatividad. Buscamos personas apasionadas, curiosas y valientes,
+            que quieran escribir, jugar y crear junto a nosotros. Si quieres dejar tu huella en proyectos
+            innovadores y formar parte de un equipo que convierte la imaginación en realidad, este es tu lugar.
+          </p>
+          <button class="btn btn-primary sopa-btn" (click)="goToMahou()">
+            Crea con nosotros
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Botón flotante scroll-top -->
+  <button
+    class="scroll-top-btn sopa-scroll-top"
+    *ngIf="showScrollTop"
+    (click)="scrollToTop()"
+    aria-label="Volver arriba"
+  >
+    ↑
+  </button>
+</div>

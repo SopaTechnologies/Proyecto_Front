@@ -14,11 +14,12 @@ import { GenresComponent } from "./pages/genres/genres.component";
 import { PasswordComponent } from "./pages/auth/password/password.component";
 import { UserAdminComponent } from "./pages/user-admin/user-admin.component";
 import { MensajesComponent } from "./pages/timeline/timeline.component";
-import { PersonajesComponent } from "./pages/personajes/personajes.component";
-import { HistoriesCardComponent } from "./pages/histories/histories.component";
-import { ForumComponent } from "./pages/forum/forum.component";
 import { GameBoardComponent} from "./components/game-board/game-board.component";
 import { GameLobbyComponent } from "./components/game-lobby/game-lobby.component";
+import { PersonajesComponent } from './pages/personajes/personajes.component';
+import { HistoriesCardComponent } from './pages/histories/histories.component';
+import { ForumComponent } from './pages/forum/forum.component';
+import { PerlinNoiseComponent } from './pages/Maps/perlin-noise/perlin-noise.component';
 import { LandingPageComponent } from './pages/mahou-landing-page/mahou-landing-page.component';
 
 
@@ -57,6 +58,16 @@ export const routes: Routes = [
         path: "app",
         redirectTo: "users",
         pathMatch: "full",
+      },
+      {
+        path: "perlin-noise",
+        component: PerlinNoiseComponent,
+        canActivate: [AdminRoleGuard],
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin],
+          name: "Generador de Mapas",
+          showInSidebar: false,
+        },
       },
       {
         path: "dashboard",
