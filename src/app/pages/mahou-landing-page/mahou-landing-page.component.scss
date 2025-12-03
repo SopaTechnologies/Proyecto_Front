@@ -442,3 +442,115 @@ $color-border-soft: rgba(255, 255, 255, 0.08);
   50%  { transform: translateY(-8px); }
   100% { transform: translateY(0); }
 }
+/* ===========================
+   ANIMACIONES MAHOU LANDING
+   =========================== */
+
+/* 1. Logo: “respira” y gira un poquito en hover */
+@keyframes mahouLogoBreath {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.navbar .logo-img {
+  animation: mahouLogoBreath 3s ease-in-out infinite;
+  transition: transform 0.25s ease;
+}
+
+.navbar .logo-img:hover {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+/* 2. Imagen del hero: flotando suave + hover */
+@keyframes mahouHeroFloat {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.hero-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: mahouHeroFloat 4s ease-in-out infinite;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hero-image img:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* 3. Tarjetas de features: micro-lift al hover */
+.features .feature-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+    background-color 0.25s ease;
+  cursor: default;
+}
+
+.features .feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+}
+
+/* Iconos dentro de las cards: ligero zoom */
+.features .feature-icon img {
+  transition: transform 0.25s ease;
+}
+
+.features .feature-card:hover .feature-icon img {
+  transform: scale(1.08);
+}
+
+/* 4. CTA: card que “respira” al hover y botón pro */
+.cta .cta-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cta .cta-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
+}
+
+.cta .cta-btn {
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.cta .cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* 5. Botón scroll-top: animación y hover */
+.scroll-top-btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.scroll-top-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* (Opcional) si quieres que aparezca como “fade-in” */
+.scroll-top-btn {
+  opacity: 0.9;
+}
+
+.scroll-top-btn:hover {
+  opacity: 1;
+}

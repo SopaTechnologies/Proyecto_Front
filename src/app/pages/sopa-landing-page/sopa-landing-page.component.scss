@@ -1,0 +1,287 @@
+$sopa-primary: #004e7a;
+$sopa-bg-dark: #121212;
+$sopa-bg-card: #1b1b1b;
+$sopa-accent: #f2c49b;
+
+.sopa-page {
+  min-height: 100vh;
+  background-color: $sopa-bg-dark;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+/* NAVBAR */
+.sopa-navbar {
+  background-color: $sopa-primary;
+  color: #ffffff;
+  padding: 0.75rem 0;
+
+  .navbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .logo-img {
+      height: 36px;
+      width: auto;
+    }
+
+    .brand-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+  }
+
+  .nav-actions .btn-light {
+    color: $sopa-primary;
+    font-weight: 500;
+  }
+}
+
+/* HERO */
+.sopa-hero {
+  padding: 4rem 0;
+  text-align: center;
+
+  .hero-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .sopa-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 1.5rem 0;
+  }
+
+  .hero-bowl {
+    width: 120px;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    opacity: 0.8;
+  }
+}
+
+/* SECCIONES GENERALES */
+.sopa-section {
+  padding: 3.5rem 0;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: $sopa-primary;
+  }
+
+  p {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+}
+
+.sopa-section-light .section-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: $sopa-bg-card;
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* EQUIPO */
+.sopa-team {
+  .team-grid {
+    max-width: 800px;
+    margin: 2rem auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(140px, 1fr));
+    gap: 2rem;
+    justify-items: center;
+  }
+
+  .team-member {
+    text-align: center;
+
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 0.75rem;
+      border: 3px solid $sopa-primary;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .avatar:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45);
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .role {
+      margin-top: 0.25rem;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+  }
+  /* Fabiana (último) centrada en la columna del medio en desktop */
+  .team-member:last-child {
+    grid-column: 2 / 3;
+  }
+
+  @media (max-width: 768px) {
+    .team-grid {
+      grid-template-columns: repeat(2, minmax(120px, 1fr));
+    }
+
+    .team-member:last-child {
+      grid-column: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .team-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+/* CTA FINAL */
+.sopa-cta .cta-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: $sopa-bg-card;
+  border-radius: 16px;
+  padding: 2.5rem 2.5rem 2rem;
+  border: 1px solid $sopa-accent;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  h2 {
+    color: #ffffff;
+    margin-bottom: 1.25rem;
+  }
+
+  p + p {
+    margin-top: 0.75rem;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
+  }
+
+  .sopa-btn {
+    margin-top: 1.75rem;
+  }
+}
+
+/* BOTONES */
+.sopa-btn {
+  background-color: $sopa-primary;
+  border-color: $sopa-primary;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+    background-color: lighten($sopa-primary, 5%);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+}
+
+/* BOTÓN SCROLL TOP */
+.sopa-scroll-top {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background-color: $sopa-primary;
+  color: #ffffff;
+  border-radius: 999px;
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  }
+}
+.sopa-navbar .logo-img {
+  animation: sopaBreath 3s ease-in-out infinite;
+  transition: transform 0.3s ease;
+}
+
+.sopa-navbar .logo-img:hover {
+  transform: rotate(-5deg) scale(1.08);
+}
+
+@keyframes sopaWobble {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(-4deg); }
+  40%  { transform: rotate(4deg); }
+  60%  { transform: rotate(-2deg); }
+  80%  { transform: rotate(2deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* efecto sutil y lento */
+.sopa-navbar .logo-img {
+  animation: sopaWobble 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+/* ANIMACIÓN: flotando suave */
+@keyframes sopaHeroFloat {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.05);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Aplica la animación al logo del centro (hero) */
+.sopa-hero .hero-bowl {
+  animation: sopaHeroFloat 3.5s ease-in-out infinite;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+/* Efecto extra al pasar el mouse */
+.sopa-hero .hero-bowl:hover {
+  transform: translateY(-4px) scale(1.08) rotate(-4deg);
+  filter: drop-shadow(0 0 12px rgba(0, 78, 122, 0.7));
+}
