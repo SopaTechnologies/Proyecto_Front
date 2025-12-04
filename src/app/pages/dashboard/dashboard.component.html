@@ -1,3 +1,291 @@
-<div>
-  <h1>Dashboard</h1>
+<div class="dashboard-page">
+  <!-- HEADER / BIENVENIDA -->
+  <header class="dashboard-header">
+    <div class="header-main">
+      <span class="pill pill-soft">
+        <i class="fas fa-magic"></i>
+        Panel principal
+      </span>
+
+      <h1 class="dashboard-title">
+        Bienvenido a tu mundo Mahou
+      </h1>
+
+      <p class="dashboard-subtitle">
+        Organiza tus historias, revisa tu progreso creativo y accede rápido a lo que más usas.
+      </p>
+
+      <div class="dashboard-actions">
+        <button
+          type="button"
+          class="btn-primary"
+          (click)="onCreateHistory()"
+        >
+          <i class="fas fa-plus"></i>
+          Nueva historia
+        </button>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="onGoToHistories()"
+        >
+          <i class="fas fa-book-open"></i>
+          Ir a biblioteca
+        </button>
+      </div>
+    </div>
+
+    <div class="header-side">
+      <div class="focus-card">
+        <h3>Consejo del día</h3>
+        <p>
+          Escribe aunque sea un párrafo. La magia está en mantener el hábito, no en la perfección.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- MÉTRICAS PRINCIPALES -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <article class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-book"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-label">Historias creadas</span>
+          <span class="stat-value">
+            {{ totalHistorias || 0 }}
+          </span>
+          <span class="stat-caption">Incluye borradores y proyectos activos.</span>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-pen-nib"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-label">Historias en progreso</span>
+          <span class="stat-value">
+            {{ historiasEnProgreso || 0 }}
+          </span>
+          <span class="stat-caption">Historias no marcadas como finalizadas.</span>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-diagram-project"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-label">Elementos narrativos</span>
+          <span class="stat-value">
+            {{ totalElementosNarrativos || 0 }}
+          </span>
+          <span class="stat-caption">Personajes, lugares, eventos, etc.</span>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-label">Sesiones recientes</span>
+          <span class="stat-value">
+            {{ sesionesRecientes || 0 }}
+          </span>
+          <span class="stat-caption">Últimos 7 días.</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <section class="dashboard-main">
+    <div class="main-left">
+      <!-- Últimas historias -->
+      <div class="card-block">
+        <div class="card-header">
+          <h2>Últimas historias</h2>
+          <button
+            type="button"
+            class="link-button"
+            (click)="onGoToHistories()"
+          >
+            Ver todas
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <div
+          class="empty-state"
+          *ngIf="!recentHistories || recentHistories.length === 0"
+        >
+          <i class="fas fa-feather"></i>
+          <p>Aún no tienes historias recientes.</p>
+          <button
+            type="button"
+            class="btn-ghost"
+            (click)="onCreateHistory()"
+          >
+            Crear tu primera historia
+          </button>
+        </div>
+
+        <ul
+          class="history-list"
+          *ngIf="recentHistories && recentHistories.length > 0"
+        >
+          <li
+            class="history-item"
+            *ngFor="let history of recentHistories"
+          >
+            <div class="history-main">
+              <h3 class="history-title">
+                {{ history.titulo }}
+              </h3>
+
+              <div class="history-meta">
+                <!-- Género -->
+                <span class="badge-genre" *ngIf="history.genero">
+                  <i class="fas fa-tag"></i>
+                  {{ history.genero }}
+                </span>
+
+                <!-- Estado -->
+                <span class="badge-status" [class.completed]="history.finalizada">
+                  <i
+                    class="fas"
+                    [ngClass]="history.finalizada ? 'fa-check-circle' : 'fa-hourglass-half'"
+                  ></i>
+                  {{ history.finalizada ? 'Finalizada' : 'En progreso' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="history-side">
+              <span class="history-date">
+                <i class="far fa-calendar-alt"></i>
+                {{ history.updatedAt | date: 'shortDate' }}
+              </span>
+
+              <button
+                type="button"
+                class="btn-small"
+                (click)="onEditHistory(history.id)"
+              >
+                <i class="fas fa-pen"></i>
+                Continuar
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Progreso creativo -->
+      <div class="card-block">
+        <div class="card-header">
+          <h2>Progreso creativo</h2>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-label-row">
+            <span>Historias en curso</span>
+            <span class="progress-value">
+              {{ progresoHistoriasEnCurso || 0 }}%
+            </span>
+          </div>
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              [style.width.%]="progresoHistoriasEnCurso || 0"
+            ></div>
+          </div>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-label-row">
+            <span>Elementos narrativos creados</span>
+            <span class="progress-value">
+              {{ progresoElementosNarrativos || 0 }}%
+            </span>
+          </div>
+          <div class="progress-bar">
+            <div
+              class="progress-fill secondary"
+              [style.width.%]="progresoElementosNarrativos || 0"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA -->
+    <div class="main-right">
+      <!-- Acciones rápidas -->
+      <div class="card-block">
+        <div class="card-header">
+          <h2>Acciones rápidas</h2>
+        </div>
+
+        <ul class="quick-actions">
+          <li>
+            <button
+              type="button"
+              class="quick-action-button"
+              (click)="onCreateHistory()"
+            >
+              <div class="icon">
+                <i class="fas fa-plus-circle"></i>
+              </div>
+              <div class="info">
+                <span class="title">Crear nueva historia</span>
+                <span class="desc">Empieza un nuevo proyecto desde cero.</span>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="quick-action-button"
+              (click)="onGoToNarrativeElements()"
+            >
+              <div class="icon">
+                <i class="fas fa-diagram-project"></i>
+              </div>
+              <div class="info">
+                <span class="title">Gestionar elementos narrativos</span>
+                <span class="desc">Personajes, lugares, tramas y más.</span>
+              </div>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Notas / recordatorios -->
+      <div class="card-block reminders-card">
+        <div class="card-header">
+          <h2>Recordatorios</h2>
+        </div>
+
+        <ul class="reminders-list">
+          <li>
+            <i class="fas fa-check-square"></i>
+            Revisa la coherencia entre personajes y líneas temporales.
+          </li>
+          <li>
+            <i class="fas fa-check-square"></i>
+            Añade al menos un elemento narrativo a cada historia activa.
+          </li>
+          <li>
+            <i class="fas fa-check-square"></i>
+            Haz una copia de seguridad de tus historias importantes.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
 </div>

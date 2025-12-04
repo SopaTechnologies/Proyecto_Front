@@ -27,7 +27,6 @@ export class CrearHistoriaComponent {
     description: '',
     genero: '',
     contieneJuego: false,
-    // idUsuarioCreador: 101 // Simulado (usuario autenticado)
   };
 
   genres: GenreModel[] = [];
@@ -52,7 +51,6 @@ export class CrearHistoriaComponent {
     this.historyService.getGenres().subscribe({
       next: (response) => {
         this.genres = response.data;
-        console.log('Generos traidos exitosamente', this.genres);
       },
       error: err => {
         this.mostrarMensaje(err.status, err.status)
