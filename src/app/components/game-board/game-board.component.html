@@ -2,11 +2,11 @@
   <!-- Header -->
   <header class="game-header">
     <div class="game-info">
-      <span class="game-code">Game: {{ gameState.gameCode }}</span>
+      <span class="game-code">Juego: {{ gameState.gameCode }}</span>
       <span class="turn-info">
-        Turn {{ gameState.turnNumber }} -
+        Turno {{ gameState.turnNumber }} -
         <strong [style.color]="getCurrentPlayerColor()">
-          {{ getCurrentPlayerName() }}'s Turn
+          Turno de {{ getCurrentPlayerName() }}
         </strong>
       </span>
     </div>
@@ -18,7 +18,7 @@
         [disabled]="!isMyTurn() || gameState.status !== 'ACTIVE'"
       >
         <i class="fas fa-forward"></i>
-        End Turn
+        Terminar turno
       </button>
     </div>
   </header>
@@ -29,7 +29,7 @@
     <section class="map-section">
       <div class="map-controls">
         <div class="zoom-info">Zoom: {{ zoom | number : "1.1-1" }}x</div>
-        <div class="unit-count">Units: {{ gameState.units.length }}</div>
+        <div class="unit-count">Unidades: {{ gameState.units.length }}</div>
       </div>
 
       <div class="map-wrapper">
@@ -53,7 +53,7 @@
     <aside class="game-sidebar">
       <!-- Players -->
       <section class="panel players-panel">
-        <h3>Players</h3>
+        <h3>Jugadores</h3>
         <div class="player-list">
           <div
             class="player-item"
@@ -69,7 +69,7 @@
                 {{ gameState.hostPlayer.playerName }}
               </div>
               <div class="unit-count-small">
-                {{ getPlayerUnitCount(0) }} units
+                {{ getPlayerUnitCount(0) }} unidades
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@
                 {{ gameState.guestPlayer.playerName }}
               </div>
               <div class="unit-count-small">
-                {{ getPlayerUnitCount(1) }} units
+                {{ getPlayerUnitCount(1) }} unidades
               </div>
             </div>
           </div>
@@ -98,7 +98,7 @@
 
       <!-- Selected Unit -->
       <section class="panel unit-panel" *ngIf="selectedUnit">
-        <h3>Selected Unit</h3>
+        <h3>Unidad seleccionada</h3>
         <div class="unit-details">
           <div class="unit-header">
             <span class="unit-icon">{{ selectedUnit.icon }}</span>
@@ -108,9 +108,9 @@
           <div class="unit-stats">
             <div class="stat">
               <i class="fas fa-heart"></i>
-              <span
-                >{{ selectedUnit.health }} / {{ selectedUnit.maxHealth }}</span
-              >
+              <span>
+                {{ selectedUnit.health }} / {{ selectedUnit.maxHealth }}
+              </span>
             </div>
             <div class="stat">
               <i class="fas fa-sword"></i>
@@ -118,7 +118,7 @@
             </div>
             <div class="stat">
               <i class="fas fa-bullseye"></i>
-              <span>Range: {{ selectedUnit.attackRange }}</span>
+              <span>Alcance: {{ selectedUnit.attackRange }}</span>
             </div>
 
             <div class="stat">
@@ -127,17 +127,17 @@
             </div>
             <div class="stat">
               <i class="fas fa-shoe-prints"></i>
-              <span
-                >{{ selectedUnit.remainingMovement }} /
-                {{ selectedUnit.movement }}</span
-              >
+              <span>
+                {{ selectedUnit.remainingMovement }} /
+                {{ selectedUnit.movement }}
+              </span>
             </div>
           </div>
 
           <div class="unit-actions">
             <button class="btn-unit-action" (click)="deselectUnit()">
               <i class="fas fa-times"></i>
-              Deselect
+              Deseleccionar
             </button>
           </div>
         </div>
@@ -145,7 +145,7 @@
 
       <!-- Combat Log -->
       <section class="panel log-panel">
-        <h3>Combat Log</h3>
+        <h3>Registro de combate</h3>
         <div class="log-messages">
           <div
             *ngFor="let log of combatLog"
@@ -155,7 +155,7 @@
             {{ log.message }}
           </div>
           <div *ngIf="combatLog.length === 0" class="log-empty">
-            No combat yet
+            Todavía no hay combate
           </div>
         </div>
       </section>
@@ -168,10 +168,10 @@
     *ngIf="gameState && gameState.status === 'FINISHED'"
   >
     <div class="modal-content">
-      <h2>Juego Terminado!</h2>
+      <h2>¡Juego terminado!</h2>
       <div class="winner-announcement">
         <i class="fas fa-trophy"></i>
-        <p>{{ getWinnerName() }} ha ganado!</p>
+        <p>{{ getWinnerName() }} ha ganado</p>
       </div>
       <div class="game-stats">
         <p>Turnos jugados: {{ gameState.turnNumber }}</p>
@@ -185,7 +185,7 @@
       </div>
       <button class="btn-primary" (click)="returnToLobby()">
         <i class="fas fa-home"></i>
-        Volver al Lobby
+        Volver al lobby
       </button>
     </div>
   </div>
