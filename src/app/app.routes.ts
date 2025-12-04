@@ -21,6 +21,7 @@ import { HistoriesCardComponent } from './pages/histories/histories.component';
 import { ForumComponent } from './pages/forum/forum.component';
 import { PerlinNoiseComponent } from './pages/Maps/perlin-noise/perlin-noise.component';
 import { LandingPageComponent } from './pages/mahou-landing-page/mahou-landing-page.component';
+import { SopaLandingPageComponent } from "./pages/sopa-landing-page/sopa-landing-page.component";
 
 
 export const routes: Routes = [
@@ -28,6 +29,11 @@ export const routes: Routes = [
   {
     path: '',
     component: LandingPageComponent,
+    pathMatch: 'full',
+  },
+  {
+    path: 'sopa',
+    component: SopaLandingPageComponent,
     pathMatch: 'full',
   },
   {
